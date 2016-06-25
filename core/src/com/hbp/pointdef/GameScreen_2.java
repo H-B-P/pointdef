@@ -372,7 +372,7 @@ public class GameScreen_2 implements Screen {
    }
    
    private void create_matrix_dot_function(){
-	   if (MODE=="Scale_I"){
+	   if (MODE=="Diag_I"){
 		   if (seconds==0){
 			   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
 			   TheMatrix.set(SI_Input);
@@ -390,12 +390,12 @@ public class GameScreen_2 implements Screen {
 			   TheMatrix.set(SI_Input);
 		   }
 	   }
-	   if (MODE=="Scale_II"){
+	   if (MODE=="Diag_II"){
 		   if (seconds<99){
-			   NewScaleMatrix_easy();
+			   NewDiagMatrix_easy();
 		   }
 		   else{
-			   NewScaleMatrix_hard();
+			   NewDiagMatrix_hard();
 		   }
 	   }
 	   if (MODE=="Rotation"){
@@ -558,7 +558,7 @@ public class GameScreen_2 implements Screen {
 	   TheMatrix.set(NPSM_Input);
    }
    
-   private void NewScaleMatrix_easy(){
+   private void NewDiagMatrix_easy(){
 	   int a = 0;
 	   int c = 0;
 	   while ((a==0 || c==0) || !(a==1 || c==1 || a==c)){
@@ -569,7 +569,7 @@ public class GameScreen_2 implements Screen {
 	   TheMatrix.set(NPSM_Input);
    }
    
-   private void NewScaleMatrix_hard(){
+   private void NewDiagMatrix_hard(){
 	   int a = 0;
 	   int c = 0;
 	   while ((a==0 || c==0) || (a==1 || c==1 || a==c)){

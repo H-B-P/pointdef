@@ -131,8 +131,8 @@ public class BookScreen_2 implements Screen {
 		new_posn_y=(double)0;
 		posn_x=(double)0;
 		posn_y=(double)0;
-		Function_Code="Scale";
-		MODE="Scale";
+		Function_Code="Diag";
+		MODE="Diag";
 		
 	    dot = new Rectangle();
 		dot.x = 0;
@@ -618,7 +618,7 @@ public class BookScreen_2 implements Screen {
 				}
 				DecimalFormat df = new DecimalFormat("#.#");
 				game.batch.draw(statusbarImage, 0, 400);
-				font.draw(game.batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+				font.draw(game.batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i) x ("+ argand_a + "+" + argand_b + "i)", 30, 455);
 			}
 		}
 		if (BOOKNAME=="Book_6"){

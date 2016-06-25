@@ -68,18 +68,18 @@ public class MainMenuScreen implements Screen {
 		
 		prefs = Gdx.app.getPreferences("galen_preferences");
 		if (GENRE=="MATRIX"){
-			score_one=prefs.getInteger("score_MATRIX_Scale_I");
-			score_two=prefs.getInteger("score_MATRIX_Scale_II");
+			score_one=prefs.getInteger("score_MATRIX_Diag_I");
+			score_two=prefs.getInteger("score_MATRIX_Diag_II");
 			score_three=prefs.getInteger("score_MATRIX_Rotation");
 			score_four=prefs.getInteger("score_MATRIX_Singular");
 			
-			cost_one=prefs.getInteger("cost_MATRIX_Scale_I");
-			cost_two=prefs.getInteger("cost_MATRIX_Scale_II");
+			cost_one=prefs.getInteger("cost_MATRIX_Diag_I");
+			cost_two=prefs.getInteger("cost_MATRIX_Diag_II");
 			cost_three=prefs.getInteger("cost_MATRIX_Rotation");
 			cost_four=prefs.getInteger("cost_MATRIX_Singular");
 			
-			one_t = new Texture(Gdx.files.internal("button_scaI.png"));
-			two_t = new Texture(Gdx.files.internal("button_scaII.png"));
+			one_t = new Texture(Gdx.files.internal("button_diagI.png"));
+			two_t = new Texture(Gdx.files.internal("button_diagII.png"));
 			three_t = new Texture(Gdx.files.internal("button_rot.png"));
 			four_t = new Texture(Gdx.files.internal("button_sing.png"));
 		}
@@ -291,11 +291,11 @@ public class MainMenuScreen implements Screen {
 			
 			if (GENRE=="MATRIX"){
 				if (one_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Scale_I"));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_I"));
 		            dispose();
 				}
 				if (two_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Scale_II"));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_II"));
 		            dispose();
 				}
 				if (three_r.contains(tp_x,480-tp_y)){
