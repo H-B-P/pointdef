@@ -614,7 +614,7 @@ public class BookScreen_2 implements Screen {
 					argand_b=Math.round((float)posn_y);
 				}
 				if (dot.x<320-5){
-				game.batch.draw(dot_b, dot.x-5, dot.y-5);
+				game.batch.draw(dot_b, dot.x, dot.y);
 				}
 				DecimalFormat df = new DecimalFormat("#.#");
 				game.batch.draw(statusbarImage, 0, 400);
