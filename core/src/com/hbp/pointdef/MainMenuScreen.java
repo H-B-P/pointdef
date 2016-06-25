@@ -22,6 +22,14 @@ public class MainMenuScreen implements Screen {
 	private Rectangle prv_r;
 	private Texture prv_t;	
 	
+	private Rectangle but_instructions_r;
+	private Texture but_instructions_t;
+	
+	private Texture instructions_t;
+	private Rectangle instructions_r;
+	
+	private Rectangle cancel_instructions_r;
+	
 	private Rectangle one_r;
 	private Texture one_t;
 	
@@ -60,11 +68,15 @@ public class MainMenuScreen implements Screen {
 	private Rectangle selector_nxt_r;
 	private Texture selector_t;
 	
+	boolean are_instructions_visible;
+	
 	public MainMenuScreen(final PointDef gam, String genre, int minespeed) {
 		
 		GENRE=genre;
 		
 		MINESPEED=minespeed;
+		
+		are_instructions_visible=false;
 		
 		prefs = Gdx.app.getPreferences("galen_preferences");
 		if (GENRE=="MATRIX"){
@@ -117,6 +129,26 @@ public class MainMenuScreen implements Screen {
 			three_t = new Texture(Gdx.files.internal("button_multiply.png"));
 			four_t = new Texture(Gdx.files.internal("button_powers.png"));
 		}
+		
+		but_instructions_r = new Rectangle();
+		but_instructions_r.x=180;
+		but_instructions_r.y=440;
+		but_instructions_r.height=20;
+		but_instructions_r.width=120;
+		but_instructions_t = new Texture(Gdx.files.internal("button_instructions_smol.png"));
+		
+		instructions_r = new Rectangle();
+		instructions_r.x=20;
+		instructions_r.y=20;
+		instructions_r.height=440;
+		instructions_r.width=280;
+		instructions_t = new Texture(Gdx.files.internal("Instructions.png"));
+		
+		cancel_instructions_r = new Rectangle();
+		cancel_instructions_r.x=320-20-40;
+		cancel_instructions_r.y=420;
+		cancel_instructions_r.height=40;
+		cancel_instructions_r.width=40;
 		
 		nxt_r = new Rectangle();
 		nxt_r.x=260;
@@ -267,7 +299,7 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
 		game.batch.draw(prv_t, prv_r.x, prv_r.y);
 		game.batch.draw(nxt_t, nxt_r.x, nxt_r.y);
-		font.draw(game.batch, "GENRE:  " + GENRE, 170, 440);
+		font.draw(game.batch, "GENRE:  " + GENRE, 170, 420);
 		
 		//font.draw(game.batch, "MINE SPEED:  " + "LOW", 10, 460);
 		
@@ -275,105 +307,119 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(prv_t, selector_prv_r.x, selector_prv_r.y);
 		game.batch.draw(nxt_t, selector_nxt_r.x, selector_nxt_r.y);
 		font.draw(game.batch, ""+MINESPEED, selector_r.x+60, selector_r.y+25);
+		game.batch.draw(but_instructions_t, but_instructions_r.x, but_instructions_r.y);
+		if (are_instructions_visible){
+			game.batch.draw(instructions_t, instructions_r.x, instructions_r.y);
+		}
 		game.batch.end();
 
 		if (Gdx.input.justTouched()) {
 			float tp_x=Gdx.input.getX();
 			float tp_y=Gdx.input.getY();
+			if (!are_instructions_visible){
+				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>30){
+					MINESPEED-=5;
+				}
+				if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<150){
+					MINESPEED+=5;
+				}
+				
+				
+				if (GENRE=="MATRIX"){
+					if (one_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_I"));
+			            dispose();
+					}
+					if (two_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_II"));
+			            dispose();
+					}
+					if (three_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Rotation"));
+			            dispose();
+					}
+					if (four_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Singular"));
+			            dispose();
+					}
+					if (prv_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new MainMenuScreen(game, "ARGAND", MINESPEED));
+			            dispose();
+					}
+					if (nxt_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new MainMenuScreen(game, "POLAR", MINESPEED));
+			            dispose();
+					}
+	
+				}
+				if (GENRE=="POLAR"){
+					if (one_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "theta"));
+			            dispose();
+					}
+					if (two_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "r"));
+			            dispose();
+					}
+					if (three_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "power"));
+			            dispose();
+					}
+					if (four_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "switch"));
+			            dispose();
+					}
+					if (prv_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new MainMenuScreen(game, "MATRIX", MINESPEED));
+			            dispose();
+					}
+					if (nxt_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new MainMenuScreen(game, "ARGAND", MINESPEED));
+			            dispose();
+					}
+	
+				}
+				if (GENRE=="ARGAND"){
+					if (one_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "errata"));
+			            dispose();
+					}
+					if (two_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "add"));
+			            dispose();
+					}
+					if (three_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply"));
+			            dispose();
+					}
+					if (four_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "power"));
+			            dispose();
+					}
+					if (prv_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new MainMenuScreen(game, "POLAR", MINESPEED));
+			            dispose();
+					}
+					if (nxt_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new MainMenuScreen(game, "MATRIX", MINESPEED));
+			            dispose();
+					}
+	
+				}
+				
+				if (LIBRARY_r.contains(tp_x,480-tp_y)){
+		            game.setScreen(new LibraryScreen(game));
+		            dispose();
+				}
+			}
 			
-			if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>30){
-				MINESPEED-=5;
+			if(((!instructions_r.contains(tp_x,480-tp_y))||(cancel_instructions_r.contains(tp_x,480-tp_y)))&&are_instructions_visible==true){
+				System.out.println(tp_x);
+				System.out.println(tp_y);
+				are_instructions_visible=false;
 			}
-			if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<150){
-				MINESPEED+=5;
-			}
-			
-			
-			if (GENRE=="MATRIX"){
-				if (one_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_I"));
-		            dispose();
-				}
-				if (two_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_II"));
-		            dispose();
-				}
-				if (three_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Rotation"));
-		            dispose();
-				}
-				if (four_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Singular"));
-		            dispose();
-				}
-				if (prv_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new MainMenuScreen(game, "ARGAND", MINESPEED));
-		            dispose();
-				}
-				if (nxt_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new MainMenuScreen(game, "POLAR", MINESPEED));
-		            dispose();
-				}
-
-			}
-			if (GENRE=="POLAR"){
-				if (one_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "theta"));
-		            dispose();
-				}
-				if (two_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "r"));
-		            dispose();
-				}
-				if (three_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "power"));
-		            dispose();
-				}
-				if (four_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "switch"));
-		            dispose();
-				}
-				if (prv_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new MainMenuScreen(game, "MATRIX", MINESPEED));
-		            dispose();
-				}
-				if (nxt_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new MainMenuScreen(game, "ARGAND", MINESPEED));
-		            dispose();
-				}
-
-			}
-			if (GENRE=="ARGAND"){
-				if (one_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "errata"));
-		            dispose();
-				}
-				if (two_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "add"));
-		            dispose();
-				}
-				if (three_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply"));
-		            dispose();
-				}
-				if (four_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "power"));
-		            dispose();
-				}
-				if (prv_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new MainMenuScreen(game, "POLAR", MINESPEED));
-		            dispose();
-				}
-				if (nxt_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new MainMenuScreen(game, "MATRIX", MINESPEED));
-		            dispose();
-				}
-
-			}
-			
-			if (LIBRARY_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new LibraryScreen(game));
-	            dispose();
+			else if (but_instructions_r.contains(tp_x,480-tp_y) && are_instructions_visible==false){
+	            are_instructions_visible=true;
 			}
 			
 		}
