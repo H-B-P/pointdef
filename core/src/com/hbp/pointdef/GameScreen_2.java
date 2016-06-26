@@ -66,9 +66,6 @@ public class GameScreen_2 implements Screen {
    private int score;
    
    private int prefs_score;
-   private int prefs_cost;
-   
-   private float cost;
    
    private int argand_a;
    private int argand_b;
@@ -133,11 +130,6 @@ public class GameScreen_2 implements Screen {
       
       prefs = Gdx.app.getPreferences("galen_preferences");
       prefs_score=prefs.getInteger("score_"+GENRE+"_"+MODE);
-	  prefs_cost=prefs.getInteger("cost_"+GENRE+"_"+MODE);
-	  if (prefs_cost<250){
-		  prefs.putInteger("cost_"+GENRE+"_"+MODE, 10000);
-    	  prefs.flush();
-	  }
 	  
 	  //--Load images--
       mineImage = new Texture(Gdx.files.internal("a_mine_2.png"));
@@ -176,7 +168,6 @@ public class GameScreen_2 implements Screen {
       Function_Code="None";
       total_time=0;
       seconds=0;
-      cost=0;
       wastouched=false;
       //(Whether the game is not-exactly-paused.)
       IS_TIME_HAPPENING=true;
@@ -824,9 +815,6 @@ public class GameScreen_2 implements Screen {
       }
       
       
-      if(!IS_TIME_HAPPENING){
-    	  cost+=1.0*Gdx.graphics.getDeltaTime();
-      }
       for(Kaboom other_dot: other_dots) {
     	  batch.draw(dotImage, other_dot.rect.x, other_dot.rect.y);
        }
@@ -864,7 +852,6 @@ public class GameScreen_2 implements Screen {
       mirror_dot.setCenter(dotPos_j_x.floatValue(),dotPos_j_y.floatValue());
       
       if(!Gdx.input.isTouched() && IS_TIME_HAPPENING && seconds>1){
-    	  cost+=4.0*Gdx.graphics.getDeltaTime();
     	  batch.draw(dotImage, dot.x, dot.y);
     	  if (MIRROR_THE_DOT){
     		  batch.draw(dotImage, mirror_dot.x, mirror_dot.y);
@@ -972,9 +959,6 @@ public class GameScreen_2 implements Screen {
       font.draw(batch, "Score:", 200, 450);
       font.draw(batch, df.format(score), 250, 450);
       
-      //font.draw(batch, "Cost:", 200, 425);
-      //font.draw(batch, df_two.format(cost), 250, 425);
-      
       batch.end();
       
       //--Exit the game when main menu button pressed--
@@ -1018,10 +1002,6 @@ public class GameScreen_2 implements Screen {
     	    	  prefs.putInteger("score_"+GENRE+"_"+MODE, score);
     	    	  prefs.flush();
     		  }
-    		  if(cost<prefs_cost){
-    	    	  prefs.putInteger("cost_"+GENRE+"_"+MODE, (int) cost);
-    	    	  prefs.flush();
-    		  }
     		  game.setScreen(new MainMenuScreen(game, GENRE, MINESPEED));
     		  dispose();
     	  }
@@ -1062,7 +1042,6 @@ public class GameScreen_2 implements Screen {
 		     	spawnExplosion(mine.x,mine.y);
 		        //iters.remove();
 		         	iter.remove();
-		         	cost+=100.0;
 		         	deadyet=true;
 		         	shieldImage=shieldImage_flicker;
 		             
@@ -1082,12 +1061,6 @@ public class GameScreen_2 implements Screen {
 		     }
 		  }
       }      
-      
-      //--Make the player pay in energy per click--
-      
-      if(Gdx.input.justTouched()){
-    	  cost+=5.0;
-      }
       //--Let the player pause/unpause--
       if (Gdx.input.isKeyJustPressed(Keys.SPACE)){
     	  IS_TIME_HAPPENING=!IS_TIME_HAPPENING;
