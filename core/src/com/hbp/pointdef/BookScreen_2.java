@@ -89,6 +89,10 @@ public class BookScreen_2 implements Screen {
 	   private int polar_b;
 	   
 	   private Matrix3 TheMatrix;
+	   private Matrix3 OtherMatrix_1;
+	   private Matrix3 OtherMatrix_2;
+	   private Matrix3 OtherMatrix_3;
+	   
 	   
 	   private double posn_x;
 	   private double posn_y;
@@ -102,12 +106,20 @@ public class BookScreen_2 implements Screen {
 	   private Double new_posn_x;
 	   private Double new_posn_y;
 	   
+	   private double extra_posn_x;
+	   private double extra_posn_y;
+	   
+	   private double per_page_grx;
+	   private double per_page_gry;
+	   
 	   private Vector3 dotPos_g;
 	   
 	   public String MODE;
 	   private int MINESPEED;
 	   
 	   private boolean MIRROR_THE_DOT;
+	   
+	   private boolean first_timestep;
 	   
 	   private String Function_Code;
 	
@@ -255,6 +267,12 @@ public class BookScreen_2 implements Screen {
 		if (BOOKNAME=="Book_6"){
 			total_pages=3;
 		}
+		if (BOOKNAME=="Book_7"){
+			total_pages=5;
+		}
+		if (BOOKNAME=="Book_8"){
+			total_pages=3;
+		}
 		stepsin=new int[total_pages];
 		
 		int lastworking = 0;
@@ -271,7 +289,6 @@ public class BookScreen_2 implements Screen {
 				}
 			}
 		}
-		//Book_Pages[0][0]=new Texture(Gdx.files.internal("Books/Book_1_Page_1_0.png"));
 		
 		Page_t=Book_Pages[pageno][stepsin[pageno]];
 		
@@ -427,15 +444,19 @@ public class BookScreen_2 implements Screen {
 			tp_y=Gdx.input.getY();
 			if (prv_r.contains(tp_x,480-tp_y) && pageno>0){
 				pageno-=1;
+				first_timestep=true;
 			}
 			else if (nxt_r.contains(tp_x,480-tp_y) && pageno<(total_pages-1)){
 	            pageno+=1;
+	            first_timestep=true;
 			}
 			else if (R_r.contains(tp_x,480-tp_y) && pageno<(total_pages)){
 				stepsin[pageno]=0;
+				first_timestep=true;
 			}
 			else if (menu_button_r.contains(tp_x,480-tp_y) && pageno<(total_pages)){
 				game.setScreen(new MainMenuScreen(game, GENRE, 50));
+				dispose();
 			}
 			
 		}
@@ -636,9 +657,293 @@ public class BookScreen_2 implements Screen {
 				}
 			}
 		}
+		if (BOOKNAME=="Book_7"){
+			if (pageno==1){
+				if (first_timestep){
+					TheMatrix=new Matrix3();
+					float[] SI_Input = new float[]{2, 0, 0, 0, 3, 0, 0, 0, 1};
+					TheMatrix.set(SI_Input);
+					OtherMatrix_1=new Matrix3();
+					SI_Input = new float[]{4, 0, 0, 0, 1, 0, 0, 0, 1};
+					OtherMatrix_1.set(SI_Input);
+				}
+				if (Gdx.input.getX()<320-5){
+					per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
+			    	per_page_gry=-(Gdx.input.getY()-240)/UNIT_LENGTH_IN_PIXELS;
+					
+			    	dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_b, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+					
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(OtherMatrix_1);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_r, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+					
+				}
+			}
+			if (pageno==2){
+				if (first_timestep){
+					TheMatrix=new Matrix3();
+					float[] SI_Input = new float[]{1, 0, 0, 0, 0.5f, 0, 0, 0, 1};
+					TheMatrix.set(SI_Input);
+					OtherMatrix_1=new Matrix3();
+					SI_Input = new float[]{2, 0, 0, 0, 0, 0, 0, 0, 1};
+					OtherMatrix_1.set(SI_Input);
+					OtherMatrix_2=new Matrix3();
+					SI_Input = new float[]{-2, 0, 0, 0, 1, 0, 0, 0, 1};
+					OtherMatrix_2.set(SI_Input);
+				}
+				if (Gdx.input.getX()<320-5){
+					per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
+			    	per_page_gry=-(Gdx.input.getY()-240)/UNIT_LENGTH_IN_PIXELS;
+					
+			    	dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_b, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+					
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(OtherMatrix_1);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_r, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				    
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(OtherMatrix_2);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_g, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				}
+			}
+			if (pageno==3){
+				if (first_timestep){
+					TheMatrix=new Matrix3();
+					float[] SI_Input = new float[]{0.25f, 0, 0, 0, 0.25f, 0, 0, 0, 1};
+					TheMatrix.set(SI_Input);
+					OtherMatrix_1=new Matrix3();
+					SI_Input = new float[]{2, 0, 0, 0, 2, 0, 0, 0, 1};
+					OtherMatrix_1.set(SI_Input);
+					OtherMatrix_2=new Matrix3();
+					SI_Input = new float[]{-3, 0, 0, 0, -3, 0, 0, 0, 1};
+					OtherMatrix_2.set(SI_Input);
+					OtherMatrix_3=new Matrix3();
+					SI_Input = new float[]{3, 0, 0, 0, 1, 0, 0, 0, 1};
+					OtherMatrix_3.set(SI_Input);
+				}
+				if (Gdx.input.getX()<320-5){
+					per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
+			    	per_page_gry=-(Gdx.input.getY()-240)/UNIT_LENGTH_IN_PIXELS;
+					
+			    	dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_b, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+					
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(OtherMatrix_1);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_r, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				    
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(OtherMatrix_2);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_g, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				    
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(OtherMatrix_3);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_y, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				}
+			}
+			if (pageno==4){
+				if (first_timestep){
+					TheMatrix=new Matrix3();
+					float[] SI_Input = new float[]{2, 0, 0, 0, 2, 0, 0, 0, 1};
+					TheMatrix.set(SI_Input);
+				}
+				if (Gdx.input.getX()<320-5){
+					per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
+			    	per_page_gry=-(Gdx.input.getY()-240)/UNIT_LENGTH_IN_PIXELS;
+					
+			    	dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_b, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+					
+				    per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS-2;
+				    
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=(extra_posn_x+2)*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_y, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				    
+				    per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS+2;
+				    
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=(extra_posn_x-2)*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_g, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				}
+			}
+		}
+		if (BOOKNAME=="Book_8"){
+			if (pageno==1){
+				if (first_timestep){
+					TheMatrix=new Matrix3();
+					float[] SI_Input = new float[]{0.7f, 0.7f, 0, -0.7f, 0.7f, 0, 0, 0, 1};
+					TheMatrix.set(SI_Input);
+					OtherMatrix_1=new Matrix3();
+					SI_Input = new float[]{0, 1, 0, -1, 0, 0, 0, 0, 1};
+					OtherMatrix_1.set(SI_Input);
+					OtherMatrix_2=new Matrix3();
+					SI_Input = new float[]{-1, 0, 0, 0, -1, 0, 0, 0, 1};
+					OtherMatrix_2.set(SI_Input);
+				}
+				if (Gdx.input.getX()<320-5){
+					per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
+			    	per_page_gry=-(Gdx.input.getY()-240)/UNIT_LENGTH_IN_PIXELS;
+					
+			    	dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_b, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+					
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(OtherMatrix_1);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_r, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				    
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(OtherMatrix_2);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_g, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				}
+			}
+			if (pageno==2){
+				if (first_timestep){
+					TheMatrix=new Matrix3();
+					float[] SI_Input = new float[]{0, 1, 0, -1, 0, 0, 0, 0, 1};
+					TheMatrix.set(SI_Input);
+				}
+				if (Gdx.input.getX()<320-5){
+					per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
+			    	per_page_gry=-(Gdx.input.getY()-240)/UNIT_LENGTH_IN_PIXELS;
+					
+			    	dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_b, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+					
+				    per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS-2;
+				    
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=(extra_posn_x+2)*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_y, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				    
+				    per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS+2;
+				    
+				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
+					dotPos_g.mul(TheMatrix);
+					extra_posn_x=(double)dotPos_g.x;
+					extra_posn_y=(double)dotPos_g.y;
+					extra_posn_x=(extra_posn_x-2)*UNIT_LENGTH_IN_PIXELS+160.0;
+				    extra_posn_y=extra_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+				    if (extra_posn_x<320-5){
+				    	game.batch.draw(dot_g, (float)extra_posn_x-5, (float)extra_posn_y-5);
+				    }
+				}
+			}
+		}
 		//game.batch.draw(statusbarImage,0,0);
 		//game.batch.draw(statusbarImage,0,400);
 		game.batch.end();
+		first_timestep=false;
 	}
 
 	@Override

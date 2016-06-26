@@ -23,6 +23,8 @@ public class LibraryScreen implements Screen {
 	private Rectangle Book4_r;
 	private Rectangle Book5_r;
 	private Rectangle Book6_r;
+	private Rectangle Book7_r;
+	private Rectangle Book8_r;
 	
 	private Texture title_button_t;
 	
@@ -33,7 +35,7 @@ public class LibraryScreen implements Screen {
 		
 		B1_r = new Rectangle();
 		B1_r.x=90;
-		B1_r.y=20;
+		B1_r.y=10;
 		B1_r.height=60;
 		B1_r.width=140;
 		B1_t = new Texture(Gdx.files.internal("button_menu.png"));
@@ -45,39 +47,51 @@ public class LibraryScreen implements Screen {
 		
 		Book1_r = new Rectangle();
 		Book1_r.x=20;
-		Book1_r.y=400;
+		Book1_r.y=430;
 		Book1_r.height=40;
 		Book1_r.width=280;
 		
 		Book2_r = new Rectangle();
 		Book2_r.x=20;
-		Book2_r.y=350;
+		Book2_r.y=380;
 		Book2_r.height=40;
 		Book2_r.width=280;
 		
 		Book3_r = new Rectangle();
 		Book3_r.x=20;
-		Book3_r.y=300;
+		Book3_r.y=330;
 		Book3_r.height=40;
 		Book3_r.width=280;
 		
 		Book4_r = new Rectangle();
 		Book4_r.x=20;
-		Book4_r.y=250;
+		Book4_r.y=280;
 		Book4_r.height=40;
 		Book4_r.width=280;
 		
 		Book5_r = new Rectangle();
 		Book5_r.x=20;
-		Book5_r.y=200;
+		Book5_r.y=230;
 		Book5_r.height=40;
 		Book5_r.width=280;
 		
 		Book6_r = new Rectangle();
 		Book6_r.x=20;
-		Book6_r.y=150;
+		Book6_r.y=180;
 		Book6_r.height=40;
 		Book6_r.width=280;
+		
+		Book7_r = new Rectangle();
+		Book7_r.x=20;
+		Book7_r.y=130;
+		Book7_r.height=40;
+		Book7_r.width=280;
+		
+		Book8_r = new Rectangle();
+		Book8_r.x=20;
+		Book8_r.y=80;
+		Book8_r.height=40;
+		Book8_r.width=280;
 		
 		title_button_t=new Texture(Gdx.files.internal("book_title_button.png"));
 		
@@ -110,12 +124,17 @@ public class LibraryScreen implements Screen {
 		game.batch.draw(title_button_t, Book5_r.x, Book5_r.y);
 		game.batch.draw(title_button_t, Book6_r.x, Book6_r.y);
 		
+		game.batch.draw(title_button_t, Book7_r.x, Book7_r.y);
+		game.batch.draw(title_button_t, Book8_r.x, Book8_r.y);
+		
 		font.draw(game.batch, "What is a Vector?", Book1_r.x+15, Book1_r.y+25);
 		font.draw(game.batch, "What is a Matrix?", Book2_r.x+15, Book2_r.y+25);
 		font.draw(game.batch, "An alternative view of Matrices", Book3_r.x+15, Book3_r.y+25);
 		font.draw(game.batch, "What is a complex number?", Book4_r.x+15, Book4_r.y+25);
 		font.draw(game.batch, "Basic maths with complex numbers", Book5_r.x+15, Book5_r.y+25);
 		font.draw(game.batch, "Errata: Complex numbers", Book6_r.x+15, Book6_r.y+25);
+		font.draw(game.batch, "Diagonal Matrices", Book7_r.x+15, Book7_r.y+25);
+		font.draw(game.batch, "Rotation Matrices", Book8_r.x+15, Book8_r.y+25);
 		game.batch.end();
 
 		if (Gdx.input.justTouched()) {
@@ -147,6 +166,14 @@ public class LibraryScreen implements Screen {
 			}
 			if (Book6_r.contains(tp_x,480-tp_y)){
 	            game.setScreen(new BookScreen_2(game, "ARGAND", "Book_6"));
+	            dispose();
+			}
+			if (Book7_r.contains(tp_x,480-tp_y)){
+	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_7"));
+	            dispose();
+			}
+			if (Book8_r.contains(tp_x,480-tp_y)){
+	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_8"));
 	            dispose();
 			}
 		}
