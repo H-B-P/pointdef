@@ -85,11 +85,6 @@ public class MainMenuScreen implements Screen {
 			score_three=prefs.getInteger("score_MATRIX_Rotation");
 			score_four=prefs.getInteger("score_MATRIX_Singular");
 			
-			cost_one=prefs.getInteger("cost_MATRIX_Diag_I");
-			cost_two=prefs.getInteger("cost_MATRIX_Diag_II");
-			cost_three=prefs.getInteger("cost_MATRIX_Rotation");
-			cost_four=prefs.getInteger("cost_MATRIX_Singular");
-			
 			one_t = new Texture(Gdx.files.internal("button_diagI.png"));
 			two_t = new Texture(Gdx.files.internal("button_diagII.png"));
 			three_t = new Texture(Gdx.files.internal("button_rot.png"));
@@ -102,11 +97,6 @@ public class MainMenuScreen implements Screen {
 			score_three=prefs.getInteger("score_POLAR_power");
 			score_four=prefs.getInteger("score_POLAR_switch");
 			
-			cost_one=prefs.getInteger("cost_POLAR_theta");
-			cost_two=prefs.getInteger("cost_POLAR_r");
-			cost_three=prefs.getInteger("cost_POLAR_power");
-			cost_four=prefs.getInteger("cost_POLAR_switch");
-			
 			one_t = new Texture(Gdx.files.internal("button_theta.png"));
 			two_t = new Texture(Gdx.files.internal("button_r.png"));
 			three_t = new Texture(Gdx.files.internal("button_powers.png"));
@@ -118,11 +108,6 @@ public class MainMenuScreen implements Screen {
 			score_two=prefs.getInteger("score_ARGAND_add");
 			score_three=prefs.getInteger("score_ARGAND_multiply");
 			score_four=prefs.getInteger("score_ARGAND_power");
-			
-			cost_one=prefs.getInteger("cost_ARGAND_errata");
-			cost_two=prefs.getInteger("cost_ARGAND_add");
-			cost_three=prefs.getInteger("cost_ARGAND_multiply");
-			cost_four=prefs.getInteger("cost_ARGAND_power");
 			
 			one_t = new Texture(Gdx.files.internal("button_errata.png"));
 			two_t = new Texture(Gdx.files.internal("button_add.png"));
@@ -251,57 +236,28 @@ public class MainMenuScreen implements Screen {
 
 		game.batch.begin();
 		DecimalFormat df = new DecimalFormat("####");
-		//font = new BitmapFont();
+		
 	    font.setColor(Color.BLACK);
 		game.batch.draw(one_t, one_r.x, one_r.y);
 		font.draw(game.batch, "SCORE:", one_r.x+180, one_r.y+35);
 		font.draw(game.batch, df.format(score_one), one_r.x+250, one_r.y+35);
-		//font.draw(game.batch, "COST:", one_r.x+180, one_r.y+50);
-		if (cost_one<500){
-			//font.draw(game.batch, "N/A", one_r.x+250, one_r.y+50);
-		}
-		else{
-			//font.draw(game.batch, df.format(cost_one), one_r.x+250, one_r.y+50);
-		}
+
 		game.batch.draw(two_t, two_r.x, two_r.y);
 		font.draw(game.batch, "SCORE:", two_r.x+180, two_r.y+35);
 		font.draw(game.batch, df.format(score_two), two_r.x+250, two_r.y+35);
-		//font.draw(game.batch, "COST:", two_r.x+180, two_r.y+50);
-		if (cost_two<1000){
-			//font.draw(game.batch, "N/A", two_r.x+250, two_r.y+50);
-		}
-		else{
-			//font.draw(game.batch, df.format(cost_two), two_r.x+250, two_r.y+50);
-		}
 		
 		game.batch.draw(three_t, three_r.x, three_r.y);
 		font.draw(game.batch, "SCORE:", three_r.x+180, three_r.y+35);
 		font.draw(game.batch, df.format(score_three), three_r.x+250, three_r.y+35);
-		//font.draw(game.batch, "COST:", three_r.x+180, three_r.y+50);
-		if (cost_three<1000){
-			//font.draw(game.batch, "N/A", three_r.x+250, three_r.y+50);
-		}
-		else{
-			//font.draw(game.batch, df.format(cost_three), three_r.x+250, three_r.y+50);
-		}
 		
 		game.batch.draw(four_t, four_r.x, four_r.y);
 		font.draw(game.batch, "SCORE:", four_r.x+180, four_r.y+35);
 		font.draw(game.batch, df.format(score_four), four_r.x+250, four_r.y+35);
-		//font.draw(game.batch, "COST:", four_r.x+180, four_r.y+50);
-		if (cost_four<1000){
-			//font.draw(game.batch, "N/A", four_r.x+250, four_r.y+50);
-		}
-		else{
-			//font.draw(game.batch, df.format(cost_four), four_r.x+250, four_r.y+50);
-		}
 		
 		game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
 		game.batch.draw(prv_t, prv_r.x, prv_r.y);
 		game.batch.draw(nxt_t, nxt_r.x, nxt_r.y);
 		font.draw(game.batch, "GENRE:  " + GENRE, 170, 420);
-		
-		//font.draw(game.batch, "MINE SPEED:  " + "LOW", 10, 460);
 		
 		game.batch.draw(selector_t, selector_r.x, selector_r.y);
 		game.batch.draw(prv_t, selector_prv_r.x, selector_prv_r.y);
