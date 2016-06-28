@@ -805,6 +805,12 @@ public class BookScreen_2 implements Screen {
 					TheMatrix=new Matrix3();
 					float[] SI_Input = new float[]{2, 0, 0, 0, 2, 0, 0, 0, 1};
 					TheMatrix.set(SI_Input);
+					OtherMatrix_1=new Matrix3();
+					SI_Input = new float[]{-1, 0, 0, 0, 2, 0, 0, 0, 1};
+					OtherMatrix_1.set(SI_Input);
+					OtherMatrix_2=new Matrix3();
+					SI_Input = new float[]{2, 0, 0, 0, -1, 0, 0, 0, 1};
+					OtherMatrix_2.set(SI_Input);
 				}
 				if (Gdx.input.getX()<320-5){
 					per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
@@ -823,7 +829,7 @@ public class BookScreen_2 implements Screen {
 				    per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS-2;
 				    
 				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
-					dotPos_g.mul(TheMatrix);
+					dotPos_g.mul(OtherMatrix_1);
 					extra_posn_x=(double)dotPos_g.x;
 					extra_posn_y=(double)dotPos_g.y;
 					extra_posn_x=(extra_posn_x+2)*UNIT_LENGTH_IN_PIXELS+160.0;
@@ -835,7 +841,7 @@ public class BookScreen_2 implements Screen {
 				    per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS+2;
 				    
 				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
-					dotPos_g.mul(TheMatrix);
+					dotPos_g.mul(OtherMatrix_2);
 					extra_posn_x=(double)dotPos_g.x;
 					extra_posn_y=(double)dotPos_g.y;
 					extra_posn_x=(extra_posn_x-2)*UNIT_LENGTH_IN_PIXELS+160.0;
@@ -852,12 +858,12 @@ public class BookScreen_2 implements Screen {
 					TheMatrix=new Matrix3();
 					float[] SI_Input = new float[]{0.7f, 0.7f, 0, -0.7f, 0.7f, 0, 0, 0, 1};
 					TheMatrix.set(SI_Input);
-					OtherMatrix_1=new Matrix3();
-					SI_Input = new float[]{0, 1, 0, -1, 0, 0, 0, 0, 1};
-					OtherMatrix_1.set(SI_Input);
 					OtherMatrix_2=new Matrix3();
-					SI_Input = new float[]{-1, 0, 0, 0, -1, 0, 0, 0, 1};
+					SI_Input = new float[]{0, 1, 0, -1, 0, 0, 0, 0, 1};
 					OtherMatrix_2.set(SI_Input);
+					OtherMatrix_1=new Matrix3();
+					SI_Input = new float[]{-1, 0, 0, 0, -1, 0, 0, 0, 1};
+					OtherMatrix_1.set(SI_Input);
 				}
 				if (Gdx.input.getX()<320-5){
 					per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
@@ -897,15 +903,21 @@ public class BookScreen_2 implements Screen {
 			if (pageno==2){
 				if (first_timestep){
 					TheMatrix=new Matrix3();
-					float[] SI_Input = new float[]{0, 1, 0, -1, 0, 0, 0, 0, 1};
+					float[] SI_Input = new float[]{0.7f, 0.7f, 0, -0.7f, 0.7f, 0, 0, 0, 1};
 					TheMatrix.set(SI_Input);
+					OtherMatrix_1=new Matrix3();
+					SI_Input = new float[]{0, 1, 0, -1, 0, 0, 0, 0, 1};
+					OtherMatrix_1.set(SI_Input);
+					OtherMatrix_2=new Matrix3();
+					SI_Input = new float[]{-1, 0, 0, 0, -1, 0, 0, 0, 1};
+					OtherMatrix_2.set(SI_Input);
 				}
 				if (Gdx.input.getX()<320-5){
 					per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
 			    	per_page_gry=-(Gdx.input.getY()-240)/UNIT_LENGTH_IN_PIXELS;
 					
 			    	dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
-					dotPos_g.mul(TheMatrix);
+					dotPos_g.mul(OtherMatrix_1);
 					extra_posn_x=(double)dotPos_g.x;
 					extra_posn_y=(double)dotPos_g.y;
 					extra_posn_x=extra_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
@@ -929,7 +941,7 @@ public class BookScreen_2 implements Screen {
 				    per_page_grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS+2;
 				    
 				    dotPos_g.set((float)per_page_grx, (float)per_page_gry,0);
-					dotPos_g.mul(TheMatrix);
+					dotPos_g.mul(OtherMatrix_2);
 					extra_posn_x=(double)dotPos_g.x;
 					extra_posn_y=(double)dotPos_g.y;
 					extra_posn_x=(extra_posn_x-2)*UNIT_LENGTH_IN_PIXELS+160.0;

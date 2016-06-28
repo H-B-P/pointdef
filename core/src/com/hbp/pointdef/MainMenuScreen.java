@@ -54,11 +54,6 @@ public class MainMenuScreen implements Screen {
 	private int score_three;
 	private int score_four;
 	
-	private int cost_one;
-	private int cost_two;
-	private int cost_three;
-	private int cost_four;
-	
 	private BitmapFont font;
 	
 	private int MINESPEED;
@@ -276,7 +271,7 @@ public class MainMenuScreen implements Screen {
 				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>30){
 					MINESPEED-=5;
 				}
-				if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<150){
+				if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<200){
 					MINESPEED+=5;
 				}
 				

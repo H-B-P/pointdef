@@ -18,7 +18,7 @@ public class PointDef extends Game {
 		batch = new SpriteBatch();
 		// Use LibGDX's default Arial font.
 		font = new BitmapFont();
-		this.setScreen(new MainMenuScreen(this, "MATRIX", 50));
+		this.setScreen(new MainMenuScreen(this, "MATRIX", 100));
 	}
 
 	public void render() {
