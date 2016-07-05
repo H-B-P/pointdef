@@ -1,7 +1,5 @@
 package com.hbp.pointdef;
 
-import java.text.DecimalFormat;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -418,6 +416,11 @@ public class BookScreen_2 implements Screen {
 			new_posn_y=(double)dotPos_g.y;
 	   }
 
+	   private String double_formatted(double doub){
+		   double a=Math.round(doub*10.0)/10.0;
+		   Float b=(Float)(float)a;
+		   return b.toString();
+	   }
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -610,8 +613,7 @@ public class BookScreen_2 implements Screen {
 				game.batch.draw(dot_y, 160-5+120, 240+40-5);
 				
 				game.batch.draw(statusbarImage, 0, 400);
-				DecimalFormat df = new DecimalFormat("#.#");
-				font.draw(game.batch, "z=("+df.format(posn_x)+"x"+df.format(posn_y)+"i)", 30, 455);
+				font.draw(game.batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
 			}
 		}
 		if (BOOKNAME=="Book_5"){
@@ -637,9 +639,8 @@ public class BookScreen_2 implements Screen {
 				if (dot.x<320-5){
 				game.batch.draw(dot_b, dot.x, dot.y);
 				}
-				DecimalFormat df = new DecimalFormat("#.#");
 				game.batch.draw(statusbarImage, 0, 400);
-				font.draw(game.batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i) x ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+				font.draw(game.batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i) x ("+ argand_a + "+" + argand_b + "i)", 30, 455);
 			}
 		}
 		if (BOOKNAME=="Book_6"){

@@ -1,7 +1,6 @@
 package com.hbp.pointdef;
 
 import java.util.Iterator;
-import java.text.DecimalFormat;
 //import java.math.*;
 //import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -780,6 +779,34 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
    
+   //---------
+   
+   
+   
+   private String f_format(float fl){
+	   float a=Math.round(fl*10f)/10f;
+	   Float b=(Float)a;
+	   return b.toString();
+   }
+   
+   private String f_format_2pl(float fl){
+	   float a=Math.round(fl*100f)/100f;
+	   Float b=(Float)a;
+	   return b.toString();
+   }
+   
+   private String double_formatted(double doub){
+	   double a=Math.round(doub*10.0)/10.0;
+	   Float b=(Float)(float)a;
+	   return b.toString();
+   }
+   
+   private String double_formatted_2pl(double doub){
+	   double a=Math.round(doub*100.0)/100.0;
+	   Float b=(Float)(float)a;
+	   return b.toString();
+   }
+   
    //---RENDER---
    @Override
    public void render(float delta) {
@@ -825,11 +852,6 @@ public class GameScreen_2 implements Screen {
       
       
       
-      
-      DecimalFormat df = new DecimalFormat("#.#");
-      DecimalFormat df_two = new DecimalFormat("#");
-      DecimalFormat df_three = new DecimalFormat("#.##");
-      
       //--Apply the transformation; draw dots--
       
       if(Gdx.input.getY()>80 && Gdx.input.getY()<480 && Gdx.input.getX()>0 && Gdx.input.getX()<320){
@@ -867,97 +889,97 @@ public class GameScreen_2 implements Screen {
       //(That is: make it clear on the statusbar what is actually being done.)
       
       if (GENRE=="MATRIX"){
-    	  font.draw(batch, df.format(posn_x), 95, 455);
-          font.draw(batch, df.format(posn_y), 95, 435);
+    	  font.draw(batch, double_formatted(posn_x), 95, 455);
+          font.draw(batch, double_formatted(posn_y), 95, 435);
     	  
-    	  dotfunction_font.draw(batch, df.format(TheMatrix.getValues()[Matrix3.M00]/1.0), 30, 455);
-          dotfunction_font.draw(batch, df.format(TheMatrix.getValues()[Matrix3.M01]/1.0), 55, 455);
-          dotfunction_font.draw(batch, df.format(TheMatrix.getValues()[Matrix3.M10]/1.0), 30, 435);
-          dotfunction_font.draw(batch, df.format(TheMatrix.getValues()[Matrix3.M11]/1.0), 55, 435);
+    	  dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M00]/1.0), 30, 455);
+          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M01]/1.0), 55, 455);
+          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M10]/1.0), 30, 435);
+          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M11]/1.0), 55, 435);
           
       }
       if (GENRE=="POLAR"){
     	  if (MODE=="r"){
-	    	  dotfunction_font.draw(batch, "r="+polar_a+"*"+df.format(posn_r)+"+"+polar_b, 30, 455);
-	          font.draw(batch, "Theta="+df_three.format(posn_theta/Math.PI)+"pi", 30, 435);
+	    	  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(posn_r)+"+"+polar_b, 30, 455);
+	          font.draw(batch, "Theta="+double_formatted_2pl(posn_theta/Math.PI)+"pi", 30, 435);
     	  }
     	  if (MODE=="theta"){
-	    	  font.draw(batch, "r="+df.format(posn_r), 30, 455);
+	    	  font.draw(batch, "r="+double_formatted(posn_r), 30, 455);
 	    	  if (Function_Code=="divide"){
-	    		  dotfunction_font.draw(batch, "Theta="+df_three.format(posn_theta/Math.PI)+"pi/"+polar_a+" +(" + polar_b +")pi/4", 30, 435);
+	    		  dotfunction_font.draw(batch, "Theta="+double_formatted_2pl(posn_theta/Math.PI)+"pi/"+polar_a+" +(" + polar_b +")pi/4", 30, 435);
 	    	  }
 	    	  else{
-	    		  dotfunction_font.draw(batch, "Theta="+polar_a+"*"+df_three.format(posn_theta/Math.PI)+"pi+(" + polar_b +")pi/4", 30, 435);
+	    		  dotfunction_font.draw(batch, "Theta="+polar_a+"*"+double_formatted_2pl(posn_theta/Math.PI)+"pi+(" + polar_b +")pi/4", 30, 435);
 	    	  }
 	          
     	  }
     	  if (MODE=="power"){
 	    	  if (Function_Code=="square"){
-	    		  dotfunction_font.draw(batch, "r="+df.format(posn_r)+"^2", 30, 455);
+	    		  dotfunction_font.draw(batch, "r="+double_formatted(posn_r)+"^2", 30, 455);
 	    	  }
 	    	  if (Function_Code=="cube"){
-	    		  dotfunction_font.draw(batch, "r="+df.format(posn_r)+"^3", 30, 455);
+	    		  dotfunction_font.draw(batch, "r="+double_formatted(posn_r)+"^3", 30, 455);
 	    	  }
 	    	  if (Function_Code=="reciprocal"){
-	    		  dotfunction_font.draw(batch, "r="+df.format(posn_r)+"^-1", 30, 455);
+	    		  dotfunction_font.draw(batch, "r="+double_formatted(posn_r)+"^-1", 30, 455);
 	    	  }
 	    	  if (Function_Code=="square root"){
-	    		  dotfunction_font.draw(batch, "r="+df.format(posn_r)+"^0.5", 30, 455);
+	    		  dotfunction_font.draw(batch, "r="+double_formatted(posn_r)+"^0.5", 30, 455);
 	    	  }
-	    	  font.draw(batch, "Theta="+df_three.format(posn_theta/Math.PI)+"pi", 30, 435);
+	    	  font.draw(batch, "Theta="+double_formatted_2pl(posn_theta/Math.PI)+"pi", 30, 435);
     	  }
     	  if (MODE=="switch"){
-    		  font.draw(batch, "r="+df.format(posn_theta), 30, 455);
-    		  font.draw(batch, "Theta="+df.format(posn_r), 30, 435);
+    		  font.draw(batch, "r="+double_formatted(posn_theta), 30, 455);
+    		  font.draw(batch, "Theta="+double_formatted(posn_r), 30, 435);
     	  }
       }
       
       if (GENRE=="ARGAND"){
     	  if (MODE=="add"){
-    		  dotfunction_font.draw(batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);
     	  }
     	  if (MODE=="multiply"){
 	    	  
 	    	  if (Function_Code=="divide"){
-	    		  dotfunction_font.draw(batch, "z=1/("+df.format(posn_x)+"+"+df.format(posn_y)+"i)", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=1/("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
 	    	  }
 	    	  else{
-	    		  dotfunction_font.draw(batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i) * ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i) * ("+ argand_a + "+" + argand_b + "i)", 30, 455);
 	    	  }
 	          
     	  }
     	  if (MODE=="power"){
 	    	  if (Function_Code=="square"){
-	    		  dotfunction_font.draw(batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i)^2", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)^2", 30, 455);
 	    	  }
 	    	  if (Function_Code=="cube"){
-	    		  dotfunction_font.draw(batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i)^3", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)^3", 30, 455);
 	    	  }
 	    	  if (Function_Code=="reciprocal"){
-	    		  dotfunction_font.draw(batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i)^-1", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)^-1", 30, 455);
 	    	  }
 	    	  if (Function_Code=="square root"){
-	    		  dotfunction_font.draw(batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i)^0.5", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)^0.5", 30, 455);
 	    	  }
     	  }
     	  if (MODE=="errata"){
     		  if (Function_Code=="z_alone"){
-    			  dotfunction_font.draw(batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i)", 30, 455);
+    			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
     		  }
     		  if (Function_Code=="minus_z"){
-    			  dotfunction_font.draw(batch, "z=-("+df.format(posn_x)+"+"+df.format(posn_y)+"i)", 30, 455);
+    			  dotfunction_font.draw(batch, "z=-("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
     		  }
     		  if (Function_Code=="conjugate"){
-    			  dotfunction_font.draw(batch, "z=("+df.format(posn_x)+"+"+df.format(posn_y)+"i)*", 30, 455);
+    			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)*", 30, 455);
     		  }
     		  if (Function_Code=="real"){
-    			  dotfunction_font.draw(batch, "z=Re("+df.format(posn_x)+"+"+df.format(posn_y)+"i)", 30, 455);
+    			  dotfunction_font.draw(batch, "z=Re("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
     		  }
     	  }
       }
       
       font.draw(batch, "Score:", 200, 450);
-      font.draw(batch, df.format(score), 250, 450);
+      font.draw(batch, ((Integer)score).toString(), 250, 450);
       
       batch.end();
       

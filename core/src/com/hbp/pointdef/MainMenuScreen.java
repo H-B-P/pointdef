@@ -1,6 +1,6 @@
 package com.hbp.pointdef;
 
-import java.text.DecimalFormat;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -230,24 +230,23 @@ public class MainMenuScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
-		DecimalFormat df = new DecimalFormat("####");
 		
 	    font.setColor(Color.BLACK);
 		game.batch.draw(one_t, one_r.x, one_r.y);
 		font.draw(game.batch, "SCORE:", one_r.x+180, one_r.y+35);
-		font.draw(game.batch, df.format(score_one), one_r.x+250, one_r.y+35);
+		font.draw(game.batch, ((Integer)score_one).toString(), one_r.x+250, one_r.y+35);
 
 		game.batch.draw(two_t, two_r.x, two_r.y);
 		font.draw(game.batch, "SCORE:", two_r.x+180, two_r.y+35);
-		font.draw(game.batch, df.format(score_two), two_r.x+250, two_r.y+35);
+		font.draw(game.batch, ((Integer)score_two).toString(), two_r.x+250, two_r.y+35);
 		
 		game.batch.draw(three_t, three_r.x, three_r.y);
 		font.draw(game.batch, "SCORE:", three_r.x+180, three_r.y+35);
-		font.draw(game.batch, df.format(score_three), three_r.x+250, three_r.y+35);
+		font.draw(game.batch, ((Integer)score_three).toString(), three_r.x+250, three_r.y+35);
 		
 		game.batch.draw(four_t, four_r.x, four_r.y);
 		font.draw(game.batch, "SCORE:", four_r.x+180, four_r.y+35);
-		font.draw(game.batch, df.format(score_four), four_r.x+250, four_r.y+35);
+		font.draw(game.batch, ((Integer)score_four).toString(), four_r.x+250, four_r.y+35);
 		
 		game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
 		game.batch.draw(prv_t, prv_r.x, prv_r.y);
