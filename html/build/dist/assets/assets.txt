@@ -97,7 +97,7 @@ i:button_powers.png:2381:image/png
 i:Head_3_1.png:716:image/png
 i:button_scaI.png:2625:image/png
 i:button_instructions_smol.png:1572:image/png
-i:statusbar.png:2149:image/png
+i:statusbar.png:2142:image/png
 i:Head_2_2.png:710:image/png
 b:hs_err_pid6433.log:0:application/unknown
 i:a_mine.png:638:image/png

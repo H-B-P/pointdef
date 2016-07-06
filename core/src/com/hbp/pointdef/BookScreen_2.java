@@ -1,3 +1,6 @@
+
+
+
 package com.hbp.pointdef;
 
 import com.badlogic.gdx.Gdx;
@@ -469,7 +472,7 @@ public class BookScreen_2 implements Screen {
 				first_timestep=true;
 			}
 			else if (menu_button_r.contains(tp_x,480-tp_y) && pageno<(total_pages)){
-				game.setScreen(new MainMenuScreen(game, GENRE, 50));
+				game.setScreen(new MainMenuScreen(game, GENRE, 100));
 				dispose();
 			}
 			
@@ -651,7 +654,12 @@ public class BookScreen_2 implements Screen {
 				game.batch.draw(dot_b, dot.x, dot.y);
 				}
 				game.batch.draw(statusbarImage, 0, 400);
-				font.draw(game.batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) x ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+				if (argand_b<0){
+					font.draw(game.batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) x ("+ argand_a + "" + argand_b + "i)", 30, 455);
+				}
+				else{
+					font.draw(game.batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) x ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+				}
 			}
 		}
 		if (BOOKNAME=="Book_6"){
