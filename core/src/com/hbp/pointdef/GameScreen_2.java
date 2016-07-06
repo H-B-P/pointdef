@@ -69,10 +69,14 @@ public class GameScreen_2 implements Screen {
    private int argand_a;
    private int argand_b;
    
+   private int old_argand_a;
+   private int old_argand_b;
+   
    private int polar_a;
    private int polar_b;
    
    private Matrix3 TheMatrix;
+   private Matrix3 OldMatrix;
    
    private BitmapFont font;
    private BitmapFont dotfunction_font;
@@ -177,8 +181,13 @@ public class GameScreen_2 implements Screen {
       
       //(Even though this is a 2D game, we use 3D matrices and vectors simply because matrix2d doesn't exist in libgdx's setup.)
       //(All vectors have a z-value of 0; all matrices have 1s at zz and 0s at [xz, yz, zy, zx].)
-      
+      float[] ST_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 0};
       TheMatrix=new Matrix3();
+      OldMatrix=new Matrix3();
+      TheMatrix.set(ST_Input);
+      OldMatrix.set(ST_Input);
+      argand_a=0;
+      argand_b=0;
       dotPos_g=new Vector3();
       
       //--Create rectangles--
@@ -323,13 +332,20 @@ public class GameScreen_2 implements Screen {
    }
    
    private void create_argand_dot_function(){
-	   if (MODE=="add"){
-		   argand_a=MathUtils.random(-1,1);
-		   argand_b=MathUtils.random(-4,4);
-	   }
-	   if (MODE=="multiply"){
-		   argand_a=MathUtils.random(0,2);
-		   argand_b=plusorminus()*MathUtils.random(1,2);
+	   
+	   if (MODE=="add" || MODE=="multiply"){
+		   old_argand_a=argand_a;
+		   old_argand_b=argand_b;
+		   while (old_argand_a==argand_a && old_argand_b==argand_b){
+			   if (MODE=="add"){
+				   argand_a=MathUtils.random(-1,1);
+				   argand_b=MathUtils.random(-4,4);
+			   }
+			   if (MODE=="multiply"){
+				   argand_a=MathUtils.random(0,2);
+				   argand_b=plusorminus()*MathUtils.random(1,2);
+			   }
+		   }
 	   }
 	   if (MODE=="power"){
 		   if (seconds==0){
@@ -362,50 +378,53 @@ public class GameScreen_2 implements Screen {
    }
    
    private void create_matrix_dot_function(){
-	   if (MODE=="Diag_I"){
-		   if (seconds==0){
-			   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
-			   TheMatrix.set(SI_Input);
+	   OldMatrix.set(TheMatrix.getValues());
+	   while (OldMatrix.equals(TheMatrix)){
+		   if (MODE=="Diag_I"){
+			   if (seconds==0){
+				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
+				   TheMatrix.set(SI_Input);
+			   }
+			   if (seconds==50){
+				   float[] SI_Input = new float[]{1, 0, 0, 0, -1, 0, 0, 0, 1};
+				   TheMatrix.set(SI_Input);
+			   }
+			   if (seconds==100){
+				   float[] SI_Input = new float[]{-1, 0, 0, 0, 1, 0, 0, 0, 1};
+				   TheMatrix.set(SI_Input);
+			   }
+			   if (seconds==150){
+				   float[] SI_Input = new float[]{-1, 0, 0, 0, -1, 0, 0, 0, 1};
+				   TheMatrix.set(SI_Input);
+			   }
 		   }
-		   if (seconds==50){
-			   float[] SI_Input = new float[]{1, 0, 0, 0, -1, 0, 0, 0, 1};
-			   TheMatrix.set(SI_Input);
+		   if (MODE=="Diag_II"){
+			   if (seconds<99){
+				   NewDiagMatrix_easy();
+			   }
+			   else{
+				   NewDiagMatrix_hard();
+			   }
 		   }
-		   if (seconds==100){
-			   float[] SI_Input = new float[]{-1, 0, 0, 0, 1, 0, 0, 0, 1};
-			   TheMatrix.set(SI_Input);
+		   if (MODE=="Rotation"){
+			   if (seconds<99){
+				   NewRotMatrix_quarters_easy();
+			   }
+			   else{
+				   NewRotMatrix_quarters_hard();
+			   }
 		   }
-		   if (seconds==150){
-			   float[] SI_Input = new float[]{-1, 0, 0, 0, -1, 0, 0, 0, 1};
-			   TheMatrix.set(SI_Input);
+		   if (MODE=="Singular"){
+			   if ((seconds%100)==0){
+				   NewSingMatrix();
+			   }
+			   else{
+				   NewSingMatrix_notflat();
+			   }
 		   }
-	   }
-	   if (MODE=="Diag_II"){
-		   if (seconds<99){
-			   NewDiagMatrix_easy();
+		   if (MODE=="Arbitrary"){
+			   NewArbMatrix();
 		   }
-		   else{
-			   NewDiagMatrix_hard();
-		   }
-	   }
-	   if (MODE=="Rotation"){
-		   if (seconds<99){
-			   NewRotMatrix_quarters_easy();
-		   }
-		   else{
-			   NewRotMatrix_quarters_hard();
-		   }
-	   }
-	   if (MODE=="Singular"){
-		   if ((seconds%100)==0){
-			   NewSingMatrix();
-		   }
-		   else{
-			   NewSingMatrix_notflat();
-		   }
-	   }
-	   if (MODE=="Arbitrary"){
-		   NewArbMatrix();
 	   }
    }
    
@@ -552,8 +571,8 @@ public class GameScreen_2 implements Screen {
 	   int a = 0;
 	   int c = 0;
 	   while ((a==0 || c==0) || !(a==1 || c==1 || a==c)){
-	   		a=MathUtils.random(-4,4);
-	   		c=MathUtils.random(-4,4);
+	   		a=MathUtils.random(-3,3);
+	   		c=MathUtils.random(-3,3);
 	   }
 	   float[] NPSM_Input = new float[]{a, 0, 0, 0, c, 0, 0, 0, 1};
 	   TheMatrix.set(NPSM_Input);
@@ -563,8 +582,8 @@ public class GameScreen_2 implements Screen {
 	   int a = 0;
 	   int c = 0;
 	   while ((a==0 || c==0) || (a==1 || c==1 || a==c)){
-	   		a=MathUtils.random(-4,4);
-	   		c=MathUtils.random(-4,4);
+	   		a=MathUtils.random(-3,3);
+	   		c=MathUtils.random(-3,3);
 	   }
 	   float[] NPSM_Input = new float[]{a, 0, 0, 0, c, 0, 0, 0, 1};
 	   TheMatrix.set(NPSM_Input);
