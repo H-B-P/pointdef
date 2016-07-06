@@ -141,7 +141,7 @@ public class LibraryScreen implements Screen {
 			float tp_x=Gdx.input.getX();
 			float tp_y=Gdx.input.getY();
 			if (B1_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new MainMenuScreen(game, "MATRIX", 50));
+	            game.setScreen(new MainMenuScreen(game, "MATRIX", 100));
 	            dispose();
 			}
 			if (Book1_r.contains(tp_x,480-tp_y)){
