@@ -181,7 +181,7 @@ public class GameScreen_2 implements Screen {
       
       //(Even though this is a 2D game, we use 3D matrices and vectors simply because matrix2d doesn't exist in libgdx's setup.)
       //(All vectors have a z-value of 0; all matrices have 1s at zz and 0s at [xz, yz, zy, zx].)
-      float[] ST_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 0};
+      float[] ST_Input = new float[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
       TheMatrix=new Matrix3();
       OldMatrix=new Matrix3();
       TheMatrix.set(ST_Input);
@@ -378,8 +378,8 @@ public class GameScreen_2 implements Screen {
    }
    
    private void create_matrix_dot_function(){
-	   OldMatrix.set(TheMatrix.getValues());
-	   while (OldMatrix.equals(TheMatrix)){
+	   OldMatrix.set(TheMatrix.val);
+	   while (OldMatrix.getValues()[0]==TheMatrix.getValues()[0] && OldMatrix.getValues()[4]==TheMatrix.getValues()[4] && OldMatrix.getValues()[8]==TheMatrix.getValues()[8]){
 		   if (MODE=="Diag_I"){
 			   if (seconds==0){
 				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
@@ -820,6 +820,16 @@ public class GameScreen_2 implements Screen {
 	   return b.toString();
    }
    
+   private String double_formatted_prepl(double doub){
+	   double a=Math.round(doub*10.0)/10.0;
+	   Float b=(Float)(float)a;
+	   if (a<0){
+		   return b.toString();
+	   }
+	   else
+	   return "+"+b.toString();
+   }
+   
    private String double_formatted_2pl(double doub){
 	   double a=Math.round(doub*100.0)/100.0;
 	   Float b=(Float)(float)a;
@@ -908,18 +918,32 @@ public class GameScreen_2 implements Screen {
       //(That is: make it clear on the statusbar what is actually being done.)
       
       if (GENRE=="MATRIX"){
-    	  font.draw(batch, double_formatted(posn_x), 95, 455);
-          font.draw(batch, double_formatted(posn_y), 95, 435);
-    	  
-    	  dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M00]/1.0), 30, 455);
-          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M01]/1.0), 55, 455);
-          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M10]/1.0), 30, 435);
-          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M11]/1.0), 55, 435);
-          
+    	  font.draw(batch, double_formatted(posn_x), 96, 457);
+          font.draw(batch, double_formatted(posn_y), 96, 437);
+    	  if (TheMatrix.getValues()[Matrix3.M00]==(int)(TheMatrix.getValues()[Matrix3.M00]) &&TheMatrix.getValues()[Matrix3.M11]==(int)(TheMatrix.getValues()[Matrix3.M11])){
+    		  dotfunction_font.draw(batch, ((Integer)(int)(TheMatrix.getValues()[Matrix3.M00]/1.0)).toString(), 26, 457);
+              dotfunction_font.draw(batch, ((Integer)(int)(TheMatrix.getValues()[Matrix3.M01]/1.0)).toString(), 54, 457);
+              dotfunction_font.draw(batch, ((Integer)(int)(TheMatrix.getValues()[Matrix3.M10]/1.0)).toString(), 26, 437);
+              dotfunction_font.draw(batch, ((Integer)(int)(TheMatrix.getValues()[Matrix3.M11]/1.0)).toString(), 54, 437);
+    	  }
+    	  else{
+	    	  dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M00]/1.0), 20, 457);
+	          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M01]/1.0), 49, 457);
+	          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M10]/1.0), 20, 437);
+	          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M11]/1.0), 49, 437);
+    	  }
       }
       if (GENRE=="POLAR"){
     	  if (MODE=="r"){
-	    	  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(posn_r)+"+"+polar_b, 30, 455);
+    		  if (polar_b>0){
+    			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(posn_r)+"+"+polar_b, 30, 455);
+    		  }
+    		  else if (polar_b==0){
+    			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(posn_r), 30, 455);
+    		  }
+    		  else if (polar_b<0){
+    			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(posn_r)+polar_b, 30, 455);
+    		  }
 	          font.draw(batch, "Theta="+double_formatted_2pl(posn_theta/Math.PI)+"pi", 30, 435);
     	  }
     	  if (MODE=="theta"){
@@ -955,44 +979,65 @@ public class GameScreen_2 implements Screen {
       
       if (GENRE=="ARGAND"){
     	  if (MODE=="add"){
-    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+    		  //dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+    		  if (argand_b>0){
+    			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+    		  }
+    		  else if (argand_b<0){
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) + ("+ argand_a +""+ argand_b + "i)", 30, 455);
+
+    		  }
+    		  else if (argand_b==0){
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) + ("+ argand_a + ")", 30, 455);
+
+    		  }
     	  }
     	  if (MODE=="multiply"){
 	    	  
 	    	  if (Function_Code=="divide"){
-	    		  dotfunction_font.draw(batch, "z=1/("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=1/("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)", 30, 455);
 	    	  }
 	    	  else{
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i) * ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+	    		  if (argand_b>0){
+	    			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) * ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+	    		  }
+	    		  else if (argand_b<0){
+		    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) * ("+ argand_a +""+ argand_b + "i)", 30, 455);
+
+	    		  }
+	    		  else if (argand_b==0){
+		    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) * ("+ argand_a + ")", 30, 455);
+
+	    		  }
 	    	  }
 	          
     	  }
     	  if (MODE=="power"){
 	    	  if (Function_Code=="square"){
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)^2", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)^2", 30, 455);
 	    	  }
 	    	  if (Function_Code=="cube"){
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)^3", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)^3", 30, 455);
 	    	  }
 	    	  if (Function_Code=="reciprocal"){
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)^-1", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)^-1", 30, 455);
 	    	  }
 	    	  if (Function_Code=="square root"){
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)^0.5", 30, 455);
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)^0.5", 30, 455);
 	    	  }
     	  }
     	  if (MODE=="errata"){
     		  if (Function_Code=="z_alone"){
-    			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
+    			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)", 30, 455);
     		  }
     		  if (Function_Code=="minus_z"){
-    			  dotfunction_font.draw(batch, "z=-("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
+    			  dotfunction_font.draw(batch, "z=-("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)", 30, 455);
     		  }
     		  if (Function_Code=="conjugate"){
-    			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)*", 30, 455);
+    			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)*", 30, 455);
     		  }
     		  if (Function_Code=="real"){
-    			  dotfunction_font.draw(batch, "z=Re("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
+    			  dotfunction_font.draw(batch, "z=Re("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)", 30, 455);
     		  }
     	  }
       }

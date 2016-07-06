@@ -421,6 +421,17 @@ public class BookScreen_2 implements Screen {
 		   Float b=(Float)(float)a;
 		   return b.toString();
 	   }
+	   
+	   private String double_formatted_prepl(double doub){
+		   double a=Math.round(doub*10.0)/10.0;
+		   Float b=(Float)(float)a;
+		   if (a<0){
+			   return b.toString();
+		   }
+		   else
+		   return "+"+b.toString();
+	   }
+	   
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -613,7 +624,7 @@ public class BookScreen_2 implements Screen {
 				game.batch.draw(dot_y, 160-5+120, 240+40-5);
 				
 				game.batch.draw(statusbarImage, 0, 400);
-				font.draw(game.batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i)", 30, 455);
+				font.draw(game.batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)", 30, 455);
 			}
 		}
 		if (BOOKNAME=="Book_5"){
@@ -640,7 +651,7 @@ public class BookScreen_2 implements Screen {
 				game.batch.draw(dot_b, dot.x, dot.y);
 				}
 				game.batch.draw(statusbarImage, 0, 400);
-				font.draw(game.batch, "z=("+double_formatted(posn_x)+"+"+double_formatted(posn_y)+"i) x ("+ argand_a + "+" + argand_b + "i)", 30, 455);
+				font.draw(game.batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) x ("+ argand_a + "+" + argand_b + "i)", 30, 455);
 			}
 		}
 		if (BOOKNAME=="Book_6"){
