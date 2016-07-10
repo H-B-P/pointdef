@@ -36,7 +36,7 @@ public class MainMenuScreen implements Screen {
 	private Rectangle two_r;
 	private Texture two_t;
 	
-	private String GENRE;
+	private String TOPIC;
 	
 	private Rectangle three_r;
 	private Texture three_t;
@@ -65,16 +65,16 @@ public class MainMenuScreen implements Screen {
 	
 	boolean are_instructions_visible;
 	
-	public MainMenuScreen(final PointDef gam, String genre, int minespeed) {
+	public MainMenuScreen(final PointDef gam, String topic, int minespeed) {
 		
-		GENRE=genre;
+		TOPIC=topic;
 		
 		MINESPEED=minespeed;
 		
 		are_instructions_visible=false;
 		
 		prefs = Gdx.app.getPreferences("galen_preferences");
-		if (GENRE=="MATRIX"){
+		if (TOPIC=="MATRIX"){
 			score_one=prefs.getInteger("score_MATRIX_Diag_I");
 			score_two=prefs.getInteger("score_MATRIX_Diag_II");
 			score_three=prefs.getInteger("score_MATRIX_Rotation");
@@ -86,7 +86,7 @@ public class MainMenuScreen implements Screen {
 			four_t = new Texture(Gdx.files.internal("button_sing.png"));
 		}
 		
-		if (GENRE=="POLAR"){
+		if (TOPIC=="POLAR"){
 			score_one=prefs.getInteger("score_POLAR_theta");
 			score_two=prefs.getInteger("score_POLAR_r");
 			score_three=prefs.getInteger("score_POLAR_power");
@@ -98,7 +98,7 @@ public class MainMenuScreen implements Screen {
 			four_t = new Texture(Gdx.files.internal("button_switch.png"));
 		}
 		
-		if (GENRE=="ARGAND"){
+		if (TOPIC=="ARGAND"){
 			score_one=prefs.getInteger("score_ARGAND_errata");
 			score_two=prefs.getInteger("score_ARGAND_add");
 			score_three=prefs.getInteger("score_ARGAND_multiply");
@@ -251,7 +251,7 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
 		game.batch.draw(prv_t, prv_r.x, prv_r.y);
 		game.batch.draw(nxt_t, nxt_r.x, nxt_r.y);
-		font.draw(game.batch, "GENRE:  " + GENRE, 170, 420);
+		font.draw(game.batch, "TOPIC:  " + TOPIC, 170, 420);
 		
 		game.batch.draw(selector_t, selector_r.x, selector_r.y);
 		game.batch.draw(prv_t, selector_prv_r.x, selector_prv_r.y);
@@ -275,7 +275,7 @@ public class MainMenuScreen implements Screen {
 				}
 				
 				
-				if (GENRE=="MATRIX"){
+				if (TOPIC=="MATRIX"){
 					if (one_r.contains(tp_x,480-tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_I"));
 			            dispose();
@@ -302,7 +302,7 @@ public class MainMenuScreen implements Screen {
 					}
 	
 				}
-				if (GENRE=="POLAR"){
+				if (TOPIC=="POLAR"){
 					if (one_r.contains(tp_x,480-tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "theta"));
 			            dispose();
@@ -329,7 +329,7 @@ public class MainMenuScreen implements Screen {
 					}
 	
 				}
-				if (GENRE=="ARGAND"){
+				if (TOPIC=="ARGAND"){
 					if (one_r.contains(tp_x,480-tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "errata"));
 			            dispose();

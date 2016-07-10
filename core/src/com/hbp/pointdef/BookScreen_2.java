@@ -37,6 +37,7 @@ public class BookScreen_2 implements Screen {
 	
 	private Texture dot_r;
 	private Texture dot_b;
+	private Texture dot_c;
 	private Texture dot_p;
 	private Texture dot_y;
 	private Texture dot_w;
@@ -80,7 +81,7 @@ public class BookScreen_2 implements Screen {
 	
 	private BitmapFont font;
 	
-	private String GENRE;
+	private String TOPIC;
 	private String BOOKNAME;
 	
 	private int argand_a;
@@ -124,9 +125,9 @@ public class BookScreen_2 implements Screen {
 	   
 	   private String Function_Code;
 	
-	public BookScreen_2(final PointDef gam, String Genre, String Bookname) {
+	public BookScreen_2(final PointDef gam, String topic, String Bookname) {
 		
-		GENRE=Genre;
+		TOPIC=topic;
 		BOOKNAME=Bookname;
 		
 		font = new BitmapFont();
@@ -228,6 +229,7 @@ public class BookScreen_2 implements Screen {
 		
 		dot_r= new Texture(Gdx.files.internal("dots/dot_red.png"));
 		dot_b= new Texture(Gdx.files.internal("dots/dot_blue.png"));
+		dot_c= new Texture(Gdx.files.internal("dots/dot_cyan.png"));
 		dot_y= new Texture(Gdx.files.internal("dots/dot_yellow.png"));
 		dot_p= new Texture(Gdx.files.internal("dots/dot_pink.png"));
 		dot_w= new Texture(Gdx.files.internal("dots/dot_white.png"));
@@ -300,13 +302,13 @@ public class BookScreen_2 implements Screen {
 	   private void apply_dot_function(double grx, double gry){
 		   posn_x=grx;
 		   posn_y=gry;
-		   if (GENRE=="POLAR"){
+		   if (TOPIC=="POLAR"){
 			   apply_polar_dot_function(grx, gry);
 		   }
-		   if (GENRE=="ARGAND"){
+		   if (TOPIC=="ARGAND"){
 			   apply_argand_dot_function(grx, gry);
 		   }
-		   if (GENRE=="MATRIX"){
+		   if (TOPIC=="MATRIX"){
 			   apply_matrix_dot_function(grx, gry);
 		   }
 	   }
@@ -472,7 +474,7 @@ public class BookScreen_2 implements Screen {
 				first_timestep=true;
 			}
 			else if (menu_button_r.contains(tp_x,480-tp_y) && pageno<(total_pages)){
-				game.setScreen(new MainMenuScreen(game, GENRE, 100));
+				game.setScreen(new MainMenuScreen(game, TOPIC, 100));
 				dispose();
 			}
 			

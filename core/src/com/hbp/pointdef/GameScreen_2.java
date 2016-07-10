@@ -113,37 +113,60 @@ public class GameScreen_2 implements Screen {
    private double UNIT_LENGTH_IN_PIXELS;
    
    public String MODE;
-   public String GENRE;
+   public String TOPIC;
    private int MINESPEED;
    
    private String Function_Code;
    
+	private Texture dot_r;
+	private Texture dot_b;
+	private Texture dot_c;
+	private Texture dot_p;
+	private Texture dot_y;
+	private Texture dot_w;
+	private Texture dot_g;
+   
  //---Do all the initial stuff that happens on rendering---
    
-   public GameScreen_2(final PointDef gam, int minespeed, String genre, String mode) {
+   public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode) {
 	  
 	   //--Perform tautological actions--
 	   this.game = gam;
       
       MODE=mode;
-      GENRE=genre;
+      TOPIC=topic;
       MINESPEED=minespeed;
       
       //--Set up highscores--
       
       prefs = Gdx.app.getPreferences("galen_preferences");
-      prefs_score=prefs.getInteger("score_"+GENRE+"_"+MODE);
+      prefs_score=prefs.getInteger("score_"+TOPIC+"_"+MODE);
 	  
 	  //--Load images--
+      
+		dot_r= new Texture(Gdx.files.internal("dots/dot_red.png"));
+		dot_b= new Texture(Gdx.files.internal("dots/dot_blue.png"));
+		dot_c= new Texture(Gdx.files.internal("dots/dot_cyan.png"));
+		dot_y= new Texture(Gdx.files.internal("dots/dot_yellow.png"));
+		dot_p= new Texture(Gdx.files.internal("dots/dot_pink.png"));
+		dot_w= new Texture(Gdx.files.internal("dots/dot_white.png"));
+		dot_g= new Texture(Gdx.files.internal("dots/dot_green.png"));
+		
+
       mineImage = new Texture(Gdx.files.internal("a_mine_2.png"));
-      dotImage = new Texture(Gdx.files.internal("sniperdot.png"));
+      
+      if (TOPIC=="POLAR"){dotImage = dot_g;}
+      else if (TOPIC=="MATRIX"){dotImage = dot_r;}
+      else if (TOPIC=="ARGAND"){dotImage = dot_c;}
+      else{dotImage = new Texture(Gdx.files.internal("sniperdot.png"));}
+      
       shipImages = new Texture[10];
       
-      if (GENRE=="POLAR" && MODE!="switch"){gridImage = new Texture(Gdx.files.internal("grid_polar_v5.png"));}
-      else if (GENRE=="POLAR" && MODE=="switch"){gridImage = new Texture(Gdx.files.internal("grid_polar_v3.png"));}
-      else if (GENRE=="ARGAND" && MODE=="power"){gridImage = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
+      if (TOPIC=="POLAR" && MODE!="switch"){gridImage = new Texture(Gdx.files.internal("grid_polar_v5.png"));}
+      else if (TOPIC=="POLAR" && MODE=="switch"){gridImage = new Texture(Gdx.files.internal("grid_polar_v3.png"));}
+      else if (TOPIC=="ARGAND" && MODE=="power"){gridImage = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
       else {gridImage = new Texture(Gdx.files.internal("grid_t.png"));}
-      if (GENRE=="MATRIX"){statusbarImage = new Texture(Gdx.files.internal("statusbar.png"));}
+      if (TOPIC=="MATRIX"){statusbarImage = new Texture(Gdx.files.internal("statusbar.png"));}
       else {statusbarImage = new Texture(Gdx.files.internal("statusbar_blank.png"));}
       explosionImage = new Texture(Gdx.files.internal("explosion.png"));
       shieldImage_unhit = new Texture(Gdx.files.internal("shield.png"));
@@ -215,7 +238,7 @@ public class GameScreen_2 implements Screen {
       explosions = new Array<Kaboom>();
       other_dots = new Array<Kaboom>();
       
-      if ((GENRE=="POLAR"&& MODE!="switch") || (GENRE=="ARGAND" && MODE=="power")){
+      if ((TOPIC=="POLAR"&& MODE!="switch") || (TOPIC=="ARGAND" && MODE=="power")){
     	  UNIT_LENGTH_IN_PIXELS=80;
       }
       else{
@@ -262,13 +285,13 @@ public class GameScreen_2 implements Screen {
    //(Implication: if you want to change the timeline of a given level, you edit this part of the code.)
    
    private void create_dot_function(){
-	   if (GENRE=="POLAR"){
+	   if (TOPIC=="POLAR"){
 		   create_polar_dot_function();
 	   }
-	   if (GENRE=="ARGAND"){
+	   if (TOPIC=="ARGAND"){
 		   create_argand_dot_function();
 	   }
-	   if (GENRE=="MATRIX"){
+	   if (TOPIC=="MATRIX"){
 		   create_matrix_dot_function();
 	   }
    }
@@ -482,7 +505,7 @@ public class GameScreen_2 implements Screen {
 	   }
    }
    //--Generate new matrices.--
-   //(The below functions are called when a new dot function is set up in the Matrix genre.)
+   //(The below functions are called when a new dot function is set up in the Matrix topic.)
    
    private void NewRotMatrix_quarters_easy(){
 	   int q = MathUtils.random(-2,2);
@@ -595,13 +618,13 @@ public class GameScreen_2 implements Screen {
    private void apply_dot_function(double grx, double gry){
 	   posn_x=grx;
 	   posn_y=gry;
-	   if (GENRE=="POLAR"){
+	   if (TOPIC=="POLAR"){
 		   apply_polar_dot_function(grx, gry);
 	   }
-	   if (GENRE=="ARGAND"){
+	   if (TOPIC=="ARGAND"){
 		   apply_argand_dot_function(grx, gry);
 	   }
-	   if (GENRE=="MATRIX"){
+	   if (TOPIC=="MATRIX"){
 		   apply_matrix_dot_function(grx, gry);
 	   }
    }
@@ -917,7 +940,7 @@ public class GameScreen_2 implements Screen {
       //--PRESENT THE FUNCTION--
       //(That is: make it clear on the statusbar what is actually being done.)
       
-      if (GENRE=="MATRIX"){
+      if (TOPIC=="MATRIX"){
     	  font.draw(batch, double_formatted(posn_x), 96, 457);
           font.draw(batch, double_formatted(posn_y), 96, 437);
     	  if (TheMatrix.getValues()[Matrix3.M00]==(int)(TheMatrix.getValues()[Matrix3.M00]) &&TheMatrix.getValues()[Matrix3.M11]==(int)(TheMatrix.getValues()[Matrix3.M11])){
@@ -933,7 +956,7 @@ public class GameScreen_2 implements Screen {
 	          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M11]/1.0), 49, 437);
     	  }
       }
-      if (GENRE=="POLAR"){
+      if (TOPIC=="POLAR"){
     	  if (MODE=="r"){
     		  if (polar_b>0){
     			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(posn_r)+"+"+polar_b, 30, 455);
@@ -977,7 +1000,7 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       
-      if (GENRE=="ARGAND"){
+      if (TOPIC=="ARGAND"){
     	  if (MODE=="add"){
     		  //dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);
     		  if (argand_b>0){
@@ -1053,7 +1076,7 @@ public class GameScreen_2 implements Screen {
       
       if(Gdx.input.isTouched()){
     	  if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
-    		  game.setScreen(new MainMenuScreen(game, GENRE, MINESPEED));
+    		  game.setScreen(new MainMenuScreen(game, TOPIC, MINESPEED));
     		  dispose();
     	  }
       }
@@ -1085,10 +1108,10 @@ public class GameScreen_2 implements Screen {
     		  if(score>prefs_score){
     			  
     	    	  
-    	    	  prefs.putInteger("score_"+GENRE+"_"+MODE, score);
+    	    	  prefs.putInteger("score_"+TOPIC+"_"+MODE, score);
     	    	  prefs.flush();
     		  }
-    		  game.setScreen(new MainMenuScreen(game, GENRE, MINESPEED));
+    		  game.setScreen(new MainMenuScreen(game, TOPIC, MINESPEED));
     		  dispose();
     	  }
       }
