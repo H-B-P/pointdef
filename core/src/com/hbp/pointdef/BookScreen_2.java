@@ -125,7 +125,9 @@ public class BookScreen_2 implements Screen {
 	   
 	   private String Function_Code;
 	
-	public BookScreen_2(final PointDef gam, String topic, String Bookname) {
+	public BookScreen_2(final PointDef gam, String topic, String Bookname, int minespeed) {
+		
+		MINESPEED=minespeed;
 		
 		TOPIC=topic;
 		BOOKNAME=Bookname;
@@ -474,7 +476,7 @@ public class BookScreen_2 implements Screen {
 				first_timestep=true;
 			}
 			else if (menu_button_r.contains(tp_x,480-tp_y) && pageno<(total_pages)){
-				game.setScreen(new MainMenuScreen(game, TOPIC, 100));
+				game.setScreen(new LibraryScreen(game, MINESPEED));
 				dispose();
 			}
 			

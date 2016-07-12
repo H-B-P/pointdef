@@ -530,17 +530,17 @@ public class GameScreen_2 implements Screen {
    }
    
    private void NewArbMatrix(){
-	   int a = MathUtils.random(-4,4);
-	   int b = MathUtils.random(-4,4);
-	   int c = MathUtils.random(-4,4);
-	   int d = MathUtils.random(-4,4);
+	   int a = MathUtils.random(-2,2);
+	   int b = MathUtils.random(-2,2);
+	   int c = MathUtils.random(-2,2);
+	   int d = MathUtils.random(-2,2);
 	   float[] TMAT_Input = new float[]{a, c, 0, b, d, 0, 0, 0, 1};
 	   Matrix3 t_Mat= new Matrix3(TMAT_Input);
 	   while (!((a!=0 || b!=0) && check_kosherness(t_Mat))){
-		   a = MathUtils.random(-4,4);
-		   b = MathUtils.random(-4,4);
-		   c = MathUtils.random(-4,4);
-		   d = MathUtils.random(-4,4);
+		   a = MathUtils.random(-2,2);
+		   b = MathUtils.random(-2,2);
+		   c = MathUtils.random(-2,2);
+		   d = MathUtils.random(-2,2);
 		   TMAT_Input = new float[]{a, c, 0, b, d, 0, 0, 0, 1};
 		   t_Mat= new Matrix3(TMAT_Input);
 	   }
@@ -1076,7 +1076,7 @@ public class GameScreen_2 implements Screen {
       
       if(Gdx.input.isTouched()){
     	  if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
-    		  game.setScreen(new MainMenuScreen(game, TOPIC, MINESPEED));
+    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED));
     		  dispose();
     	  }
       }
@@ -1111,7 +1111,7 @@ public class GameScreen_2 implements Screen {
     	    	  prefs.putInteger("score_"+TOPIC+"_"+MODE, score);
     	    	  prefs.flush();
     		  }
-    		  game.setScreen(new MainMenuScreen(game, TOPIC, MINESPEED));
+    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED));
     		  dispose();
     	  }
       }

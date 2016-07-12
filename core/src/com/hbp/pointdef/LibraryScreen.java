@@ -17,6 +17,8 @@ public class LibraryScreen implements Screen {
 	private Rectangle B1_r;
 	private Texture B1_t;
 	
+	private int MINESPEED;
+	
 	private Rectangle Book1_r;
 	private Rectangle Book2_r;
 	private Rectangle Book3_r;
@@ -31,7 +33,9 @@ public class LibraryScreen implements Screen {
 	
 	private BitmapFont font;
 	
-	public LibraryScreen(final PointDef gam) {
+	public LibraryScreen(final PointDef gam, int minespeed) {
+		
+		MINESPEED=minespeed;
 		
 		B1_r = new Rectangle();
 		B1_r.x=90;
@@ -141,39 +145,39 @@ public class LibraryScreen implements Screen {
 			float tp_x=Gdx.input.getX();
 			float tp_y=Gdx.input.getY();
 			if (B1_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new MainMenuScreen(game, "MATRIX", 100));
+	            game.setScreen(new MainMenuScreen(game, MINESPEED));
 	            dispose();
 			}
 			if (Book1_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_1"));
+	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_1", MINESPEED));
 	            dispose();
 			}
 			if (Book2_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_2"));
+	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_2", MINESPEED));
 	            dispose();
 			}
 			if (Book3_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_3"));
+	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_3", MINESPEED));
 	            dispose();
 			}
 			if (Book4_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new BookScreen_2(game, "ARGAND", "Book_4"));
+	            game.setScreen(new BookScreen_2(game, "ARGAND", "Book_4", MINESPEED));
 	            dispose();
 			}
 			if (Book5_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new BookScreen_2(game, "ARGAND", "Book_5"));
+	            game.setScreen(new BookScreen_2(game, "ARGAND", "Book_5", MINESPEED));
 	            dispose();
 			}
 			if (Book6_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new BookScreen_2(game, "ARGAND", "Book_6"));
+	            game.setScreen(new BookScreen_2(game, "ARGAND", "Book_6", MINESPEED));
 	            dispose();
 			}
 			if (Book7_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_7"));
+	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_7", MINESPEED));
 	            dispose();
 			}
 			if (Book8_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_8"));
+	            game.setScreen(new BookScreen_2(game, "MATRIX", "Book_8", MINESPEED));
 	            dispose();
 			}
 		}

@@ -22,13 +22,6 @@ public class MainMenuScreen implements Screen {
 	private Rectangle prv_r;
 	private Texture prv_t;	
 	
-	private Rectangle but_instructions_r;
-	private Texture but_instructions_t;
-	
-	private Texture instructions_t;
-	private Rectangle instructions_r;
-	
-	private Rectangle cancel_instructions_r;
 	
 	private Rectangle one_r;
 	private Texture one_t;
@@ -46,8 +39,18 @@ public class MainMenuScreen implements Screen {
 	
 	private Preferences prefs;
 	
+	private Rectangle CAMPAIGN_r;
+	private Texture CAMPAIGN_t;
+	
+	private Rectangle LEVELS_r;
+	private Texture LEVELS_t;
+	
 	private Rectangle LIBRARY_r;
 	private Texture LIBRARY_t;
+	
+	private Texture TRIM_t;
+	
+	private Texture contact_t;
 	
 	private int score_one;
 	private int score_two;
@@ -63,92 +66,26 @@ public class MainMenuScreen implements Screen {
 	private Rectangle selector_nxt_r;
 	private Texture selector_t;
 	
+	private float tp_x;
+	private float tp_y;
+	
 	boolean are_instructions_visible;
 	
-	public MainMenuScreen(final PointDef gam, String topic, int minespeed) {
-		
-		TOPIC=topic;
+	public MainMenuScreen(final PointDef gam, int minespeed) {
 		
 		MINESPEED=minespeed;
 		
-		are_instructions_visible=false;
-		
 		prefs = Gdx.app.getPreferences("galen_preferences");
-		if (TOPIC=="MATRIX"){
-			score_one=prefs.getInteger("score_MATRIX_Diag_I");
-			score_two=prefs.getInteger("score_MATRIX_Diag_II");
-			score_three=prefs.getInteger("score_MATRIX_Rotation");
-			score_four=prefs.getInteger("score_MATRIX_Singular");
-			
-			one_t = new Texture(Gdx.files.internal("button_diagI.png"));
-			two_t = new Texture(Gdx.files.internal("button_diagII.png"));
-			three_t = new Texture(Gdx.files.internal("button_rot.png"));
-			four_t = new Texture(Gdx.files.internal("button_sing.png"));
-		}
-		
-		if (TOPIC=="POLAR"){
-			score_one=prefs.getInteger("score_POLAR_theta");
-			score_two=prefs.getInteger("score_POLAR_r");
-			score_three=prefs.getInteger("score_POLAR_power");
-			score_four=prefs.getInteger("score_POLAR_switch");
-			
-			one_t = new Texture(Gdx.files.internal("button_theta.png"));
-			two_t = new Texture(Gdx.files.internal("button_r.png"));
-			three_t = new Texture(Gdx.files.internal("button_powers.png"));
-			four_t = new Texture(Gdx.files.internal("button_switch.png"));
-		}
-		
-		if (TOPIC=="ARGAND"){
-			score_one=prefs.getInteger("score_ARGAND_errata");
-			score_two=prefs.getInteger("score_ARGAND_add");
-			score_three=prefs.getInteger("score_ARGAND_multiply");
-			score_four=prefs.getInteger("score_ARGAND_power");
-			
-			one_t = new Texture(Gdx.files.internal("button_errata.png"));
-			two_t = new Texture(Gdx.files.internal("button_add.png"));
-			three_t = new Texture(Gdx.files.internal("button_multiply.png"));
-			four_t = new Texture(Gdx.files.internal("button_powers.png"));
-		}
-		
-		but_instructions_r = new Rectangle();
-		but_instructions_r.x=180;
-		but_instructions_r.y=440;
-		but_instructions_r.height=20;
-		but_instructions_r.width=120;
-		but_instructions_t = new Texture(Gdx.files.internal("button_instructions_smol.png"));
-		
-		instructions_r = new Rectangle();
-		instructions_r.x=20;
-		instructions_r.y=20;
-		instructions_r.height=440;
-		instructions_r.width=280;
-		instructions_t = new Texture(Gdx.files.internal("Instructions.png"));
-		
-		cancel_instructions_r = new Rectangle();
-		cancel_instructions_r.x=320-20-40;
-		cancel_instructions_r.y=420;
-		cancel_instructions_r.height=40;
-		cancel_instructions_r.width=40;
-		
-		nxt_r = new Rectangle();
-		nxt_r.x=260;
-		nxt_r.y=20;
-		nxt_r.height=40;
-		nxt_r.width=40;
-		nxt_t = new Texture(Gdx.files.internal("fwd_but.png"));
-		
-		prv_r = new Rectangle();
-		prv_r.x=20;
-		prv_r.y=20;
-		prv_r.height=40;
-		prv_r.width=40;
-		prv_t = new Texture(Gdx.files.internal("bak_but.png"));
 		
 		selector_r = new Rectangle();
 		selector_r.x=10;
 		selector_r.y=390;
 		selector_r.height=80;
 		selector_r.width=140;
+		selector_t = new Texture(Gdx.files.internal("selector_minespeed.png"));
+		
+		nxt_t = new Texture(Gdx.files.internal("fwd_but.png"));
+		prv_t = new Texture(Gdx.files.internal("bak_but.png"));
 		
 		selector_prv_r = new Rectangle();
 		selector_prv_r.x=selector_r.x;
@@ -162,48 +99,36 @@ public class MainMenuScreen implements Screen {
 		selector_nxt_r.height=40;
 		selector_nxt_r.width=40;
 		
-		selector_r = new Rectangle();
-		selector_r.x=10;
-		selector_r.y=390;
-		selector_r.height=80;
-		selector_r.width=140;
-		
-		selector_t = new Texture(Gdx.files.internal("selector_minespeed.png"));
-		
-		one_r = new Rectangle();
-		one_r.x=10;
-		one_r.y=480-180;
-		one_r.height=60;
-		one_r.width=140;
 		
 		
-		two_r = new Rectangle();
-		two_r.x=10;
-		two_r.y=480-250;
-		two_r.height=60;
-		two_r.width=140;
 		
 		
-		three_r = new Rectangle();
-		three_r.x=10;
-		three_r.y=480-320;
-		three_r.height=60;
-		three_r.width=140;
-		
-		
-		four_r = new Rectangle();
-		four_r.x=10;
-		four_r.y=480-390;
-		four_r.height=60;
-		four_r.width=140;
-		
+		CAMPAIGN_r = new Rectangle();
+		CAMPAIGN_r.x=60;
+		CAMPAIGN_r.y=260;
+		CAMPAIGN_r.height=60;
+		CAMPAIGN_r.width=200;
+		CAMPAIGN_t = new Texture(Gdx.files.internal("abutton_long_campaign.png"));
 		
 		LIBRARY_r = new Rectangle();
-		LIBRARY_r.x=90;
-		LIBRARY_r.y=10;
+		LIBRARY_r.x=60;
+		LIBRARY_r.y=160;
 		LIBRARY_r.height=60;
-		LIBRARY_r.width=140;
-		LIBRARY_t = new Texture(Gdx.files.internal("button_library.png"));
+		LIBRARY_r.width=200;
+		LIBRARY_t = new Texture(Gdx.files.internal("abutton_long_library.png"));
+		
+		
+		LEVELS_r = new Rectangle();
+		LEVELS_r.x=60;
+		LEVELS_r.y=60;
+		LEVELS_r.height=60;
+		LEVELS_r.width=200;
+		LEVELS_t = new Texture(Gdx.files.internal("abutton_long_freeplay.png"));
+		
+
+		TRIM_t = new Texture(Gdx.files.internal("abutton_long_trim.png"));
+		
+		contact_t=new Texture(Gdx.files.internal("contact_block.png"));
 		
 		game = gam;
 		
@@ -221,6 +146,10 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		//Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		
+		tp_x=Gdx.input.getX();
+		tp_y=Gdx.input.getY();
+		
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -228,44 +157,41 @@ public class MainMenuScreen implements Screen {
 		
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
-
+		
 		game.batch.begin();
 		
 	    font.setColor(Color.BLACK);
-		game.batch.draw(one_t, one_r.x, one_r.y);
-		font.draw(game.batch, "SCORE:", one_r.x+180, one_r.y+35);
-		font.draw(game.batch, ((Integer)score_one).toString(), one_r.x+250, one_r.y+35);
-
-		game.batch.draw(two_t, two_r.x, two_r.y);
-		font.draw(game.batch, "SCORE:", two_r.x+180, two_r.y+35);
-		font.draw(game.batch, ((Integer)score_two).toString(), two_r.x+250, two_r.y+35);
 		
-		game.batch.draw(three_t, three_r.x, three_r.y);
-		font.draw(game.batch, "SCORE:", three_r.x+180, three_r.y+35);
-		font.draw(game.batch, ((Integer)score_three).toString(), three_r.x+250, three_r.y+35);
-		
-		game.batch.draw(four_t, four_r.x, four_r.y);
-		font.draw(game.batch, "SCORE:", four_r.x+180, four_r.y+35);
-		font.draw(game.batch, ((Integer)score_four).toString(), four_r.x+250, four_r.y+35);
-		
+		game.batch.draw(CAMPAIGN_t, CAMPAIGN_r.x, CAMPAIGN_r.y);
+		game.batch.draw(LEVELS_t, LEVELS_r.x, LEVELS_r.y);
 		game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
-		game.batch.draw(prv_t, prv_r.x, prv_r.y);
-		game.batch.draw(nxt_t, nxt_r.x, nxt_r.y);
-		font.draw(game.batch, "TOPIC:  " + TOPIC, 170, 420);
+		
+		if (CAMPAIGN_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(TRIM_t, CAMPAIGN_r.x, CAMPAIGN_r.y);
+		}
+		
+		if (LEVELS_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(TRIM_t, LEVELS_r.x, LEVELS_r.y);
+		}
+		
+		if (LIBRARY_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(TRIM_t, LIBRARY_r.x, LIBRARY_r.y);
+		}
 		
 		game.batch.draw(selector_t, selector_r.x, selector_r.y);
 		game.batch.draw(prv_t, selector_prv_r.x, selector_prv_r.y);
 		game.batch.draw(nxt_t, selector_nxt_r.x, selector_nxt_r.y);
 		font.draw(game.batch, ""+MINESPEED, selector_r.x+60, selector_r.y+25);
-		game.batch.draw(but_instructions_t, but_instructions_r.x, but_instructions_r.y);
-		if (are_instructions_visible){
-			game.batch.draw(instructions_t, instructions_r.x, instructions_r.y);
-		}
+		
+		game.batch.draw(contact_t, selector_r.x+160, selector_r.y+20);
+		
 		game.batch.end();
-
+		
+		tp_x=Gdx.input.getX();
+		tp_y=Gdx.input.getY();
+		
 		if (Gdx.input.justTouched()) {
-			float tp_x=Gdx.input.getX();
-			float tp_y=Gdx.input.getY();
+			
 			if (!are_instructions_visible){
 				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>30){
 					MINESPEED-=5;
@@ -274,104 +200,16 @@ public class MainMenuScreen implements Screen {
 					MINESPEED+=5;
 				}
 				
-				
-				if (TOPIC=="MATRIX"){
-					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_I"));
-			            dispose();
-					}
-					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_II"));
-			            dispose();
-					}
-					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Rotation"));
-			            dispose();
-					}
-					if (four_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Singular"));
-			            dispose();
-					}
-					if (prv_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new MainMenuScreen(game, "ARGAND", MINESPEED));
-			            dispose();
-					}
-					if (nxt_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new MainMenuScreen(game, "POLAR", MINESPEED));
-			            dispose();
-					}
-	
-				}
-				if (TOPIC=="POLAR"){
-					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "theta"));
-			            dispose();
-					}
-					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "r"));
-			            dispose();
-					}
-					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "power"));
-			            dispose();
-					}
-					if (four_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "switch"));
-			            dispose();
-					}
-					if (prv_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new MainMenuScreen(game, "MATRIX", MINESPEED));
-			            dispose();
-					}
-					if (nxt_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new MainMenuScreen(game, "ARGAND", MINESPEED));
-			            dispose();
-					}
-	
-				}
-				if (TOPIC=="ARGAND"){
-					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "errata"));
-			            dispose();
-					}
-					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "add"));
-			            dispose();
-					}
-					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply"));
-			            dispose();
-					}
-					if (four_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "power"));
-			            dispose();
-					}
-					if (prv_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new MainMenuScreen(game, "POLAR", MINESPEED));
-			            dispose();
-					}
-					if (nxt_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new MainMenuScreen(game, "MATRIX", MINESPEED));
-			            dispose();
-					}
-	
+				if (LEVELS_r.contains(tp_x,480-tp_y)){
+		            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED));
+		            dispose();
 				}
 				
 				if (LIBRARY_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new LibraryScreen(game));
+		            game.setScreen(new LibraryScreen(game, MINESPEED));
 		            dispose();
 				}
 			}
-			
-			if(((!instructions_r.contains(tp_x,480-tp_y))||(cancel_instructions_r.contains(tp_x,480-tp_y)))&&are_instructions_visible==true){
-				System.out.println(tp_x);
-				System.out.println(tp_y);
-				are_instructions_visible=false;
-			}
-			else if (but_instructions_r.contains(tp_x,480-tp_y) && are_instructions_visible==false){
-	            are_instructions_visible=true;
-			}
-			
 		}
 	}
 
