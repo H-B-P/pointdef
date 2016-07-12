@@ -535,23 +535,35 @@ public class GameScreen_2 implements Screen {
 				   TheMatrix.set(SI_Input);
 			   }
 		   }
-		   if (MODE=="Diag_II"){
-			   if (seconds%200<99){
-				   NewDiagMatrix_easy();
+		   if (MODE=="diagonal"){
+			   if (seconds==0){
+				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
+				   TheMatrix.set(SI_Input);
 			   }
 			   else{
-				   NewDiagMatrix_hard();
+				   if ((seconds-50)%200<99){
+					   NewDiagMatrix_easy();
+				   }
+				   else{
+					   NewDiagMatrix_hard();
+				   }
 			   }
 		   }
-		   if (MODE=="Rotation"){
-			   if (seconds%200<99){
-				   NewRotMatrix_quarters_easy();
+		   if (MODE=="rotation"){
+			   if (seconds==0){
+				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
+				   TheMatrix.set(SI_Input);
 			   }
 			   else{
-				   NewRotMatrix_quarters_hard();
+				   if ((seconds-50)%200<99){
+					   NewRotMatrix_quarters_easy();
+				   }
+				   else{
+					   NewRotMatrix_quarters_hard();
+				   }
 			   }
 		   }
-		   if (MODE=="Singular"){
+		   if (MODE=="singular"){
 			   if ((seconds%100)==0){
 				   NewSingMatrix();
 			   }
@@ -559,7 +571,7 @@ public class GameScreen_2 implements Screen {
 				   NewSingMatrix_notflat();
 			   }
 		   }
-		   if (MODE=="Arbitrary"){
+		   if (MODE=="arbitrary"){
 			   NewArbMatrix();
 		   }
 	   }

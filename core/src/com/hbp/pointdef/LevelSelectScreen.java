@@ -121,13 +121,13 @@ public class LevelSelectScreen implements Screen {
 		}
 		
 		if (TOPIC=="MATRIX"){
-			score_one=prefs.getInteger("score_MATRIX_diagonal");
-			score_two=prefs.getInteger("score_MATRIX_rotation");
+			score_one=prefs.getInteger("score_MATRIX_rotation");
+			score_two=prefs.getInteger("score_MATRIX_diagonal");
 			score_three=prefs.getInteger("score_MATRIX_singular");
 			score_four=prefs.getInteger("score_MATRIX_arbitrary");
 			
-			one_t = new Texture(Gdx.files.internal("abutton_diagonal.png"));
-			two_t = new Texture(Gdx.files.internal("abutton_rotation.png"));
+			one_t = new Texture(Gdx.files.internal("abutton_rotation.png"));
+			two_t = new Texture(Gdx.files.internal("abutton_diagonal.png"));
 			three_t = new Texture(Gdx.files.internal("abutton_singular.png"));
 			four_t = new Texture(Gdx.files.internal("abutton_arbitrary.png"));
 			
@@ -440,19 +440,19 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="MATRIX"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_II", ENDLESS));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "rotation", ENDLESS));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Rotation", ENDLESS));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "diagonal", ENDLESS));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Singular", ENDLESS));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "singular", ENDLESS));
 			            dispose();
 					}
 					if (four_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Arbitrary", ENDLESS));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "arbitrary", ENDLESS));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,480-tp_y)){
