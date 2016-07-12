@@ -20,15 +20,7 @@ public class LevelSelectScreen implements Screen {
 	private Texture nxt_t;	
 	
 	private Rectangle prv_r;
-	private Texture prv_t;	
-	
-	private Rectangle but_instructions_r;
-	private Texture but_instructions_t;
-	
-	private Texture instructions_t;
-	private Rectangle instructions_r;
-	
-	private Rectangle cancel_instructions_r;
+	private Texture prv_t;
 	
 	private Rectangle one_r;
 	private Texture one_t;
@@ -160,19 +152,6 @@ public class LevelSelectScreen implements Screen {
 
 		}
 		
-		
-		instructions_r = new Rectangle();
-		instructions_r.x=20;
-		instructions_r.y=20;
-		instructions_r.height=440;
-		instructions_r.width=280;
-		instructions_t = new Texture(Gdx.files.internal("Instructions.png"));
-		
-		cancel_instructions_r = new Rectangle();
-		cancel_instructions_r.x=320-20-40;
-		cancel_instructions_r.y=420;
-		cancel_instructions_r.height=40;
-		cancel_instructions_r.width=40;
 		
 		nxt_r = new Rectangle();
 		nxt_r.x=260;
@@ -405,19 +384,19 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="CARTESIAN"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_I"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add"));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_II"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "multiply"));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Rotation"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "mirror"));
 			            dispose();
 					}
 					if (four_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Singular"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "lines"));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,480-tp_y)){

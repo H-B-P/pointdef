@@ -75,6 +75,10 @@ public class GameScreen_2 implements Screen {
    private int polar_a;
    private int polar_b;
    
+   private int cartesian_a;
+   private int cartesian_b;
+   private int cartesian_c;
+   
    private Matrix3 TheMatrix;
    private Matrix3 OldMatrix;
    
@@ -156,8 +160,8 @@ public class GameScreen_2 implements Screen {
 		
 
       mineImage = new Texture(Gdx.files.internal("a_mine_2.png"));
-      
-      if (TOPIC=="POLAR"){dotImage = dot_g;}
+      if(TOPIC=="CARTESIAN"){dotImage = dot_y;}
+      else if (TOPIC=="POLAR"){dotImage = dot_g;}
       else if (TOPIC=="MATRIX"){dotImage = dot_r;}
       else if (TOPIC=="ARGAND"){dotImage = dot_c;}
       else{dotImage = new Texture(Gdx.files.internal("sniperdot.png"));}
@@ -287,6 +291,10 @@ public class GameScreen_2 implements Screen {
    //(Implication: if you want to change the timeline of a given level, you edit this part of the code.)
    
    private void create_dot_function(){
+	   
+	   if (TOPIC=="CARTESIAN"){
+		   create_cartesian_dot_function();
+	   }
 	   if (TOPIC=="POLAR"){
 		   create_polar_dot_function();
 	   }
@@ -298,6 +306,79 @@ public class GameScreen_2 implements Screen {
 	   }
    }
    
+   private void create_cartesian_dot_function(){
+	   if (MODE=="add"){
+		   if (seconds==0){
+			   cartesian_a=0;
+			   cartesian_b=0;
+		   }
+		   if (seconds==50){
+			   cartesian_a=0;
+			   cartesian_b=plusorminus();
+		   }
+		   if (seconds==100){
+			   cartesian_a=plusorminus();
+			   cartesian_b=0;
+		   }
+		   if (seconds==150){
+			   cartesian_a=0;
+			   cartesian_b=plusorminus()*2;
+		   }
+	   }
+	   if (MODE=="multiply"){
+		   if (seconds==0){
+			   cartesian_a=MathUtils.random(2,3);
+			   cartesian_b=1;
+		   }
+		   if (seconds==50){
+			   cartesian_a=1;
+			   cartesian_b=MathUtils.random(2,3);
+		   }
+		   if (seconds==100){
+			   cartesian_a=-MathUtils.random(1,3);
+			   cartesian_b=1;
+		   }
+		   if (seconds==150){
+			   cartesian_a=1;
+			   cartesian_b=-MathUtils.random(2,3);
+		   }
+	   }
+	   if (MODE=="mirror"){
+		   if (seconds==0){
+			   Function_Code="flip_x";
+		   }
+		   if (seconds==50){
+			   Function_Code="flip_y";
+		   }
+		   if (seconds==100){
+			   Function_Code="flip_pos_diag";
+		   }
+		   if (seconds==150){
+			   Function_Code="flip_neg_diag";
+		   }
+	   }
+	   if (MODE=="lines"){
+		   if (seconds==0){
+			   Function_Code="y_is_c";
+			   cartesian_c=plusorminus()*MathUtils.random(1,2);
+		   }
+		   if (seconds==50){
+			   Function_Code="y_is_mx";
+			   cartesian_b=MathUtils.random(1,4);
+			   cartesian_a=plusorminus()*MathUtils.random(1,1);
+			   cartesian_a=plusorminus()*MathUtils.random(1,cartesian_b);
+		   }
+		   if (seconds==100){
+			   Function_Code="y_is_mx_plus_c";
+			   cartesian_c=plusorminus();
+			   cartesian_a=plusorminus();
+			   cartesian_b=MathUtils.random(2,4);
+		   }
+		   if (seconds==150){
+			   Function_Code="circle";
+		   }
+	   }
+   }
    
    private void create_polar_dot_function(){
 	   if (MODE=="r"){
@@ -333,7 +414,7 @@ public class GameScreen_2 implements Screen {
 			   polar_b=plusorminus();
 		   }
 		   if (seconds==150){
-			   polar_a=3;
+			   polar_a=-2;
 			   polar_b=0;
 		   }
 	   }
@@ -620,6 +701,13 @@ public class GameScreen_2 implements Screen {
    private void apply_dot_function(double grx, double gry){
 	   posn_x=grx;
 	   posn_y=gry;
+	   if (TOPIC=="NONE"){
+		   new_posn_x=posn_x;
+		   new_posn_y=posn_y;
+	   }
+	   if (TOPIC=="CARTESIAN"){
+		   apply_cartesian_dot_function(grx, gry);
+	   }
 	   if (TOPIC=="POLAR"){
 		   apply_polar_dot_function(grx, gry);
 	   }
@@ -628,6 +716,56 @@ public class GameScreen_2 implements Screen {
 	   }
 	   if (TOPIC=="MATRIX"){
 		   apply_matrix_dot_function(grx, gry);
+	   }
+   }
+   
+   private void apply_cartesian_dot_function(double grx, double gry){
+	   if (MODE=="add"){
+		   new_posn_x=grx+cartesian_a;
+		   new_posn_y=gry+cartesian_b;
+	   }
+	   if (MODE=="multiply"){
+		   new_posn_x=grx*cartesian_a;
+		   new_posn_y=gry*cartesian_b;
+	   }
+	   if (MODE=="mirror"){
+		   if (Function_Code=="flip_x"){
+			   new_posn_x=-posn_x;
+			   new_posn_y=posn_y;
+		   }
+		   if (Function_Code=="flip_y"){
+			   new_posn_x=posn_x;
+			   new_posn_y=-posn_y;
+		   }
+		   if (Function_Code=="flip_pos_diag"){
+			   new_posn_x=posn_y;
+			   new_posn_y=posn_x;
+		   }
+		   if (Function_Code=="flip_neg_diag"){
+			   new_posn_x=-posn_y;
+			   new_posn_y=-posn_x;
+		   }
+	   }
+	   if (MODE=="lines"){
+		   new_posn_x=posn_x;
+		   if (Function_Code=="y_is_c"){
+			   new_posn_y=(double)cartesian_c;
+		   }
+		   if (Function_Code=="y_is_mx"){
+			   new_posn_y=cartesian_a*posn_x/cartesian_b;
+		   }
+		   if (Function_Code=="y_is_mx_plus_c"){
+			   new_posn_y=cartesian_a*posn_x/cartesian_b +cartesian_c;
+		   }
+		   if (Function_Code=="circle"){
+			   if (Math.abs(posn_x)<3){
+				   new_posn_y=Math.sqrt(9-posn_x*posn_x);
+			   }
+			   else{
+				   //Basically just send it off the screen.
+				   new_posn_y=-13.0;
+			   }
+		   }
 	   }
    }
    
