@@ -124,9 +124,10 @@ public class GameScreen_2 implements Screen {
    
    private double UNIT_LENGTH_IN_PIXELS;
    
-   public String MODE;
-   public String TOPIC;
+   private String MODE;
+   private String TOPIC;
    private int MINESPEED;
+   private boolean ENDLESS;
    
    private String Function_Code;
    
@@ -150,11 +151,12 @@ public class GameScreen_2 implements Screen {
 	private boolean show_textbox;
  //---Do all the initial stuff that happens on rendering---
    
-   public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode) {
+   public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless) {
 	  
 	   //--Perform tautological actions--
 	   this.game = gam;
       
+	   ENDLESS=endless;
       MODE=mode;
       TOPIC=topic;
       MINESPEED=minespeed;
@@ -338,72 +340,72 @@ public class GameScreen_2 implements Screen {
    
    private void create_cartesian_dot_function(){
 	   if (MODE=="add"){
-		   if (seconds==0){
+		   if (seconds%200==0){
 			   cartesian_a=0;
 			   cartesian_b=0;
 		   }
-		   if (seconds==50){
+		   if (seconds%200==50){
 			   cartesian_a=0;
 			   cartesian_b=plusorminus();
 		   }
-		   if (seconds==100){
+		   if (seconds%200==100){
 			   cartesian_a=plusorminus();
 			   cartesian_b=0;
 		   }
-		   if (seconds==150){
+		   if (seconds%200==150){
 			   cartesian_a=0;
 			   cartesian_b=plusorminus()*2;
 		   }
 	   }
 	   if (MODE=="multiply"){
-		   if (seconds==0){
+		   if (seconds%200==0){
 			   cartesian_a=MathUtils.random(2,3);
 			   cartesian_b=1;
 		   }
-		   if (seconds==50){
+		   if (seconds%200==50){
 			   cartesian_a=1;
 			   cartesian_b=MathUtils.random(2,3);
 		   }
-		   if (seconds==100){
+		   if (seconds%200==100){
 			   cartesian_a=-MathUtils.random(1,3);
 			   cartesian_b=1;
 		   }
-		   if (seconds==150){
+		   if (seconds%200==150){
 			   cartesian_a=1;
 			   cartesian_b=-MathUtils.random(2,3);
 		   }
 	   }
 	   if (MODE=="mirror"){
-		   if (seconds==0){
+		   if (seconds%200==0){
 			   Function_Code="flip_x";
 		   }
-		   if (seconds==50){
+		   if (seconds%200==50){
 			   Function_Code="flip_y";
 		   }
-		   if (seconds==100){
+		   if (seconds%200==100){
 			   Function_Code="flip_pos_diag";
 		   }
-		   if (seconds==150){
+		   if (seconds%200==150){
 			   Function_Code="flip_neg_diag";
 		   }
 	   }
 	   if (MODE=="lines"){
-		   if (seconds==0){
+		   if (seconds%200==0){
 			   Function_Code="y_is_c";
 			   cartesian_c=plusorminus()*MathUtils.random(1,2);
 		   }
-		   if (seconds==50){
+		   if (seconds%200==50){
 			   Function_Code="y_is_mx";
 			   cartesian_b=MathUtils.random(2,4);
 			   cartesian_a=plusorminus()*MathUtils.random(1,cartesian_b-1);
 		   }
-		   if (seconds==100){
+		   if (seconds%200==100){
 			   Function_Code="y_is_mx_plus_c";
 			   cartesian_c=plusorminus();
 			   cartesian_a=plusorminus();
 			   cartesian_b=MathUtils.random(2,4);
 		   }
-		   if (seconds==150){
+		   if (seconds%200==150){
 			   Function_Code="circle";
 		   }
 	   }
@@ -412,52 +414,52 @@ public class GameScreen_2 implements Screen {
    private void create_polar_dot_function(){
 	   if (MODE=="r"){
 		   
-		   if (seconds==0){
+		   if (seconds%200==0){
 			   polar_a=MathUtils.random(2,3);
 			   polar_b=0;
 		   }
-		   if (seconds==50){
+		   if (seconds%200==50){
 			   polar_a=-MathUtils.random(1,3);
 			   polar_b=0;
 		   }
-		   if (seconds==100){
+		   if (seconds%200==100){
 			   polar_a=plusorminus()*MathUtils.random(1,3);
 			   polar_b=0;
 		   }
-		   if (seconds==150){
+		   if (seconds%200==150){
 			   polar_a=1;
 			   polar_b=1;
 		   }
 	   }
 	   if (MODE=="theta"){
-		   if (seconds==0){
+		   if (seconds%200==0){
 			   polar_a=1;
 			   polar_b=0;
 		   }
-		   if (seconds==50){
+		   if (seconds%200==50){
 			   polar_a=2;
 			   polar_b=0;
 		   }
-		   if (seconds==100){
+		   if (seconds%200==100){
 			   polar_a=1;
 			   polar_b=plusorminus();
 		   }
-		   if (seconds==150){
+		   if (seconds%200==150){
 			   polar_a=-2;
 			   polar_b=0;
 		   }
 	   }
 	   if (MODE=="power"){
-		   if (seconds==0){
+		   if (seconds%200==0){
 			   Function_Code="square";
 		   }
-		   if (seconds==50){
+		   if (seconds%200==50){
 			   Function_Code="cube";
 		   }
-		   if (seconds==100){
+		   if (seconds%200==100){
 			   Function_Code="square root";
 		   }
-		   if (seconds==150){
+		   if (seconds%200==150){
 			   Function_Code="reciprocal";
 		   }
 	   }
@@ -483,30 +485,30 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
 	   if (MODE=="power"){
-		   if (seconds==0){
+		   if (seconds%200==0){
 			   Function_Code="square";
 		   }
-		   if (seconds==50){
+		   if (seconds%200==50){
 			   Function_Code="cube";
 		   }
-		   if (seconds==100){
+		   if (seconds%200==100){
 			   Function_Code="square root";
 		   }
-		   if (seconds==150){
+		   if (seconds%200==150){
 			   Function_Code="reciprocal";
 		   }
 	   }
 	   if (MODE=="errata"){
-		   if (seconds==0){
+		   if (seconds%200==0){
 			   Function_Code="z_alone";
 		   }
-		   if (seconds==50){
+		   if (seconds%200==50){
 			   Function_Code="minus_z";
 		   }
-		   if (seconds==100){
+		   if (seconds%200==100){
 			   Function_Code="conjugate";
 		   }
-		   if (seconds==150){
+		   if (seconds%200==150){
 			   Function_Code="real";
 		   }
 	   }
@@ -516,25 +518,25 @@ public class GameScreen_2 implements Screen {
 	   OldMatrix.set(TheMatrix.val);
 	   while (OldMatrix.getValues()[0]==TheMatrix.getValues()[0] && OldMatrix.getValues()[4]==TheMatrix.getValues()[4] && OldMatrix.getValues()[8]==TheMatrix.getValues()[8]){
 		   if (MODE=="Diag_I"){
-			   if (seconds==0){
+			   if (seconds%200==0){
 				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
 				   TheMatrix.set(SI_Input);
 			   }
-			   if (seconds==50){
+			   if (seconds%200==50){
 				   float[] SI_Input = new float[]{1, 0, 0, 0, -1, 0, 0, 0, 1};
 				   TheMatrix.set(SI_Input);
 			   }
-			   if (seconds==100){
+			   if (seconds%200==100){
 				   float[] SI_Input = new float[]{-1, 0, 0, 0, 1, 0, 0, 0, 1};
 				   TheMatrix.set(SI_Input);
 			   }
-			   if (seconds==150){
+			   if (seconds%200==150){
 				   float[] SI_Input = new float[]{-1, 0, 0, 0, -1, 0, 0, 0, 1};
 				   TheMatrix.set(SI_Input);
 			   }
 		   }
 		   if (MODE=="Diag_II"){
-			   if (seconds<99){
+			   if (seconds%200<99){
 				   NewDiagMatrix_easy();
 			   }
 			   else{
@@ -542,7 +544,7 @@ public class GameScreen_2 implements Screen {
 			   }
 		   }
 		   if (MODE=="Rotation"){
-			   if (seconds<99){
+			   if (seconds%200<99){
 				   NewRotMatrix_quarters_easy();
 			   }
 			   else{
@@ -1142,7 +1144,7 @@ public class GameScreen_2 implements Screen {
     		  }
     	  }
     	  if (total_time>30 && total_paused_time>0 || (total_paused_time+total_time)>50){
-    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED));
+    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
     	  }
       }
       
@@ -1346,8 +1348,12 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       
-      if (MODE!="intro"){
+      if (MODE!="intro" && !ENDLESS){
     	  font.draw(batch, "Score:", 200, 450);
+    	  font.draw(batch, ((Integer)score).toString(), 250, 450);
+      }
+      if (MODE!="intro" && ENDLESS){
+    	  font.draw(batch, "Hits:", 200, 450);
     	  font.draw(batch, ((Integer)score).toString(), 250, 450);
       }
       batch.end();
@@ -1358,7 +1364,7 @@ public class GameScreen_2 implements Screen {
       
       if(Gdx.input.isTouched()){
     	  if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
-    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED));
+    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
     		  dispose();
     	  }
       }
@@ -1378,11 +1384,14 @@ public class GameScreen_2 implements Screen {
     	  //Events!
     	  
     	  
-    	  if (MODE!="intro"){
+    	  if (MODE!="intro" && !ENDLESS){
 	    	  wave_without_pause(0);
 	    	  wave_without_pause(50);
 	    	  wave_without_pause(100);
 	    	  wave_without_pause(150);
+    	  }
+    	  if (MODE!="intro" && ENDLESS){
+    		  wave_without_pause(seconds-seconds%50);
     	  }
     	  if (MODE=="intro"){
     		  
@@ -1403,7 +1412,7 @@ public class GameScreen_2 implements Screen {
     		  }
     		  
     	  }
-    	  if (seconds==203){
+    	  if (seconds==204 && !ENDLESS){
     		  
     		  
     		  if(score>prefs_score){
@@ -1412,7 +1421,7 @@ public class GameScreen_2 implements Screen {
     	    	  prefs.putInteger("score_"+TOPIC+"_"+MODE, score);
     	    	  prefs.flush();
     		  }
-    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED));
+    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
     		  dispose();
     	  }
       }

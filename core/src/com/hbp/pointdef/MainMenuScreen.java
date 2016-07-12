@@ -133,7 +133,6 @@ public class MainMenuScreen implements Screen {
 		game = gam;
 		
 		
-		
 		font = new BitmapFont();
 		
 		
@@ -201,7 +200,7 @@ public class MainMenuScreen implements Screen {
 				}
 				
 				if (LEVELS_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED));
+		            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED, false));
 		            dispose();
 				}
 				

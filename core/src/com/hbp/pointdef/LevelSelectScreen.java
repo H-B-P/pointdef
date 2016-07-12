@@ -70,11 +70,11 @@ public class LevelSelectScreen implements Screen {
 	
 	boolean are_instructions_visible;
 	
-	public LevelSelectScreen(final PointDef gam, String topic, int minespeed) {
+	public LevelSelectScreen(final PointDef gam, String topic, int minespeed, boolean endless) {
 		
 		TOPIC=topic;
 		
-		ENDLESS=false;
+		ENDLESS=endless;
 		
 		MINESPEED=minespeed;
 		
@@ -364,19 +364,19 @@ public class LevelSelectScreen implements Screen {
 				}
 				if (TOPIC=="NONE"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", ENDLESS));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "basis"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "basis", ENDLESS));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "ARGAND", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "ARGAND", MINESPEED, ENDLESS));
 			            dispose();
 					}
 					if (nxt_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "CARTESIAN", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "CARTESIAN", MINESPEED, ENDLESS));
 			            dispose();
 					}
 	
@@ -384,27 +384,27 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="CARTESIAN"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add", ENDLESS));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "multiply"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "multiply", ENDLESS));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "mirror"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "mirror", ENDLESS));
 			            dispose();
 					}
 					if (four_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "lines"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "lines", ENDLESS));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED, ENDLESS));
 			            dispose();
 					}
 					if (nxt_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "POLAR", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "POLAR", MINESPEED, ENDLESS));
 			            dispose();
 					}
 	
@@ -412,27 +412,27 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="POLAR"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "theta"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "theta", ENDLESS));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "r"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "r", ENDLESS));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "power"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "power", ENDLESS));
 			            dispose();
 					}
 					if (four_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "switch"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "switch", ENDLESS));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "CARTESIAN", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "CARTESIAN", MINESPEED, ENDLESS));
 			            dispose();
 					}
 					if (nxt_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED, ENDLESS));
 			            dispose();
 					}
 	
@@ -440,27 +440,27 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="MATRIX"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_II"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Diag_II", ENDLESS));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Rotation"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Rotation", ENDLESS));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Singular"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Singular", ENDLESS));
 			            dispose();
 					}
 					if (four_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Arbitrary"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "Arbitrary", ENDLESS));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "POLAR", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "POLAR", MINESPEED, ENDLESS));
 			            dispose();
 					}
 					if (nxt_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "ARGAND", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "ARGAND", MINESPEED, ENDLESS));
 			            dispose();
 					}
 	
@@ -468,27 +468,27 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="ARGAND"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "errata"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "errata", ENDLESS));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "add"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "add", ENDLESS));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply", ENDLESS));
 			            dispose();
 					}
 					if (four_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "power"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "power", ENDLESS));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED, ENDLESS));
 			            dispose();
 					}
 					if (nxt_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED));
+			            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED, ENDLESS));
 			            dispose();
 					}
 	
