@@ -116,6 +116,11 @@ public class GameScreen_2 implements Screen {
    private Double new_posn_x;
    private Double new_posn_y;
    
+   private double dotPos_i_x;
+   private double dotPos_i_y;
+   private double dotPos_j_x;
+   private double dotPos_j_y;
+   
    private double UNIT_LENGTH_IN_PIXELS;
    
    public String MODE;
@@ -365,7 +370,6 @@ public class GameScreen_2 implements Screen {
 		   if (seconds==50){
 			   Function_Code="y_is_mx";
 			   cartesian_b=MathUtils.random(1,4);
-			   cartesian_a=plusorminus()*MathUtils.random(1,1);
 			   cartesian_a=plusorminus()*MathUtils.random(1,cartesian_b);
 		   }
 		   if (seconds==100){
@@ -758,7 +762,8 @@ public class GameScreen_2 implements Screen {
 			   new_posn_y=cartesian_a*posn_x/cartesian_b +cartesian_c;
 		   }
 		   if (Function_Code=="circle"){
-			   if (Math.abs(posn_x)<3){
+			   MIRROR_THE_DOT=true;
+			   if (Math.abs(posn_x)<=3){
 				   new_posn_y=Math.sqrt(9-posn_x*posn_x);
 			   }
 			   else{
@@ -942,7 +947,7 @@ public class GameScreen_2 implements Screen {
    private void wave_without_pause(int ss){
 		  if (seconds==ss){
 			  create_dot_function();
-			  dotfunction_font.setColor(Color.GREEN);
+			  dotfunction_font.setColor(Color.BLUE);
 		  }
 		  if (seconds==ss+1){
 			  dotfunction_font.setColor(Color.BLACK);
@@ -1061,15 +1066,23 @@ public class GameScreen_2 implements Screen {
       
       
       
-      Double dotPos_i_x=new_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
-      Double dotPos_i_y=new_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+      dotPos_i_x=new_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+      dotPos_i_y=new_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
     		  
-      dot.setCenter(dotPos_i_x.floatValue(),dotPos_i_y.floatValue());
+      dot.setCenter((float)dotPos_i_x,(float)dotPos_i_y);
       
-      Double dotPos_j_x=-new_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
-      Double dotPos_j_y=-new_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+      if (MODE=="lines"){
+    	  dotPos_j_x=new_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+          dotPos_j_y=-new_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+      }
+      else{
+    	  dotPos_j_x=-new_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
+          dotPos_j_y=-new_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
+      }
       
-      mirror_dot.setCenter(dotPos_j_x.floatValue(),dotPos_j_y.floatValue());
+      
+      
+      mirror_dot.setCenter((float)dotPos_j_x,(float)dotPos_j_y);
       
       if(!Gdx.input.isTouched() && IS_TIME_HAPPENING && seconds>1){
     	  batch.draw(dotImage, dot.x, dot.y);
@@ -1085,7 +1098,70 @@ public class GameScreen_2 implements Screen {
       batch.draw(menu_button_t,265,455);
       //--PRESENT THE FUNCTION--
       //(That is: make it clear on the statusbar what is actually being done.)
-      
+      if (TOPIC=="CARTESIAN"){
+    	  if (MODE=="add"){
+    		  if (cartesian_a>0){
+    			  font.draw(batch, "x="+double_formatted(posn_x)+"+"+cartesian_a, 30, 455);
+    		  }
+    		  else if (cartesian_a==0){
+    			  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+    		  }
+    		  else if (cartesian_a<0){
+    			  font.draw(batch, "x="+double_formatted(posn_x)+cartesian_a, 30, 455);
+    		  }
+    		  if (cartesian_b>0){
+    			  font.draw(batch, "y="+double_formatted(posn_y)+"+"+cartesian_b, 30, 435);
+    		  }
+    		  else if (cartesian_b==0){
+    			  font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
+    		  }
+    		  else if (cartesian_b<0){
+    			  font.draw(batch, "y="+double_formatted(posn_y)+cartesian_b, 30, 435);
+    		  }
+    	  }
+    	  if (MODE=="multiply"){
+    		  font.draw(batch, "x="+cartesian_a+"*"+double_formatted(posn_x), 30, 455);
+    		  font.draw(batch, "y="+cartesian_b+"*"+double_formatted(posn_y), 30, 435);
+    	  }
+    	  if (MODE=="mirror"){
+    		  if (Function_Code=="flip_x"){
+    			  font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
+        		  font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
+    		  }
+    		  if (Function_Code=="flip_y"){
+    			  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+        		  font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
+    		  }
+    		  if (Function_Code=="flip_pos_diag"){
+    			  font.draw(batch, "x="+double_formatted(posn_y), 30, 455);
+        		  font.draw(batch, "y="+double_formatted(posn_x), 30, 435);
+    		  }
+    		  if (Function_Code=="flip_neg_diag"){
+    			  font.draw(batch, "x=-("+double_formatted(posn_y)+")", 30, 455);
+        		  font.draw(batch, "y=-("+double_formatted(posn_x)+")", 30, 435);
+    		  }
+    	  }
+    	  if (MODE=="lines"){
+    		  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+    		  if (Function_Code=="y_is_c"){
+        		  font.draw(batch, "y="+cartesian_c, 30, 435);
+    		  }
+    		  if (Function_Code=="y_is_mx"){
+        		  font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(posn_x), 30, 435);
+    		  }
+    		  if (Function_Code=="y_is_mx_plus_c"){
+    			  if (cartesian_c>0){
+    				  font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(posn_x)+"+"+cartesian_c, 30, 435);
+    			  }
+    			  else{
+    				  font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(posn_x)+cartesian_c, 30, 435);
+    			  }
+    		  }
+    		  if (Function_Code=="circle"){
+        		  font.draw(batch, "y=(3^2-("+double_formatted(posn_x)+")^2)^0.5", 30, 435);
+    		  }
+    	  }
+      }
       if (TOPIC=="MATRIX"){
     	  font.draw(batch, double_formatted(posn_x), 96, 457);
           font.draw(batch, double_formatted(posn_y), 96, 437);
