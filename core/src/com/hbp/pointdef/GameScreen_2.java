@@ -101,6 +101,7 @@ public class GameScreen_2 implements Screen {
    private boolean MIRROR_THE_DOT;
    
    private float total_time;
+   private float total_paused_time;
    
    private float last_charge_event_time;
    
@@ -136,7 +137,17 @@ public class GameScreen_2 implements Screen {
 	private Texture dot_y;
 	private Texture dot_w;
 	private Texture dot_g;
-   
+	
+	private Texture textbox;
+	private Texture textbox_1;
+	private Texture textbox_2;
+	private Texture textbox_3;
+	private Texture textbox_4;
+	private Texture textbox_5;
+	private Texture textbox_6;
+	private float textbox_x;
+	private float textbox_y;
+	private boolean show_textbox;
  //---Do all the initial stuff that happens on rendering---
    
    public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode) {
@@ -199,13 +210,27 @@ public class GameScreen_2 implements Screen {
       shipImage=shipImages[0];
       
       menu_button_t=new Texture(Gdx.files.internal("button_menu_smol.png"));
-      
+      show_textbox=false;
+      if (MODE=="intro"){
+	      textbox_1=new Texture(Gdx.files.internal("intro_tb_1.png"));
+	      textbox_2=new Texture(Gdx.files.internal("intro_tb_2.png"));
+	      textbox_3=new Texture(Gdx.files.internal("intro_tb_3.png"));
+	      textbox_4=new Texture(Gdx.files.internal("intro_tb_4.png"));
+	      textbox_5=new Texture(Gdx.files.internal("intro_tb_5.png"));
+	      textbox_6=new Texture(Gdx.files.internal("intro_tb_6.png"));
+	      textbox=textbox_1;
+	      textbox_x=10;
+	      textbox_y=90;
+	      show_textbox=true;
+      }
       //--Set zeroes to zero--
       score=MINESPEED/5;
       Function_Code="None";
       total_time=0;
+      total_paused_time=0;
       seconds=0;
       wastouched=false;
+      
       //(Whether the game is not-exactly-paused.)
       IS_TIME_HAPPENING=true;
       //(I should set up a more rigorous way of doing this, but all the dot functions which create multiple
@@ -369,8 +394,8 @@ public class GameScreen_2 implements Screen {
 		   }
 		   if (seconds==50){
 			   Function_Code="y_is_mx";
-			   cartesian_b=MathUtils.random(1,4);
-			   cartesian_a=plusorminus()*MathUtils.random(1,cartesian_b);
+			   cartesian_b=MathUtils.random(2,4);
+			   cartesian_a=plusorminus()*MathUtils.random(1,cartesian_b-1);
 		   }
 		   if (seconds==100){
 			   Function_Code="y_is_mx_plus_c";
@@ -911,12 +936,12 @@ public class GameScreen_2 implements Screen {
 	   
    }
    
-   private void spawnRandomMine_r(){
+   private void spawnRandomMine_l(){
 	   int k=MathUtils.random(-3,-1);
 	   spawnMine_II(k);
 	   
    }
-   private void spawnRandomMine_l(){
+   private void spawnRandomMine_r(){
 	   int k=MathUtils.random(1,3);
 	   spawnMine_II(k);
 	   
@@ -1012,10 +1037,13 @@ public class GameScreen_2 implements Screen {
       if(IS_TIME_HAPPENING){
 	   total_time+=Gdx.graphics.getDeltaTime();
       }
+      else{
+    	  total_paused_time+=Gdx.graphics.getDeltaTime();
+      }
       
       if (total_time>(last_charge_event_time+1)){
     	  last_charge_event_time=total_time;
-    	  charges=Math.min(charges+1, maxcharges);
+    	  //charges=Math.min(charges+1, maxcharges);
       }
       
 	  //--Update ship image used--
@@ -1038,7 +1066,7 @@ public class GameScreen_2 implements Screen {
           batch.draw(explosionImage, boom.rect.x-20, boom.rect.y-20);
        }
       
-      batch.draw(shipImage, ship.x, ship.y);
+      
       
       for(Rectangle mine: mines) {
          batch.draw(mineImage, mine.x-20, mine.y-20);
@@ -1091,9 +1119,40 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       
-      //--Draw status bar and menu button--
-      //(These have to be drawn last so the dot doesn't go over them.)
+      //--Render any textboxes that happen to need it--
       
+      if (MODE=="intro"){
+    	  if (total_time>2){
+    		  show_textbox=true;
+    		  textbox=textbox_1;
+    	  }
+    	  if (total_time>6){
+    		  textbox=textbox_2;
+    	  }
+    	  if (total_time>10){
+    		  textbox=textbox_3;
+    	  }
+    	  if (total_time>20){
+    		  textbox=textbox_4;
+    	  }
+    	  if (!IS_TIME_HAPPENING){
+    		  textbox=textbox_5;
+    		  if (total_paused_time>15 || total_time<20){
+    			  textbox=textbox_6;
+    		  }
+    	  }
+    	  if (total_time>30 && total_paused_time>0 || (total_paused_time+total_time)>50){
+    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED));
+    	  }
+      }
+      
+      if (show_textbox){
+    	  batch.draw(textbox, textbox_x, textbox_y);
+      }
+      
+      //--Draw status bar, ship, and menu button--
+      //(These have to be drawn last so the dot doesn't go over them.)
+      batch.draw(shipImage, ship.x, ship.y);
       batch.draw(statusbarImage, 0, 400);
       batch.draw(menu_button_t,265,455);
       //--PRESENT THE FUNCTION--
@@ -1287,9 +1346,10 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       
-      font.draw(batch, "Score:", 200, 450);
-      font.draw(batch, ((Integer)score).toString(), 250, 450);
-      
+      if (MODE!="intro"){
+    	  font.draw(batch, "Score:", 200, 450);
+    	  font.draw(batch, ((Integer)score).toString(), 250, 450);
+      }
       batch.end();
       
       //--Exit the game when main menu button pressed--
@@ -1313,16 +1373,35 @@ public class GameScreen_2 implements Screen {
     	  
     	  //Updates to charges
     	  if(charges<maxcharges){
-    		  //charges+=1;
+    		  charges+=1;
     	  }
     	  //Events!
     	  
     	  
-    	  if (true){
+    	  if (MODE!="intro"){
 	    	  wave_without_pause(0);
 	    	  wave_without_pause(50);
 	    	  wave_without_pause(100);
 	    	  wave_without_pause(150);
+    	  }
+    	  if (MODE=="intro"){
+    		  
+    		  if (seconds==11){
+    			  spawnRandomMine_r();
+    		  }
+    		  if (seconds==15){
+    			  spawnRandomMine_r();
+    		  }
+    		  if (seconds==18){
+    			  spawnRandomMine_r();
+    		  }
+    		  if (seconds==22){
+    			  spawnMine_II(-3);
+    			  spawnMine_II(-1);
+    			  spawnMine_II(1);
+    			  spawnMine_II(3);
+    		  }
+    		  
     	  }
     	  if (seconds==203){
     		  

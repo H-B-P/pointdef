@@ -364,11 +364,11 @@ public class LevelSelectScreen implements Screen {
 				}
 				if (TOPIC=="NONE"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "Intro"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro"));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "Basis"));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "basis"));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,480-tp_y)){
