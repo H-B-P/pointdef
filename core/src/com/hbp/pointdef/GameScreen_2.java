@@ -98,6 +98,8 @@ public class GameScreen_2 implements Screen {
    
    private float total_time;
    
+   private float last_charge_event_time;
+   
    private double posn_x;
    private double posn_y;
    
@@ -375,13 +377,13 @@ public class GameScreen_2 implements Screen {
 			   Function_Code="square";
 		   }
 		   if (seconds==50){
-			   Function_Code="square root";
+			   Function_Code="cube";
 		   }
 		   if (seconds==100){
-			   Function_Code="square";
+			   Function_Code="square root";
 		   }
 		   if (seconds==150){
-			   Function_Code="square root";
+			   Function_Code="reciprocal";
 		   }
 	   }
 	   if (MODE=="errata"){
@@ -867,6 +869,12 @@ public class GameScreen_2 implements Screen {
       if(IS_TIME_HAPPENING){
 	   total_time+=Gdx.graphics.getDeltaTime();
       }
+      
+      if (total_time>(last_charge_event_time+1)){
+    	  last_charge_event_time=total_time;
+    	  charges=Math.min(charges+1, maxcharges);
+      }
+      
 	  //--Update ship image used--
       shipImage = shipImages[charges];
       
@@ -1091,7 +1099,7 @@ public class GameScreen_2 implements Screen {
     	  
     	  //Updates to charges
     	  if(charges<maxcharges){
-    		  charges+=1;
+    		  //charges+=1;
     	  }
     	  //Events!
     	  
@@ -1191,6 +1199,7 @@ public class GameScreen_2 implements Screen {
     					  spawn_other_dot(mirror_dot.x,mirror_dot.y);
     				  }
     				  charges-=1;
+    				  last_charge_event_time=total_time;
     			  }
     		  }
     	  }
