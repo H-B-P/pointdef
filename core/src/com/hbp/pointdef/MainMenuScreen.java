@@ -23,20 +23,6 @@ public class MainMenuScreen implements Screen {
 	private Texture prv_t;	
 	
 	
-	private Rectangle one_r;
-	private Texture one_t;
-	
-	private Rectangle two_r;
-	private Texture two_t;
-	
-	private String TOPIC;
-	
-	private Rectangle three_r;
-	private Texture three_t;
-	
-	private Rectangle four_r;
-	private Texture four_t;
-	
 	private Preferences prefs;
 	
 	private Rectangle CAMPAIGN_r;
@@ -197,6 +183,10 @@ public class MainMenuScreen implements Screen {
 				}
 				if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<200){
 					MINESPEED+=5;
+				}
+				
+				if (CAMPAIGN_r.contains(tp_x,480-tp_y)){
+					game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", false, true));
 				}
 				
 				if (LEVELS_r.contains(tp_x,480-tp_y)){

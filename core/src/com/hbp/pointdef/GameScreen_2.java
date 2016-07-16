@@ -129,6 +129,21 @@ public class GameScreen_2 implements Screen {
    private int MINESPEED;
    private boolean ENDLESS;
    
+   private boolean CAMPAIGN;
+   private boolean META_PAUSE;
+   
+   private Rectangle campaign_but_r;
+   private Texture campaign_but_t;
+   private Texture campaign_but_trim;
+   private Texture campaign_but_start_t;
+   private Texture campaign_but_retry_t;
+   private Texture campaign_but_menu_t;
+   private Texture campaign_but_next_t;
+   
+   private Texture campaign_tb_start;
+   private Texture campaign_tb_win;
+   private Texture campaign_tb_lose;
+   
    private String Function_Code;
    
 	private Texture dot_r;
@@ -148,10 +163,20 @@ public class GameScreen_2 implements Screen {
 	private Texture textbox_6;
 	private float textbox_x;
 	private float textbox_y;
+	
+	private Texture c_textbox;
+	private float c_textbox_x;
+	private float c_textbox_y;
+	
 	private boolean show_textbox;
+	private boolean show_c_textbox;
+	
+	private boolean about_to_leave;
+	
+	private int lives;
  //---Do all the initial stuff that happens on rendering---
    
-   public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless) {
+   public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign) {
 	  
 	   //--Perform tautological actions--
 	   this.game = gam;
@@ -160,9 +185,11 @@ public class GameScreen_2 implements Screen {
       MODE=mode;
       TOPIC=topic;
       MINESPEED=minespeed;
+      CAMPAIGN=campaign;
+      META_PAUSE=campaign;
       
       //--Set up highscores--
-      
+            
       prefs = Gdx.app.getPreferences("galen_preferences");
       prefs_score=prefs.getInteger("score_"+TOPIC+"_"+MODE);
 	  
@@ -213,6 +240,7 @@ public class GameScreen_2 implements Screen {
       
       menu_button_t=new Texture(Gdx.files.internal("button_menu_smol.png"));
       show_textbox=false;
+      show_c_textbox=false;
       if (MODE=="intro"){
 	      textbox_1=new Texture(Gdx.files.internal("intro_tb_1.png"));
 	      textbox_2=new Texture(Gdx.files.internal("intro_tb_2.png"));
@@ -223,7 +251,7 @@ public class GameScreen_2 implements Screen {
 	      textbox=textbox_1;
 	      textbox_x=10;
 	      textbox_y=90;
-	      show_textbox=true;
+	      //show_textbox=true;
       }
       //--Set zeroes to zero--
       score=MINESPEED/5;
@@ -232,6 +260,7 @@ public class GameScreen_2 implements Screen {
       total_paused_time=0;
       seconds=0;
       wastouched=false;
+      about_to_leave=false;
       
       //(Whether the game is not-exactly-paused.)
       IS_TIME_HAPPENING=true;
@@ -295,6 +324,34 @@ public class GameScreen_2 implements Screen {
       maxcharges=6;
       create_dot_function();
       apply_dot_function(0,0);
+      
+      
+//------
+      
+      if (CAMPAIGN){
+    	  campaign_but_r=new Rectangle();
+    	  campaign_but_r.height=40;
+    	  campaign_but_r.width=80;
+    	  campaign_but_r.x=120;
+    	  campaign_but_r.y=160;
+    	  campaign_but_start_t=new Texture(Gdx.files.internal("campaign_button_start.png"));
+    	  campaign_but_retry_t=new Texture(Gdx.files.internal("campaign_button_retry.png"));
+    	  campaign_but_menu_t=new Texture(Gdx.files.internal("campaign_button_menu.png"));
+    	  campaign_but_next_t=new Texture(Gdx.files.internal("campaign_button_next.png"));
+    	  campaign_but_trim=new Texture(Gdx.files.internal("campaign_button_trim.png"));
+    	  
+    	  campaign_but_t=campaign_but_start_t;
+    	  
+    	  campaign_tb_start=new Texture(Gdx.files.internal("campaign_tb_level.png"));
+    	  campaign_tb_win=new Texture(Gdx.files.internal("campaign_tb_win.png"));
+    	  campaign_tb_lose=new Texture(Gdx.files.internal("campaign_tb_lose.png"));
+    	  
+    	  show_c_textbox=true;
+    	  c_textbox=campaign_tb_start;
+    	  c_textbox_x=60;
+    	  c_textbox_y=140;
+      }
+      
       
       //--Batch, Camera, Action--
       camera = new OrthographicCamera();
@@ -432,20 +489,22 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
 	   if (MODE=="theta"){
-		   if (seconds%200==0){
+		   if (seconds==0){
 			   polar_a=1;
 			   polar_b=0;
 		   }
-		   if (seconds%200==50){
-			   polar_a=2;
-			   polar_b=0;
+		   else{
+			   if (seconds%100==50){
+				   polar_a=2;
+				   polar_b=0;
+			   }
+			   if (seconds%100==0){
+				   polar_a=1;
+				   polar_b=plusorminus();
+			   }
 		   }
-		   if (seconds%200==100){
-			   polar_a=1;
-			   polar_b=plusorminus();
-		   }
-		   if (seconds%200==150){
-			   polar_a=-2;
+		   if (seconds%300==250){
+			   polar_a=plusorminus()*MathUtils.random(1,3);
 			   polar_b=0;
 		   }
 	   }
@@ -1043,17 +1102,80 @@ public class GameScreen_2 implements Screen {
 	   return b.toString();
    }
    
+   //----------
+   
+   private String next_topic(){
+
+	   if (MODE=="intro"){
+		   return "CARTESIAN";
+	   }
+	   if (TOPIC=="CARTESIAN" && MODE=="add"){
+		   return "CARTESIAN";
+	   }
+	   if (TOPIC=="CARTESIAN" && MODE=="multiply"){
+		   return "POLAR";
+	   }
+	   if (TOPIC=="POLAR" && MODE=="theta"){
+		   return "POLAR";
+	   }
+	   if (TOPIC=="POLAR" && MODE=="radius"){
+		   return "MATRIX";
+	   }
+	   if (TOPIC=="MATRIX" && MODE=="diagonal"){
+		   return "MATRIX";
+	   }
+	   if (TOPIC=="MATRIX" && MODE=="rotation"){
+		   return "ARGAND";
+	   }
+	   if (TOPIC=="ARGAND" && MODE=="add"){
+		   return "ARGAND";
+	   }
+	   
+	   return "add";
+	   
+   }
+
+   private String next_mode(){
+	   if (MODE=="intro"){
+		   return "add";
+	   }
+	   if (TOPIC=="CARTESIAN" && MODE=="add"){
+		   return "multiply";
+	   }
+	   if (TOPIC=="CARTESIAN" && MODE=="multiply"){
+		   return "theta";
+	   }
+	   if (TOPIC=="POLAR" && MODE=="theta"){
+		   return "radius";
+	   }
+	   if (TOPIC=="POLAR" && MODE=="radius"){
+		   return "diagonal";
+	   }
+	   if (TOPIC=="MATRIX" && MODE=="diagonal"){
+		   return "rotation";
+	   }
+	   if (TOPIC=="MATRIX" && MODE=="rotation"){
+		   return "add";
+	   }
+	   if (TOPIC=="ARGAND" && MODE=="add"){
+		   return "multiply";
+	   }
+	   return "CARTESIAN";
+   }
+   
    //---RENDER---
    @Override
    public void render(float delta) {
 	   
 	   //--Adjust time--
+	   if (!META_PAUSE){
       if(IS_TIME_HAPPENING){
 	   total_time+=Gdx.graphics.getDeltaTime();
       }
       else{
     	  total_paused_time+=Gdx.graphics.getDeltaTime();
       }
+	   }
       
       if (total_time>(last_charge_event_time+1)){
     	  last_charge_event_time=total_time;
@@ -1135,6 +1257,8 @@ public class GameScreen_2 implements Screen {
       
       //--Render any textboxes that happen to need it--
       
+      
+      
       if (MODE=="intro"){
     	  if (total_time>2){
     		  show_textbox=true;
@@ -1155,13 +1279,56 @@ public class GameScreen_2 implements Screen {
     			  textbox=textbox_6;
     		  }
     	  }
-    	  if (total_time>30 && total_paused_time>0 || (total_paused_time+total_time)>50){
-    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
+    	  if (total_time>30 && total_paused_time>3 || (total_paused_time+total_time)>50){
+    		  if(CAMPAIGN){
+    			  show_c_textbox=true;
+    			  META_PAUSE=true;
+    			  c_textbox=campaign_tb_win;
+    			  show_textbox=false;
+    		  }
+    		  else{
+    			  about_to_leave=true;
+    		  }
     	  }
+      }
+      
+      if ((score-MINESPEED/5)==7 && MODE=="intro"){
+    	  show_textbox=false;
       }
       
       if (show_textbox){
     	  batch.draw(textbox, textbox_x, textbox_y);
+      }
+      
+      if (show_c_textbox){
+    	  batch.draw(c_textbox, c_textbox_x, c_textbox_y);
+    	  if (total_time==0){
+    		  batch.draw(campaign_but_start_t, campaign_but_r.x, campaign_but_r.y);
+    		  font.draw(batch, TOPIC+": "+MODE.toUpperCase(), c_textbox_x+20, c_textbox_y+175);
+    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
+    		  }
+    	  }
+    	  else if (CAMPAIGN){
+	    	  if (total_time>=200 && MODE=="multiply" && TOPIC=="ARGAND"){
+	    		  batch.draw(campaign_but_menu_t, campaign_but_r.x, campaign_but_r.y);
+	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
+	    		  }
+	    	  }
+	    	  else if (total_time>=200 || MODE=="intro"){
+	    		  batch.draw(campaign_but_next_t, campaign_but_r.x, campaign_but_r.y);
+	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
+	    		  }
+	    	  }
+	    	  else{
+	    		  batch.draw(campaign_but_retry_t, campaign_but_r.x, campaign_but_r.y);
+	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
+	    		  }
+	    	  }
+    	  }
       }
       
       //--Draw status bar, ship, and menu button--
@@ -1374,11 +1541,39 @@ public class GameScreen_2 implements Screen {
       
       //(Do NOT move this back to inside the batch. Weird, weird bugs crop up if you do.)
       
-      if(Gdx.input.isTouched()){
+      if(Gdx.input.justTouched()){
     	  if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
     		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
     		  dispose();
     	  }
+    	  
+    	  
+    	  
+    	  
+    	  if(META_PAUSE && campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+    		  if (total_time==0){
+    			  META_PAUSE=false;
+    			  show_c_textbox=false;
+    		  }
+    		  else if (total_time>=200 && MODE=="multiply" && TOPIC=="ARGAND"){
+    			  
+    		  }
+    		  else if (total_time>=200 || (MODE=="intro" && total_time>1)){
+    			  game.setScreen(new GameScreen_2(game, MINESPEED, next_topic(), next_mode(), ENDLESS, true));
+    			  dispose();
+    		  }
+    		  else {
+    			  game.setScreen(new GameScreen_2(game, MINESPEED, TOPIC, MODE, ENDLESS, true));
+    			  dispose();
+    		  }
+    		  
+    		  
+    	  }
+      }
+      
+      if (about_to_leave){
+    	  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
+    	  dispose();
       }
       
       //--Do the things which happen every second--
@@ -1426,15 +1621,23 @@ public class GameScreen_2 implements Screen {
     	  }
     	  if (seconds==204 && !ENDLESS){
     		  
-    		  
     		  if(score>prefs_score){
     			  
     	    	  
     	    	  prefs.putInteger("score_"+TOPIC+"_"+MODE, score);
     	    	  prefs.flush();
     		  }
-    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
-    		  dispose();
+    		  
+    		  if (CAMPAIGN){
+    			  show_c_textbox=true;
+    			  META_PAUSE=true;
+    			  c_textbox=campaign_tb_win;
+    		  }
+    		  else{
+	    		  
+	    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
+	    		  dispose();
+    		  }
     	  }
       }
       
@@ -1493,7 +1696,7 @@ public class GameScreen_2 implements Screen {
 		  }
       }      
       //--Let the player pause/unpause--
-      if (Gdx.input.isKeyJustPressed(Keys.SPACE)){
+      if (Gdx.input.isKeyJustPressed(Keys.SPACE)&& !META_PAUSE){
     	  IS_TIME_HAPPENING=!IS_TIME_HAPPENING;
       }
       
@@ -1503,7 +1706,7 @@ public class GameScreen_2 implements Screen {
     	  wastouched=true;
       }else{
     	  if(wastouched){
-    		  if(ship.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+    		  if(ship.contains(Gdx.input.getX(), 480-Gdx.input.getY()) && !META_PAUSE){
     			  IS_TIME_HAPPENING=!IS_TIME_HAPPENING;
     		  }
     		  else{
