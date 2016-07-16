@@ -193,6 +193,9 @@ public class GameScreen_2 implements Screen {
       prefs = Gdx.app.getPreferences("galen_preferences");
       prefs_score=prefs.getInteger("score_"+TOPIC+"_"+MODE);
 	  
+      //---
+      lives=10;
+      
 	  //--Load images--
       
 		dot_r= new Texture(Gdx.files.internal("dots/dot_red.png"));
@@ -202,6 +205,7 @@ public class GameScreen_2 implements Screen {
 		dot_p= new Texture(Gdx.files.internal("dots/dot_pink.png"));
 		dot_w= new Texture(Gdx.files.internal("dots/dot_white.png"));
 		dot_g= new Texture(Gdx.files.internal("dots/dot_green.png"));
+		
 		
 
       mineImage = new Texture(Gdx.files.internal("a_mine_2.png"));
@@ -1014,7 +1018,8 @@ public class GameScreen_2 implements Screen {
 	   spawnMine_II(k);
 	   
    }
-   private void spawnRandomMine_r(){
+   
+private void spawnRandomMine_r(){
 	   int k=MathUtils.random(1,3);
 	   spawnMine_II(k);
 	   
@@ -1168,13 +1173,14 @@ public class GameScreen_2 implements Screen {
    public void render(float delta) {
 	   
 	   //--Adjust time--
+	   //if (META_PAUSE){IS_TIME_HAPPENING=false;}
 	   if (!META_PAUSE){
-      if(IS_TIME_HAPPENING){
-	   total_time+=Gdx.graphics.getDeltaTime();
-      }
-      else{
-    	  total_paused_time+=Gdx.graphics.getDeltaTime();
-      }
+	      if(IS_TIME_HAPPENING){
+		   total_time+=Gdx.graphics.getDeltaTime();
+	      }
+	      else{
+	    	  total_paused_time+=Gdx.graphics.getDeltaTime();
+	      }
 	   }
       
       if (total_time>(last_charge_event_time+1)){
@@ -1294,6 +1300,13 @@ public class GameScreen_2 implements Screen {
       
       if ((score-MINESPEED/5)==7 && MODE=="intro"){
     	  show_textbox=false;
+      }
+      
+      if (CAMPAIGN && lives<1){
+    	  show_c_textbox=true;
+    	  c_textbox=campaign_tb_lose;
+    	  IS_TIME_HAPPENING=false;
+    	  META_PAUSE=true;
       }
       
       if (show_textbox){
@@ -1527,13 +1540,20 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       
-      if (MODE!="intro" && !ENDLESS){
-    	  font.draw(batch, "Score:", 200, 450);
-    	  font.draw(batch, ((Integer)score).toString(), 250, 450);
-      }
+      //----
       if (MODE!="intro" && ENDLESS){
     	  font.draw(batch, "Hits:", 200, 450);
-    	  font.draw(batch, ((Integer)score).toString(), 250, 450);
+    	  font.draw(batch, ((Integer)(score-MINESPEED/5)).toString(), 250, 450);
+    	  font.draw(batch, "Misses:", 200, 420);
+    	  font.draw(batch, ((Integer)(10-lives)).toString(), 250, 420);
+      }
+      else if (MODE!="intro" && CAMPAIGN){
+    	  font.draw(batch, "Lives:", 200, 435);
+    	  font.draw(batch, ((Integer)(lives)).toString(), 250, 435);
+      }
+      else if (MODE!="intro" && !ENDLESS){
+    	  font.draw(batch, "Score:", 200, 435);
+    	  font.draw(batch, ((Integer)score).toString(), 250, 435);
       }
       batch.end();
       
@@ -1678,7 +1698,7 @@ public class GameScreen_2 implements Screen {
 		         	iter.remove();
 		         	deadyet=true;
 		         	shieldImage=shieldImage_flicker;
-		             
+		            lives-=1; 
 		          }
 		     }
 		     
