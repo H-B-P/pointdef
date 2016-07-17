@@ -202,8 +202,8 @@ public class MainMenuScreen implements Screen {
 				}
 				
 				if (CAMPAIGN_r.contains(tp_x,480-tp_y)){
-					//game.setScreen(new GameScreen_2(game, MINESPEED, prefs.getString("TOPIC").toLowerCase(), prefs.getString("MODE"), false, true));
-					game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", false, true));
+					game.setScreen(new GameScreen_2(game, MINESPEED, prefs.getString("TOPIC"), prefs.getString("MODE"), false, true));
+					//game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", false, true));
 					//NOTE THE PROBLEM IS THAT I'M NOT USING ".equals()" IN GS2
 				}
 				

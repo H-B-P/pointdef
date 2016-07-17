@@ -212,20 +212,20 @@ public class GameScreen_2 implements Screen {
 		
 
       mineImage = new Texture(Gdx.files.internal("a_mine_2.png"));
-      if(TOPIC=="CARTESIAN"){dotImage = dot_y;}
-      else if (TOPIC=="POLAR"){dotImage = dot_g;}
-      else if (TOPIC=="MATRIX"){dotImage = dot_r;}
-      else if (TOPIC=="ARGAND"){dotImage = dot_c;}
+      if(TOPIC.equals("CARTESIAN")){dotImage = dot_y;}
+      else if (TOPIC.equals("POLAR")){dotImage = dot_g;}
+      else if (TOPIC.equals("MATRIX")){dotImage = dot_r;}
+      else if (TOPIC.equals("ARGAND")){dotImage = dot_c;}
       else{dotImage = new Texture(Gdx.files.internal("sniperdot.png"));}
       
       shipImages = new Texture[10];
       
-      if (TOPIC=="POLAR" && MODE!="switch"){gridImage = new Texture(Gdx.files.internal("grid_polar_v5.png"));}
-      else if (TOPIC=="CARTESIAN" && MODE=="mirror"){gridImage = new Texture(Gdx.files.internal("grid_t_mir.png"));}
-      else if (TOPIC=="POLAR" && MODE=="switch"){gridImage = new Texture(Gdx.files.internal("grid_polar_v3.png"));}
-      else if (TOPIC=="ARGAND" && MODE=="power"){gridImage = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
+      if (TOPIC.equals("POLAR") && !MODE.equals("switch")){gridImage = new Texture(Gdx.files.internal("grid_polar_v5.png"));}
+      else if (TOPIC.equals("CARTESIAN") && MODE.equals("mirror")){gridImage = new Texture(Gdx.files.internal("grid_t_mir.png"));}
+      else if (TOPIC.equals("POLAR") && MODE.equals("switch")){gridImage = new Texture(Gdx.files.internal("grid_polar_v3.png"));}
+      else if (TOPIC.equals("ARGAND") && MODE.equals("power")){gridImage = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
       else {gridImage = new Texture(Gdx.files.internal("grid_t.png"));}
-      if (TOPIC=="MATRIX"){statusbarImage = new Texture(Gdx.files.internal("statusbar.png"));}
+      if (TOPIC.equals("MATRIX")){statusbarImage = new Texture(Gdx.files.internal("statusbar.png"));}
       else {statusbarImage = new Texture(Gdx.files.internal("statusbar_blank.png"));}
       explosionImage = new Texture(Gdx.files.internal("explosion.png"));
       shieldImage_unhit = new Texture(Gdx.files.internal("shield.png"));
@@ -249,7 +249,7 @@ public class GameScreen_2 implements Screen {
       menu_button_t=new Texture(Gdx.files.internal("button_menu_smol.png"));
       show_textbox=false;
       show_c_textbox=false;
-      if (MODE=="intro"){
+      if (MODE.equals("intro")){
 	      textbox_1=new Texture(Gdx.files.internal("intro_tb_1.png"));
 	      textbox_2=new Texture(Gdx.files.internal("intro_tb_2.png"));
 	      textbox_3=new Texture(Gdx.files.internal("intro_tb_3.png"));
@@ -313,7 +313,7 @@ public class GameScreen_2 implements Screen {
       explosions = new Array<Kaboom>();
       other_dots = new Array<Kaboom>();
       
-      if ((TOPIC=="POLAR"&& MODE!="switch") || (TOPIC=="ARGAND" && MODE=="power")){
+      if ((TOPIC.equals("POLAR") && !MODE.equals("switch")) || (TOPIC.equals("ARGAND") && MODE.equals("power"))){
     	  UNIT_LENGTH_IN_PIXELS=80;
       }
       else{
@@ -390,22 +390,22 @@ public class GameScreen_2 implements Screen {
    
    private void create_dot_function(){
 	   
-	   if (TOPIC=="CARTESIAN"){
+	   if (TOPIC.equals("CARTESIAN")){
 		   create_cartesian_dot_function();
 	   }
-	   if (TOPIC=="POLAR"){
+	   if (TOPIC.equals("POLAR")){
 		   create_polar_dot_function();
 	   }
-	   if (TOPIC=="ARGAND"){
+	   if (TOPIC.equals("ARGAND")){
 		   create_argand_dot_function();
 	   }
-	   if (TOPIC=="MATRIX"){
+	   if (TOPIC.equals("MATRIX")){
 		   create_matrix_dot_function();
 	   }
    }
    
    private void create_cartesian_dot_function(){
-	   if (MODE=="add"){
+	   if (MODE.equals("add")){
 		   if (seconds%200==0){
 			   cartesian_a=0;
 			   cartesian_b=0;
@@ -423,7 +423,7 @@ public class GameScreen_2 implements Screen {
 			   cartesian_b=plusorminus()*2;
 		   }
 	   }
-	   if (MODE=="multiply"){
+	   if (MODE.equals("multiply")){
 		   if (seconds%200==0){
 			   cartesian_a=MathUtils.random(2,3);
 			   cartesian_b=1;
@@ -441,7 +441,7 @@ public class GameScreen_2 implements Screen {
 			   cartesian_b=-MathUtils.random(2,3);
 		   }
 	   }
-	   if (MODE=="mirror"){
+	   if (MODE.equals("mirror")){
 		   if (seconds%200==0){
 			   Function_Code="flip_x";
 		   }
@@ -455,7 +455,7 @@ public class GameScreen_2 implements Screen {
 			   Function_Code="flip_neg_diag";
 		   }
 	   }
-	   if (MODE=="lines"){
+	   if (MODE.equals("lines")){
 		   if (seconds%200==0){
 			   Function_Code="y_is_c";
 			   cartesian_c=plusorminus()*MathUtils.random(1,2);
@@ -478,7 +478,7 @@ public class GameScreen_2 implements Screen {
    }
    
    private void create_polar_dot_function(){
-	   if (MODE=="r"){
+	   if (MODE.equals("r")){
 		   
 		   if (seconds%200==0){
 			   polar_a=MathUtils.random(2,3);
@@ -497,7 +497,7 @@ public class GameScreen_2 implements Screen {
 			   polar_b=1;
 		   }
 	   }
-	   if (MODE=="theta"){
+	   if (MODE.equals("theta")){
 		   if (seconds==0){
 			   polar_a=1;
 			   polar_b=0;
@@ -517,7 +517,7 @@ public class GameScreen_2 implements Screen {
 			   polar_b=0;
 		   }
 	   }
-	   if (MODE=="power"){
+	   if (MODE.equals("power")){
 		   if (seconds%200==0){
 			   Function_Code="square";
 		   }
@@ -531,28 +531,28 @@ public class GameScreen_2 implements Screen {
 			   Function_Code="reciprocal";
 		   }
 	   }
-	   if (MODE=="switch"){
+	   if (MODE.equals("switch")){
 		   DO_ABSOLUTELY_NOTHING();
 	   }
    }
    
    private void create_argand_dot_function(){
 	   
-	   if (MODE=="add" || MODE=="multiply"){
+	   if (MODE.equals("add") || MODE.equals("multiply")){
 		   old_argand_a=argand_a;
 		   old_argand_b=argand_b;
 		   while (old_argand_a==argand_a && old_argand_b==argand_b){
-			   if (MODE=="add"){
+			   if (MODE.equals("add")){
 				   argand_a=MathUtils.random(-1,1);
 				   argand_b=MathUtils.random(-4,4);
 			   }
-			   if (MODE=="multiply"){
+			   if (MODE.equals("multiply")){
 				   argand_a=MathUtils.random(0,2);
 				   argand_b=plusorminus()*MathUtils.random(1,2);
 			   }
 		   }
 	   }
-	   if (MODE=="power"){
+	   if (MODE.equals("power")){
 		   if (seconds%200==0){
 			   Function_Code="square";
 		   }
@@ -566,7 +566,7 @@ public class GameScreen_2 implements Screen {
 			   Function_Code="reciprocal";
 		   }
 	   }
-	   if (MODE=="errata"){
+	   if (MODE.equals("errata")){
 		   if (seconds%200==0){
 			   Function_Code="z_alone";
 		   }
@@ -585,7 +585,7 @@ public class GameScreen_2 implements Screen {
    private void create_matrix_dot_function(){
 	   OldMatrix.set(TheMatrix.val);
 	   while (OldMatrix.getValues()[0]==TheMatrix.getValues()[0] && OldMatrix.getValues()[4]==TheMatrix.getValues()[4] && OldMatrix.getValues()[8]==TheMatrix.getValues()[8]){
-		   if (MODE=="Diag_I"){
+		   if (MODE.equals("Diag_I")){
 			   if (seconds%200==0){
 				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
 				   TheMatrix.set(SI_Input);
@@ -603,7 +603,7 @@ public class GameScreen_2 implements Screen {
 				   TheMatrix.set(SI_Input);
 			   }
 		   }
-		   if (MODE=="diagonal"){
+		   if (MODE.equals("diagonal")){
 			   if (seconds==0){
 				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
 				   TheMatrix.set(SI_Input);
@@ -617,7 +617,7 @@ public class GameScreen_2 implements Screen {
 				   }
 			   }
 		   }
-		   if (MODE=="rotation"){
+		   if (MODE.equals("rotation")){
 			   if (seconds==0){
 				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
 				   TheMatrix.set(SI_Input);
@@ -631,7 +631,7 @@ public class GameScreen_2 implements Screen {
 				   }
 			   }
 		   }
-		   if (MODE=="singular"){
+		   if (MODE.equals("singular")){
 			   if ((seconds%100)==0){
 				   NewSingMatrix();
 			   }
@@ -639,7 +639,7 @@ public class GameScreen_2 implements Screen {
 				   NewSingMatrix_notflat();
 			   }
 		   }
-		   if (MODE=="arbitrary"){
+		   if (MODE.equals("arbitrary")){
 			   NewArbMatrix();
 		   }
 	   }
@@ -812,16 +812,16 @@ public class GameScreen_2 implements Screen {
    private void apply_dot_function(double grx, double gry){
 	   posn_x=grx;
 	   posn_y=gry;
-	   if (TOPIC=="CARTESIAN"){
+	   if (TOPIC.equals("CARTESIAN")){
 		   apply_cartesian_dot_function(grx, gry);
 	   }
-	   else if (TOPIC=="POLAR"){
+	   else if (TOPIC.equals("POLAR")){
 		   apply_polar_dot_function(grx, gry);
 	   }
-	   else if (TOPIC=="ARGAND"){
+	   else if (TOPIC.equals("ARGAND")){
 		   apply_argand_dot_function(grx, gry);
 	   }
-	   else if (TOPIC=="MATRIX"){
+	   else if (TOPIC.equals("MATRIX")){
 		   apply_matrix_dot_function(grx, gry);
 	   }
 	   else{
@@ -831,15 +831,15 @@ public class GameScreen_2 implements Screen {
    }
    
    private void apply_cartesian_dot_function(double grx, double gry){
-	   if (MODE=="add"){
+	   if (MODE.equals("add")){
 		   new_posn_x=grx+cartesian_a;
 		   new_posn_y=gry+cartesian_b;
 	   }
-	   if (MODE=="multiply"){
+	   if (MODE.equals("multiply")){
 		   new_posn_x=grx*cartesian_a;
 		   new_posn_y=gry*cartesian_b;
 	   }
-	   if (MODE=="mirror"){
+	   if (MODE.equals("mirror")){
 		   if (Function_Code=="flip_x"){
 			   new_posn_x=-posn_x;
 			   new_posn_y=posn_y;
@@ -857,7 +857,7 @@ public class GameScreen_2 implements Screen {
 			   new_posn_y=-posn_x;
 		   }
 	   }
-	   if (MODE=="lines"){
+	   if (MODE.equals("lines")){
 		   new_posn_x=posn_x;
 		   if (Function_Code=="y_is_c"){
 			   new_posn_y=(double)cartesian_c;
@@ -887,11 +887,11 @@ public class GameScreen_2 implements Screen {
        if (gry<0){
    		  posn_theta=-posn_theta;
     	  }
-	   if (MODE=="r"){
+	   if (MODE.equals("r")){
 		   new_posn_r= posn_r*polar_a + polar_b;
 		   new_posn_theta=posn_theta;
 	   }
-	   if (MODE=="theta"){
+	   if (MODE.equals("theta")){
 		   new_posn_r=posn_r;
 		   if (Function_Code=="divide"){
 			   new_posn_theta=posn_theta/polar_a+polar_b*Math.PI/4f;
@@ -902,7 +902,7 @@ public class GameScreen_2 implements Screen {
 		   }
 		   
 	   }
-	   if (MODE=="power"){
+	   if (MODE.equals("power")){
 		   
 		   if (Function_Code=="square"){
 			   new_posn_r=posn_r*posn_r;
@@ -919,7 +919,7 @@ public class GameScreen_2 implements Screen {
 		   }
 		   new_posn_theta=posn_theta;
 	   }
-	   if (MODE=="switch"){
+	   if (MODE.equals("switch")){
 		   new_posn_r=posn_theta;
 		   new_posn_theta=posn_r;
 	   }
@@ -928,15 +928,15 @@ public class GameScreen_2 implements Screen {
    }
    
    private void apply_argand_dot_function(double grx, double gry){
-	   if (MODE=="add"){
+	   if (MODE.equals("add")){
 		   new_posn_x=grx+argand_a;
 		   new_posn_y=gry+argand_b;
 	   }
-	   if (MODE=="multiply"){
+	   if (MODE.equals("multiply")){
 		   new_posn_x=grx*argand_a-gry*argand_b;
 		   new_posn_y=gry*argand_a+grx*argand_b;
 	   }
-	   if (MODE=="power"){
+	   if (MODE.equals("power")){
 		   if (Function_Code=="square"){
 			   new_posn_x=grx*grx-gry*gry;
 			   new_posn_y=grx*gry+gry*grx;
@@ -962,7 +962,7 @@ public class GameScreen_2 implements Screen {
 			   MIRROR_THE_DOT=true;
 		   }
 	   }
-	   if (MODE=="errata"){
+	   if (MODE.equals("errata")){
 		   if (Function_Code=="z_alone"){
 			   new_posn_x=posn_x;
 			   new_posn_y=posn_y;
@@ -1116,28 +1116,28 @@ private void spawnRandomMine_r(){
    
    private String next_topic(){
 
-	   if (MODE=="intro"){
+	   if (MODE.equals("intro")){
 		   return "CARTESIAN";
 	   }
-	   if (TOPIC=="CARTESIAN" && MODE=="add"){
+	   if (TOPIC.equals("CARTESIAN") && MODE.equals("add")){
 		   return "CARTESIAN";
 	   }
-	   if (TOPIC=="CARTESIAN" && MODE=="multiply"){
+	   if (TOPIC.equals("CARTESIAN") && MODE.equals("multiply")){
 		   return "POLAR";
 	   }
-	   if (TOPIC=="POLAR" && MODE=="theta"){
+	   if (TOPIC.equals("POLAR") && MODE.equals("theta")){
 		   return "POLAR";
 	   }
-	   if (TOPIC=="POLAR" && MODE=="radius"){
+	   if (TOPIC.equals("POLAR") && MODE.equals("radius")){
 		   return "MATRIX";
 	   }
-	   if (TOPIC=="MATRIX" && MODE=="diagonal"){
+	   if (TOPIC.equals("MATRIX") && MODE.equals("diagonal")){
 		   return "MATRIX";
 	   }
-	   if (TOPIC=="MATRIX" && MODE=="rotation"){
+	   if (TOPIC.equals("MATRIX") && MODE.equals("rotation")){
 		   return "ARGAND";
 	   }
-	   if (TOPIC=="ARGAND" && MODE=="add"){
+	   if (TOPIC.equals("ARGAND") && MODE.equals("add")){
 		   return "ARGAND";
 	   }
 	   
@@ -1146,28 +1146,28 @@ private void spawnRandomMine_r(){
    }
 
    private String next_mode(){
-	   if (MODE=="intro"){
+	   if (MODE.equals("intro")){
 		   return "add";
 	   }
-	   if (TOPIC=="CARTESIAN" && MODE=="add"){
+	   if (TOPIC.equals("CARTESIAN") && MODE.equals("add")){
 		   return "multiply";
 	   }
-	   if (TOPIC=="CARTESIAN" && MODE=="multiply"){
+	   if (TOPIC.equals("CARTESIAN") && MODE.equals("multiply")){
 		   return "theta";
 	   }
-	   if (TOPIC=="POLAR" && MODE=="theta"){
+	   if (TOPIC.equals("POLAR") && MODE.equals("theta")){
 		   return "radius";
 	   }
-	   if (TOPIC=="POLAR" && MODE=="radius"){
+	   if (TOPIC.equals("POLAR") && MODE.equals("radius")){
 		   return "diagonal";
 	   }
-	   if (TOPIC=="MATRIX" && MODE=="diagonal"){
+	   if (TOPIC.equals("MATRIX") && MODE.equals("diagonal")){
 		   return "rotation";
 	   }
-	   if (TOPIC=="MATRIX" && MODE=="rotation"){
+	   if (TOPIC.equals("MATRIX") && MODE.equals("rotation")){
 		   return "add";
 	   }
-	   if (TOPIC=="ARGAND" && MODE=="add"){
+	   if (TOPIC.equals("ARGAND") && MODE.equals("add")){
 		   return "multiply";
 	   }
 	   return "CARTESIAN";
@@ -1246,7 +1246,7 @@ private void spawnRandomMine_r(){
     		  
       dot.setCenter((float)dotPos_i_x,(float)dotPos_i_y);
       
-      if (MODE=="lines"){
+      if (MODE.equals("lines")){
     	  dotPos_j_x=new_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
           dotPos_j_y=-new_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
       }
@@ -1270,7 +1270,7 @@ private void spawnRandomMine_r(){
       
       
       
-      if (MODE=="intro"){
+      if (MODE.equals("intro")){
     	  if (total_time>2){
     		  show_textbox=true;
     		  textbox=textbox_1;
@@ -1303,7 +1303,7 @@ private void spawnRandomMine_r(){
     	  }
       }
       
-      if ((score-MINESPEED/5)==7 && MODE=="intro"){
+      if ((score-MINESPEED/5)==7 && MODE.equals("intro")){
     	  show_textbox=false;
       }
       
@@ -1328,14 +1328,14 @@ private void spawnRandomMine_r(){
     		  }
     	  }
     	  else if (CAMPAIGN){
-	    	  if (total_time>=200 && MODE=="multiply" && TOPIC=="ARGAND"){
+	    	  if (total_time>=200 && MODE.equals("multiply") && TOPIC.equals("ARGAND")){
 	    		  batch.draw(campaign_but_menu_t, campaign_but_r.x, campaign_but_r.y);
 	    		  font.draw(batch, "Congratulations, you finished the campaign! Use freeplay to try more levels, or visit the library to learn the math behind the things you did.", c_textbox_x+20, c_textbox_y+175, 160, 1, true);
 	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
 	    	  }
-	    	  else if (total_time>=200 || MODE=="intro"){
+	    	  else if (total_time>=200 || MODE.equals("intro")){
 	    		  batch.draw(campaign_but_next_t, campaign_but_r.x, campaign_but_r.y);
 	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
@@ -1357,8 +1357,8 @@ private void spawnRandomMine_r(){
       batch.draw(menu_button_t,265,455);
       //--PRESENT THE FUNCTION--
       //(That is: make it clear on the statusbar what is actually being done.)
-      if (TOPIC=="CARTESIAN"){
-    	  if (MODE=="add"){
+      if (TOPIC.equals("CARTESIAN")){
+    	  if (MODE.equals("add")){
     		  if (cartesian_a>0){
     			  font.draw(batch, "x="+double_formatted(posn_x)+"+"+cartesian_a, 30, 455);
     		  }
@@ -1378,11 +1378,11 @@ private void spawnRandomMine_r(){
     			  font.draw(batch, "y="+double_formatted(posn_y)+cartesian_b, 30, 435);
     		  }
     	  }
-    	  if (MODE=="multiply"){
+    	  if (MODE.equals("multiply")){
     		  font.draw(batch, "x="+cartesian_a+"*"+double_formatted(posn_x), 30, 455);
     		  font.draw(batch, "y="+cartesian_b+"*"+double_formatted(posn_y), 30, 435);
     	  }
-    	  if (MODE=="mirror"){
+    	  if (MODE.equals("mirror")){
     		  if (Function_Code=="flip_x"){
     			  font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
         		  font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
@@ -1400,7 +1400,7 @@ private void spawnRandomMine_r(){
         		  font.draw(batch, "y=-("+double_formatted(posn_x)+")", 30, 435);
     		  }
     	  }
-    	  if (MODE=="lines"){
+    	  if (MODE.equals("lines")){
     		  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
     		  if (Function_Code=="y_is_c"){
         		  font.draw(batch, "y="+cartesian_c, 30, 435);
@@ -1421,7 +1421,7 @@ private void spawnRandomMine_r(){
     		  }
     	  }
       }
-      if (TOPIC=="MATRIX"){
+      if (TOPIC.equals("MATRIX")){
     	  font.draw(batch, double_formatted(posn_x), 96, 457);
           font.draw(batch, double_formatted(posn_y), 96, 437);
     	  if (TheMatrix.getValues()[Matrix3.M00]==(int)(TheMatrix.getValues()[Matrix3.M00]) &&TheMatrix.getValues()[Matrix3.M11]==(int)(TheMatrix.getValues()[Matrix3.M11])){
@@ -1437,8 +1437,8 @@ private void spawnRandomMine_r(){
 	          dotfunction_font.draw(batch, double_formatted(TheMatrix.getValues()[Matrix3.M11]/1.0), 49, 437);
     	  }
       }
-      if (TOPIC=="POLAR"){
-    	  if (MODE=="r"){
+      if (TOPIC.equals("POLAR")){
+    	  if (MODE.equals("r")){
     		  if (polar_b>0){
     			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(posn_r)+"+"+polar_b, 30, 455);
     		  }
@@ -1450,7 +1450,7 @@ private void spawnRandomMine_r(){
     		  }
 	          font.draw(batch, "Theta="+double_formatted_2pl(posn_theta/Math.PI)+"pi", 30, 435);
     	  }
-    	  if (MODE=="theta"){
+    	  if (MODE.equals("theta")){
 	    	  font.draw(batch, "r="+double_formatted(posn_r), 30, 455);
 	    	  if (Function_Code=="divide"){
 	    		  dotfunction_font.draw(batch, "Theta="+double_formatted_2pl(posn_theta/Math.PI)+"pi/"+polar_a+" +(" + polar_b +")pi/4", 30, 435);
@@ -1460,7 +1460,7 @@ private void spawnRandomMine_r(){
 	    	  }
 	          
     	  }
-    	  if (MODE=="power"){
+    	  if (MODE.equals("power")){
 	    	  if (Function_Code=="square"){
 	    		  dotfunction_font.draw(batch, "r="+double_formatted(posn_r)+"^2", 30, 455);
 	    	  }
@@ -1475,14 +1475,14 @@ private void spawnRandomMine_r(){
 	    	  }
 	    	  font.draw(batch, "Theta="+double_formatted_2pl(posn_theta/Math.PI)+"pi", 30, 435);
     	  }
-    	  if (MODE=="switch"){
+    	  if (MODE.equals("switch")){
     		  font.draw(batch, "r="+double_formatted(posn_theta), 30, 455);
     		  font.draw(batch, "Theta="+double_formatted(posn_r), 30, 435);
     	  }
       }
       
-      if (TOPIC=="ARGAND"){
-    	  if (MODE=="add"){
+      if (TOPIC.equals("ARGAND")){
+    	  if (MODE.equals("add")){
     		  //dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);
     		  if (argand_b>0){
     			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);
@@ -1496,7 +1496,7 @@ private void spawnRandomMine_r(){
 
     		  }
     	  }
-    	  if (MODE=="multiply"){
+    	  if (MODE.equals("multiply")){
 	    	  
 	    	  if (Function_Code=="divide"){
 	    		  dotfunction_font.draw(batch, "z=1/("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)", 30, 455);
@@ -1516,7 +1516,7 @@ private void spawnRandomMine_r(){
 	    	  }
 	          
     	  }
-    	  if (MODE=="power"){
+    	  if (MODE.equals("power")){
 	    	  if (Function_Code=="square"){
 	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)^2", 30, 455);
 	    	  }
@@ -1530,7 +1530,7 @@ private void spawnRandomMine_r(){
 	    		  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)^0.5", 30, 455);
 	    	  }
     	  }
-    	  if (MODE=="errata"){
+    	  if (MODE.equals("errata")){
     		  if (Function_Code=="z_alone"){
     			  dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i)", 30, 455);
     		  }
@@ -1547,17 +1547,17 @@ private void spawnRandomMine_r(){
       }
       
       //----
-      if (MODE!="intro" && ENDLESS){
+      if (!MODE.equals("intro") && ENDLESS){
     	  font.draw(batch, "Hits:", 200, 450);
     	  font.draw(batch, ((Integer)(score-MINESPEED/5)).toString(), 250, 450);
     	  font.draw(batch, "Misses:", 200, 420);
     	  font.draw(batch, ((Integer)(10-lives)).toString(), 250, 420);
       }
-      else if (MODE!="intro" && CAMPAIGN){
+      else if (!MODE.equals("intro") && CAMPAIGN){
     	  font.draw(batch, "Lives:", 200, 435);
     	  font.draw(batch, ((Integer)(lives)).toString(), 250, 435);
       }
-      else if (MODE!="intro" && !ENDLESS){
+      else if (!MODE.equals("intro") && !ENDLESS){
     	  font.draw(batch, "Score:", 200, 435);
     	  font.draw(batch, ((Integer)score).toString(), 250, 435);
       }
@@ -1581,10 +1581,10 @@ private void spawnRandomMine_r(){
     			  META_PAUSE=false;
     			  show_c_textbox=false;
     		  }
-    		  else if (total_time>=200 && MODE=="multiply" && TOPIC=="ARGAND"){
+    		  else if (total_time>=200 && MODE.equals("multiply") && TOPIC.equals("ARGAND")){
     			  game.setScreen(new MainMenuScreen(game, MINESPEED));
     		  }
-    		  else if (total_time>=200 || (MODE=="intro" && total_time>1)){
+    		  else if (total_time>=200 || (MODE.equals("intro") && total_time>1)){
     			  game.setScreen(new GameScreen_2(game, MINESPEED, next_topic(), next_mode(), ENDLESS, true));
     			  dispose();
     		  }
@@ -1617,16 +1617,16 @@ private void spawnRandomMine_r(){
     	  //Events!
     	  
     	  
-    	  if (MODE!="intro" && !ENDLESS){
+    	  if (!MODE.equals("intro") && !ENDLESS){
 	    	  wave_without_pause(0);
 	    	  wave_without_pause(50);
 	    	  wave_without_pause(100);
 	    	  wave_without_pause(150);
     	  }
-    	  if (MODE!="intro" && ENDLESS){
+    	  if (!MODE.equals("intro") && ENDLESS){
     		  wave_without_pause(seconds-seconds%50);
     	  }
-    	  if (MODE=="intro"){
+    	  if (MODE.equals("intro")){
     		  
     		  if (seconds==11){
     			  spawnRandomMine_r();
@@ -1659,7 +1659,7 @@ private void spawnRandomMine_r(){
     	    	  prefs.putString("MODE", next_mode());
     			  show_c_textbox=true;
     			  META_PAUSE=true;
-    			  if (MODE=="multiply" && TOPIC=="ARGAND"){
+    			  if (MODE.equals("multiply") && TOPIC.equals("ARGAND")){
     				  c_textbox=campaign_tb_final;
     			  }
     			  else{
