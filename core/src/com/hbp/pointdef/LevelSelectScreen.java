@@ -476,7 +476,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply", ENDLESS, true));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply", ENDLESS, false));
 			            dispose();
 					}
 					if (four_r.contains(tp_x,480-tp_y)){

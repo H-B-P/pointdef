@@ -1259,7 +1259,7 @@ private void spawnRandomMine_r(){
       
       mirror_dot.setCenter((float)dotPos_j_x,(float)dotPos_j_y);
       
-      if(!Gdx.input.isTouched() && IS_TIME_HAPPENING && seconds>1){
+      if(!Gdx.input.justTouched() && IS_TIME_HAPPENING && seconds>1){
     	  batch.draw(dotImage, dot.x, dot.y);
     	  if (MIRROR_THE_DOT){
     		  batch.draw(dotImage, mirror_dot.x, mirror_dot.y);
