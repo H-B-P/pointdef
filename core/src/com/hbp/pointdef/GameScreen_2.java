@@ -188,11 +188,13 @@ public class GameScreen_2 implements Screen {
       CAMPAIGN=campaign;
       META_PAUSE=campaign;
       
+      System.out.println("TOPIC IS " + TOPIC + "XXXX");
+      System.out.println("MODE IS " + MODE + "XXXX");
+      
       //--Set up highscores--
             
       prefs = Gdx.app.getPreferences("galen_preferences");
       prefs_score=prefs.getInteger("score_"+TOPIC+"_"+MODE);
-	  
       //---
       lives=10;
       
@@ -807,10 +809,6 @@ public class GameScreen_2 implements Screen {
    private void apply_dot_function(double grx, double gry){
 	   posn_x=grx;
 	   posn_y=gry;
-	   if (TOPIC=="NONE"){
-		   new_posn_x=posn_x;
-		   new_posn_y=posn_y;
-	   }
 	   if (TOPIC=="CARTESIAN"){
 		   apply_cartesian_dot_function(grx, gry);
 	   }
@@ -822,6 +820,10 @@ public class GameScreen_2 implements Screen {
 	   }
 	   if (TOPIC=="MATRIX"){
 		   apply_matrix_dot_function(grx, gry);
+	   }
+	   else{
+		   new_posn_x=posn_x;
+		   new_posn_y=posn_y;
 	   }
    }
    
@@ -1563,7 +1565,7 @@ private void spawnRandomMine_r(){
       
       if(Gdx.input.justTouched()){
     	  if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
-    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
+    		  game.setScreen(new MainMenuScreen(game, MINESPEED));
     		  dispose();
     	  }
     	  
@@ -1649,6 +1651,8 @@ private void spawnRandomMine_r(){
     		  }
     		  
     		  if (CAMPAIGN){
+    			  prefs.putString("TOPIC", next_topic());
+    	    	  prefs.putString("MODE", next_mode());
     			  show_c_textbox=true;
     			  META_PAUSE=true;
     			  c_textbox=campaign_tb_win;

@@ -384,11 +384,11 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="CARTESIAN"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add", ENDLESS, true));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add", ENDLESS, false));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "multiply", ENDLESS, true));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "multiply", ENDLESS, false));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){

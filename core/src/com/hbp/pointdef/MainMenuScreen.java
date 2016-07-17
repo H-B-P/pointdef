@@ -57,11 +57,27 @@ public class MainMenuScreen implements Screen {
 	
 	boolean are_instructions_visible;
 	
+	private String preferred_mode;
+	private String preferred_topic;
+	
 	public MainMenuScreen(final PointDef gam, int minespeed) {
 		
 		MINESPEED=minespeed;
 		
 		prefs = Gdx.app.getPreferences("galen_preferences");
+		
+		if (!prefs.contains("MODE")){
+			prefs.putString("MODE", "intro");
+			prefs.flush();
+		}
+		if (!prefs.contains("TOPIC")){
+			prefs.putString("TOPIC", "NONE");
+			prefs.flush();
+		}
+		
+		preferred_mode=prefs.getString("MODE");
+		preferred_topic=prefs.getString("TOPIC");
+		
 		
 		selector_r = new Rectangle();
 		selector_r.x=10;
@@ -186,7 +202,9 @@ public class MainMenuScreen implements Screen {
 				}
 				
 				if (CAMPAIGN_r.contains(tp_x,480-tp_y)){
+					//game.setScreen(new GameScreen_2(game, MINESPEED, prefs.getString("TOPIC").toLowerCase(), prefs.getString("MODE"), false, true));
 					game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", false, true));
+					//NOTE THE PROBLEM IS THAT I'M NOT USING ".equals()" IN GS2
 				}
 				
 				if (LEVELS_r.contains(tp_x,480-tp_y)){
