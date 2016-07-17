@@ -143,6 +143,7 @@ public class GameScreen_2 implements Screen {
    private Texture campaign_tb_start;
    private Texture campaign_tb_win;
    private Texture campaign_tb_lose;
+   private Texture campaign_tb_final;
    
    private String Function_Code;
    
@@ -220,6 +221,7 @@ public class GameScreen_2 implements Screen {
       shipImages = new Texture[10];
       
       if (TOPIC=="POLAR" && MODE!="switch"){gridImage = new Texture(Gdx.files.internal("grid_polar_v5.png"));}
+      else if (TOPIC=="CARTESIAN" && MODE=="mirror"){gridImage = new Texture(Gdx.files.internal("grid_t_mir.png"));}
       else if (TOPIC=="POLAR" && MODE=="switch"){gridImage = new Texture(Gdx.files.internal("grid_polar_v3.png"));}
       else if (TOPIC=="ARGAND" && MODE=="power"){gridImage = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
       else {gridImage = new Texture(Gdx.files.internal("grid_t.png"));}
@@ -351,6 +353,7 @@ public class GameScreen_2 implements Screen {
     	  campaign_tb_start=new Texture(Gdx.files.internal("campaign_tb_level.png"));
     	  campaign_tb_win=new Texture(Gdx.files.internal("campaign_tb_win.png"));
     	  campaign_tb_lose=new Texture(Gdx.files.internal("campaign_tb_lose.png"));
+    	  campaign_tb_final=new Texture(Gdx.files.internal("campaign_tb_final.png"));
     	  
     	  show_c_textbox=true;
     	  c_textbox=campaign_tb_start;
@@ -812,13 +815,13 @@ public class GameScreen_2 implements Screen {
 	   if (TOPIC=="CARTESIAN"){
 		   apply_cartesian_dot_function(grx, gry);
 	   }
-	   if (TOPIC=="POLAR"){
+	   else if (TOPIC=="POLAR"){
 		   apply_polar_dot_function(grx, gry);
 	   }
-	   if (TOPIC=="ARGAND"){
+	   else if (TOPIC=="ARGAND"){
 		   apply_argand_dot_function(grx, gry);
 	   }
-	   if (TOPIC=="MATRIX"){
+	   else if (TOPIC=="MATRIX"){
 		   apply_matrix_dot_function(grx, gry);
 	   }
 	   else{
@@ -1327,6 +1330,7 @@ private void spawnRandomMine_r(){
     	  else if (CAMPAIGN){
 	    	  if (total_time>=200 && MODE=="multiply" && TOPIC=="ARGAND"){
 	    		  batch.draw(campaign_but_menu_t, campaign_but_r.x, campaign_but_r.y);
+	    		  font.draw(batch, "Congratulations, you finished the campaign! Use freeplay to try more levels, or visit the library to learn the math behind the things you did.", c_textbox_x+20, c_textbox_y+175, 160, 1, true);
 	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
@@ -1578,7 +1582,7 @@ private void spawnRandomMine_r(){
     			  show_c_textbox=false;
     		  }
     		  else if (total_time>=200 && MODE=="multiply" && TOPIC=="ARGAND"){
-    			  
+    			  game.setScreen(new MainMenuScreen(game, MINESPEED));
     		  }
     		  else if (total_time>=200 || (MODE=="intro" && total_time>1)){
     			  game.setScreen(new GameScreen_2(game, MINESPEED, next_topic(), next_mode(), ENDLESS, true));
@@ -1655,7 +1659,12 @@ private void spawnRandomMine_r(){
     	    	  prefs.putString("MODE", next_mode());
     			  show_c_textbox=true;
     			  META_PAUSE=true;
-    			  c_textbox=campaign_tb_win;
+    			  if (MODE=="multiply" && TOPIC=="ARGAND"){
+    				  c_textbox=campaign_tb_final;
+    			  }
+    			  else{
+    				  c_textbox=campaign_tb_win;
+    			  }
     		  }
     		  else{
 	    		  

@@ -88,7 +88,7 @@ public class LevelSelectScreen implements Screen {
 			one_t = new Texture(Gdx.files.internal("abutton_intro.png"));
 			two_t = new Texture(Gdx.files.internal("abutton_basis.png"));
 			
-			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_grey.png"));
+			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
 		}
 		if (TOPIC=="CARTESIAN"){
 			score_one=prefs.getInteger("score_CARTESIAN_add");
@@ -476,7 +476,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply", ENDLESS, false));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply", ENDLESS, true));
 			            dispose();
 					}
 					if (four_r.contains(tp_x,480-tp_y)){
