@@ -455,6 +455,21 @@ public class GameScreen_2 implements Screen {
 			   Function_Code="flip_neg_diag";
 		   }
 	   }
+	   if (MODE.equals("flip")){
+		   if (seconds==0){
+			   Function_Code="flip_nothing";
+		   }else{
+			   if (seconds%100==50){
+				   Function_Code="flip_x";
+			   }
+			   if (seconds%100==0){
+				   Function_Code="flip_y";
+			   }font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
+		   }
+		   if (seconds%450==350){
+			   Function_Code="flip_both";
+		   }
+	   }
 	   if (MODE.equals("lines")){
 		   if (seconds%200==0){
 			   Function_Code="y_is_c";
@@ -831,6 +846,24 @@ public class GameScreen_2 implements Screen {
    }
    
    private void apply_cartesian_dot_function(double grx, double gry){
+	   if (MODE.equals("flip")){
+		   if (Function_Code=="flip_nothing"){
+			   new_posn_x=posn_x;
+			   new_posn_y=posn_y;
+		   }
+		   if (Function_Code=="flip_x"){
+			   new_posn_x=-posn_x;
+			   new_posn_y=posn_y;
+		   }
+		   if (Function_Code=="flip_y"){
+			   new_posn_x=posn_x;
+			   new_posn_y=-posn_y;
+		   }
+		   if (Function_Code=="flip_both"){
+			   new_posn_x=-posn_x;
+			   new_posn_y=-posn_y;
+		   }
+	   }
 	   if (MODE.equals("add")){
 		   new_posn_x=grx+cartesian_a;
 		   new_posn_y=gry+cartesian_b;
@@ -1119,6 +1152,9 @@ private void spawnRandomMine_r(){
 	   if (MODE.equals("intro")){
 		   return "CARTESIAN";
 	   }
+	   if (TOPIC.equals("CARTESIAN") && MODE.equals("flip")){
+		   return "CARTESIAN";
+	   }
 	   if (TOPIC.equals("CARTESIAN") && MODE.equals("add")){
 		   return "CARTESIAN";
 	   }
@@ -1137,16 +1173,21 @@ private void spawnRandomMine_r(){
 	   if (TOPIC.equals("MATRIX") && MODE.equals("rotation")){
 		   return "ARGAND";
 	   }
+	   if (TOPIC.equals("ARGAND") && MODE.equals("errata")){
+		   return "ARGAND";
+	   }
 	   if (TOPIC.equals("ARGAND") && MODE.equals("add")){
 		   return "ARGAND";
 	   }
-	   
-	   return "add";
+	   return "CARTESIAN";
 	   
    }
 
    private String next_mode(){
 	   if (MODE.equals("intro")){
+		   return "flip";
+	   }
+	   if (TOPIC.equals("CARTESIAN") && MODE.equals("flip")){
 		   return "add";
 	   }
 	   if (TOPIC.equals("CARTESIAN") && MODE.equals("add")){
@@ -1165,12 +1206,15 @@ private void spawnRandomMine_r(){
 		   return "rotation";
 	   }
 	   if (TOPIC.equals("MATRIX") && MODE.equals("rotation")){
+		   return "errata";
+	   }
+	   if (TOPIC.equals("ARGAND") && MODE.equals("errata")){
 		   return "add";
 	   }
 	   if (TOPIC.equals("ARGAND") && MODE.equals("add")){
 		   return "multiply";
 	   }
-	   return "CARTESIAN";
+	   return "add";
    }
    
    //---RENDER---
@@ -1381,6 +1425,24 @@ private void spawnRandomMine_r(){
     	  if (MODE.equals("multiply")){
     		  font.draw(batch, "x="+cartesian_a+"*"+double_formatted(posn_x), 30, 455);
     		  font.draw(batch, "y="+cartesian_b+"*"+double_formatted(posn_y), 30, 435);
+    	  }
+    	  if (MODE.equals("flip")){
+    		  if (Function_Code=="flip_nothing"){
+    			  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+        		  font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
+    		  }
+    		  if (Function_Code=="flip_x"){
+    			  font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
+        		  font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
+    		  }
+    		  if (Function_Code=="flip_y"){
+    			  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+        		  font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
+    		  }
+    		  if (Function_Code=="flip_both"){
+    			  font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
+    			  font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
+    		  }
     	  }
     	  if (MODE.equals("mirror")){
     		  if (Function_Code=="flip_x"){

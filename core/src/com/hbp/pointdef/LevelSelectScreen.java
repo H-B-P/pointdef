@@ -91,14 +91,14 @@ public class LevelSelectScreen implements Screen {
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
 		}
 		if (TOPIC=="CARTESIAN"){
-			score_one=prefs.getInteger("score_CARTESIAN_add");
-			score_two=prefs.getInteger("score_CARTESIAN_multiply");
-			score_three=prefs.getInteger("score_CARTESIAN_mirror");
+			score_one=prefs.getInteger("score_CARTESIAN_flip");
+			score_two=prefs.getInteger("score_CARTESIAN_add");
+			score_three=prefs.getInteger("score_CARTESIAN_multiply");
 			score_four=prefs.getInteger("score_CARTESIAN_lines");
 			
-			one_t = new Texture(Gdx.files.internal("abutton_add.png"));
-			two_t = new Texture(Gdx.files.internal("abutton_multiply.png"));
-			three_t = new Texture(Gdx.files.internal("abutton_mirror.png"));
+			one_t = new Texture(Gdx.files.internal("abutton_flip.png"));
+			two_t = new Texture(Gdx.files.internal("abutton_add.png"));
+			three_t = new Texture(Gdx.files.internal("abutton_multiply.png"));
 			four_t = new Texture(Gdx.files.internal("abutton_lines.png"));
 			
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_yellow.png"));
@@ -384,15 +384,15 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="CARTESIAN"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add", ENDLESS, false));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "flip", ENDLESS, false));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "multiply", ENDLESS, false));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add", ENDLESS, false));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "mirror", ENDLESS, false));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "multiply", ENDLESS, false));
 			            dispose();
 					}
 					if (four_r.contains(tp_x,480-tp_y)){
