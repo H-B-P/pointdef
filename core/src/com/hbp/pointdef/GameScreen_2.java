@@ -436,6 +436,10 @@ public class GameScreen_2 implements Screen {
 		   }
 		   if (seconds%200==150){
 			   cartesian_a=1;
+			   cartesian_b=-MathUtils.random(1,3);
+		   }
+		   if (seconds==200){
+			   cartesian_a=1;
 			   cartesian_b=-MathUtils.random(2,3);
 		   }
 	   }
@@ -502,7 +506,7 @@ public class GameScreen_2 implements Screen {
 			   polar_b=0;
 		   }
 		   if (seconds%200==100){
-			   polar_a=plusorminus()*MathUtils.random(1,3);
+			   polar_a=plusorminus()*MathUtils.random(2,3);
 			   polar_b=0;
 		   }
 		   if (seconds%200==150){
@@ -1164,7 +1168,7 @@ private void spawnRandomMine_r(){
 	   if (TOPIC.equals("POLAR") && MODE.equals("theta")){
 		   return "POLAR";
 	   }
-	   if (TOPIC.equals("POLAR") && MODE.equals("radius")){
+	   if (TOPIC.equals("POLAR") && MODE.equals("r")){
 		   return "MATRIX";
 	   }
 	   if (TOPIC.equals("MATRIX") && MODE.equals("diagonal")){
@@ -1197,9 +1201,9 @@ private void spawnRandomMine_r(){
 		   return "theta";
 	   }
 	   if (TOPIC.equals("POLAR") && MODE.equals("theta")){
-		   return "radius";
+		   return "r";
 	   }
-	   if (TOPIC.equals("POLAR") && MODE.equals("radius")){
+	   if (TOPIC.equals("POLAR") && MODE.equals("r")){
 		   return "diagonal";
 	   }
 	   if (TOPIC.equals("MATRIX") && MODE.equals("diagonal")){
@@ -1404,82 +1408,82 @@ private void spawnRandomMine_r(){
       if (TOPIC.equals("CARTESIAN")){
     	  if (MODE.equals("add")){
     		  if (cartesian_a>0){
-    			  font.draw(batch, "x="+double_formatted(posn_x)+"+"+cartesian_a, 30, 455);
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x)+"+"+cartesian_a, 30, 455);
     		  }
     		  else if (cartesian_a==0){
-    			  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
     		  }
     		  else if (cartesian_a<0){
-    			  font.draw(batch, "x="+double_formatted(posn_x)+cartesian_a, 30, 455);
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x)+cartesian_a, 30, 455);
     		  }
     		  if (cartesian_b>0){
-    			  font.draw(batch, "y="+double_formatted(posn_y)+"+"+cartesian_b, 30, 435);
+    			  dotfunction_font.draw(batch, "y="+double_formatted(posn_y)+"+"+cartesian_b, 30, 435);
     		  }
     		  else if (cartesian_b==0){
-    			  font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
+    			  dotfunction_font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
     		  }
     		  else if (cartesian_b<0){
-    			  font.draw(batch, "y="+double_formatted(posn_y)+cartesian_b, 30, 435);
+    			  dotfunction_font.draw(batch, "y="+double_formatted(posn_y)+cartesian_b, 30, 435);
     		  }
     	  }
     	  if (MODE.equals("multiply")){
-    		  font.draw(batch, "x="+cartesian_a+"*"+double_formatted(posn_x), 30, 455);
-    		  font.draw(batch, "y="+cartesian_b+"*"+double_formatted(posn_y), 30, 435);
+    		  dotfunction_font.draw(batch, "x="+cartesian_a+"*"+double_formatted(posn_x), 30, 455);
+    		  dotfunction_font.draw(batch, "y="+cartesian_b+"*"+double_formatted(posn_y), 30, 435);
     	  }
     	  if (MODE.equals("flip")){
     		  if (Function_Code=="flip_nothing"){
-    			  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
-        		  font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+        		  dotfunction_font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
     		  }
     		  if (Function_Code=="flip_x"){
-    			  font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
-        		  font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
+    			  dotfunction_font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
+        		  dotfunction_font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
     		  }
     		  if (Function_Code=="flip_y"){
-    			  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
-        		  font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+        		  dotfunction_font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
     		  }
     		  if (Function_Code=="flip_both"){
-    			  font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
-    			  font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
+    			  dotfunction_font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
+    			  dotfunction_font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
     		  }
     	  }
     	  if (MODE.equals("mirror")){
     		  if (Function_Code=="flip_x"){
-    			  font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
-        		  font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
+    			  dotfunction_font.draw(batch, "x=-("+double_formatted(posn_x)+")", 30, 455);
+        		  dotfunction_font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
     		  }
     		  if (Function_Code=="flip_y"){
-    			  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
-        		  font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+        		  dotfunction_font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
     		  }
     		  if (Function_Code=="flip_pos_diag"){
-    			  font.draw(batch, "x="+double_formatted(posn_y), 30, 455);
-        		  font.draw(batch, "y="+double_formatted(posn_x), 30, 435);
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_y), 30, 455);
+        		  dotfunction_font.draw(batch, "y="+double_formatted(posn_x), 30, 435);
     		  }
     		  if (Function_Code=="flip_neg_diag"){
-    			  font.draw(batch, "x=-("+double_formatted(posn_y)+")", 30, 455);
-        		  font.draw(batch, "y=-("+double_formatted(posn_x)+")", 30, 435);
+    			  dotfunction_font.draw(batch, "x=-("+double_formatted(posn_y)+")", 30, 455);
+        		  dotfunction_font.draw(batch, "y=-("+double_formatted(posn_x)+")", 30, 435);
     		  }
     	  }
     	  if (MODE.equals("lines")){
     		  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
     		  if (Function_Code=="y_is_c"){
-        		  font.draw(batch, "y="+cartesian_c, 30, 435);
+        		  dotfunction_font.draw(batch, "y="+cartesian_c, 30, 435);
     		  }
     		  if (Function_Code=="y_is_mx"){
-        		  font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(posn_x), 30, 435);
+        		  dotfunction_font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(posn_x), 30, 435);
     		  }
     		  if (Function_Code=="y_is_mx_plus_c"){
     			  if (cartesian_c>0){
-    				  font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(posn_x)+"+"+cartesian_c, 30, 435);
+    				  dotfunction_font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(posn_x)+"+"+cartesian_c, 30, 435);
     			  }
     			  else{
-    				  font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(posn_x)+cartesian_c, 30, 435);
+    				  dotfunction_font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(posn_x)+cartesian_c, 30, 435);
     			  }
     		  }
     		  if (Function_Code=="circle"){
-        		  font.draw(batch, "y=(3^2-("+double_formatted(posn_x)+")^2)^0.5", 30, 435);
+        		  dotfunction_font.draw(batch, "y=(3^2-("+double_formatted(posn_x)+")^2)^0.5", 30, 435);
     		  }
     	  }
       }

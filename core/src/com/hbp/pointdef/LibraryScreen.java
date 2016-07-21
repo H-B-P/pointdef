@@ -29,7 +29,8 @@ public class LibraryScreen implements Screen {
 	private Rectangle Book8_r;
 	
 	private Texture title_button_t;
-	
+	private Texture title_trim_matrix;
+	private Texture title_trim_argand;
 	
 	private BitmapFont font;
 	
@@ -98,7 +99,8 @@ public class LibraryScreen implements Screen {
 		Book8_r.width=280;
 		
 		title_button_t=new Texture(Gdx.files.internal("book_title_button.png"));
-		
+		title_trim_matrix=new Texture(Gdx.files.internal("book_title_trim_matrix.png"));
+		title_trim_argand=new Texture(Gdx.files.internal("book_title_trim_argand.png"));
 		
 		
 		camera = new OrthographicCamera();
@@ -114,22 +116,51 @@ public class LibraryScreen implements Screen {
 		
 		Gdx.graphics.setWindowedMode(320, 480);
 		
+
+		float tp_x=Gdx.input.getX();
+		float tp_y=Gdx.input.getY();
+		
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
 		
 		game.batch.draw(B1_t, B1_r.x, B1_r.y);
+		
 		game.batch.draw(title_button_t, Book1_r.x, Book1_r.y);
+		if (Book1_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(title_trim_matrix, Book1_r.x, Book1_r.y);
+		}
 		game.batch.draw(title_button_t, Book2_r.x, Book2_r.y);
+		if (Book2_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(title_trim_matrix, Book2_r.x, Book2_r.y);
+		}
 		game.batch.draw(title_button_t, Book3_r.x, Book3_r.y);
+		if (Book3_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(title_trim_matrix, Book3_r.x, Book3_r.y);
+		}
 		
 		game.batch.draw(title_button_t, Book4_r.x, Book4_r.y);
+		if (Book4_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(title_trim_argand, Book4_r.x, Book4_r.y);
+		}
 		game.batch.draw(title_button_t, Book5_r.x, Book5_r.y);
+		if (Book5_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(title_trim_argand, Book5_r.x, Book5_r.y);
+		}
 		game.batch.draw(title_button_t, Book6_r.x, Book6_r.y);
+		if (Book6_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(title_trim_argand, Book6_r.x, Book6_r.y);
+		}
 		
 		game.batch.draw(title_button_t, Book7_r.x, Book7_r.y);
+		if (Book7_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(title_trim_matrix, Book7_r.x, Book7_r.y);
+		}
 		game.batch.draw(title_button_t, Book8_r.x, Book8_r.y);
+		if (Book8_r.contains(tp_x,480-tp_y)){
+			game.batch.draw(title_trim_matrix, Book8_r.x, Book8_r.y);
+		}
 		
 		font.draw(game.batch, "What is a Vector?", Book1_r.x+15, Book1_r.y+25);
 		font.draw(game.batch, "What is a Matrix?", Book2_r.x+15, Book2_r.y+25);
@@ -140,10 +171,9 @@ public class LibraryScreen implements Screen {
 		font.draw(game.batch, "Diagonal Matrices", Book7_r.x+15, Book7_r.y+25);
 		font.draw(game.batch, "Rotation Matrices", Book8_r.x+15, Book8_r.y+25);
 		game.batch.end();
-
+		
 		if (Gdx.input.justTouched()) {
-			float tp_x=Gdx.input.getX();
-			float tp_y=Gdx.input.getY();
+			
 			if (B1_r.contains(tp_x,480-tp_y)){
 	            game.setScreen(new MainMenuScreen(game, MINESPEED));
 	            dispose();

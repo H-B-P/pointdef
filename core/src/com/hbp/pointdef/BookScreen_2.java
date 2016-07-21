@@ -229,10 +229,10 @@ public class BookScreen_2 implements Screen {
 		menu_button_r.width=40;
 		menu_button_t = new Texture(Gdx.files.internal("M_but.png"));
 		
-		dot_r= new Texture(Gdx.files.internal("dots/dot_red.png"));
+		dot_r= new Texture(Gdx.files.internal("dots/dot_book_red.png"));
 		dot_b= new Texture(Gdx.files.internal("dots/dot_blue.png"));
 		dot_c= new Texture(Gdx.files.internal("dots/dot_cyan.png"));
-		dot_y= new Texture(Gdx.files.internal("dots/dot_yellow.png"));
+		dot_y= new Texture(Gdx.files.internal("dots/dot_book_yellow.png"));
 		dot_p= new Texture(Gdx.files.internal("dots/dot_pink.png"));
 		dot_w= new Texture(Gdx.files.internal("dots/dot_white.png"));
 		dot_g= new Texture(Gdx.files.internal("dots/dot_green.png"));
