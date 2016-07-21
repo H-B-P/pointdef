@@ -32,6 +32,8 @@ public class GameScreen_2 implements Screen {
 	
 	private Texture mineImage;
    private Texture dotImage;
+   private Texture standard_dot_r;
+   private Texture change_dot_r;
    private Texture shipImage;
    private Texture[] shipImages;
    private Texture gridImage;
@@ -212,11 +214,15 @@ public class GameScreen_2 implements Screen {
 		
 
       mineImage = new Texture(Gdx.files.internal("a_mine_2.png"));
-      if(TOPIC.equals("CARTESIAN")){dotImage = dot_y;}
-      else if (TOPIC.equals("POLAR")){dotImage = dot_g;}
-      else if (TOPIC.equals("MATRIX")){dotImage = dot_r;}
-      else if (TOPIC.equals("ARGAND")){dotImage = dot_c;}
-      else{dotImage = new Texture(Gdx.files.internal("sniperdot.png"));}
+      if(TOPIC.equals("CARTESIAN")){standard_dot_r = dot_y;}
+      else if (TOPIC.equals("POLAR")){standard_dot_r = dot_g;}
+      else if (TOPIC.equals("MATRIX")){standard_dot_r = dot_r;}
+      else if (TOPIC.equals("ARGAND")){standard_dot_r = dot_c;}
+      else{standard_dot_r = new Texture(Gdx.files.internal("sniperdot.png"));}
+      
+      dotImage=standard_dot_r;
+      
+      change_dot_r=dot_w;
       
       shipImages = new Texture[10];
       
@@ -464,7 +470,7 @@ public class GameScreen_2 implements Screen {
 			   }
 			   if (seconds%100==0){
 				   Function_Code="flip_y";
-			   }font.draw(batch, "y=-("+double_formatted(posn_y)+")", 30, 435);
+			   }
 		   }
 		   if (seconds%450==350){
 			   Function_Code="flip_both";
@@ -1089,9 +1095,11 @@ private void spawnRandomMine_r(){
 		  if (seconds==ss){
 			  create_dot_function();
 			  dotfunction_font.setColor(Color.BLUE);
+			  if (ss>0){dotImage=change_dot_r;}
 		  }
 		  if (seconds==ss+1){
 			  dotfunction_font.setColor(Color.BLACK);
+			  dotImage=standard_dot_r;
 		  }
 		  int ts=ss+5;
 		   if (seconds>=ts && seconds<ts+20){
