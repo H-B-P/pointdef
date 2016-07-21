@@ -412,21 +412,13 @@ public class GameScreen_2 implements Screen {
    
    private void create_cartesian_dot_function(){
 	   if (MODE.equals("add")){
-		   if (seconds%200==0){
-			   cartesian_a=0;
-			   cartesian_b=0;
-		   }
-		   if (seconds%200==50){
-			   cartesian_a=0;
-			   cartesian_b=plusorminus();
-		   }
-		   if (seconds%200==100){
+		   if (seconds%100==0){
 			   cartesian_a=plusorminus();
 			   cartesian_b=0;
 		   }
-		   if (seconds%200==150){
+		   if (seconds%100==50){
 			   cartesian_a=0;
-			   cartesian_b=plusorminus()*2;
+			   cartesian_b=plusorminus()*MathUtils.random(1,3);
 		   }
 	   }
 	   if (MODE.equals("multiply")){
