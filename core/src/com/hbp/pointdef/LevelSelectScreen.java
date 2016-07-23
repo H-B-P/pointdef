@@ -91,13 +91,13 @@ public class LevelSelectScreen implements Screen {
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
 		}
 		if (TOPIC=="CARTESIAN"){
-			score_one=prefs.getInteger("score_CARTESIAN_flip");
-			score_two=prefs.getInteger("score_CARTESIAN_add");
+			score_one=prefs.getInteger("score_CARTESIAN_add");
+			score_two=prefs.getInteger("score_CARTESIAN_flip");
 			score_three=prefs.getInteger("score_CARTESIAN_multiply");
 			score_four=prefs.getInteger("score_CARTESIAN_lines");
 			
-			one_t = new Texture(Gdx.files.internal("abutton_flip.png"));
-			two_t = new Texture(Gdx.files.internal("abutton_add.png"));
+			one_t = new Texture(Gdx.files.internal("abutton_add.png"));
+			two_t = new Texture(Gdx.files.internal("abutton_flip.png"));
 			three_t = new Texture(Gdx.files.internal("abutton_multiply.png"));
 			four_t = new Texture(Gdx.files.internal("abutton_lines.png"));
 			
@@ -138,12 +138,12 @@ public class LevelSelectScreen implements Screen {
 		
 		
 		if (TOPIC=="ARGAND"){
-			score_one=prefs.getInteger("score_ARGAND_errata");
+			score_one=prefs.getInteger("score_ARGAND_function");
 			score_two=prefs.getInteger("score_ARGAND_add");
 			score_three=prefs.getInteger("score_ARGAND_multiply");
 			score_four=prefs.getInteger("score_ARGAND_power");
 			
-			one_t = new Texture(Gdx.files.internal("abutton_errata.png"));
+			one_t = new Texture(Gdx.files.internal("abutton_function.png"));
 			two_t = new Texture(Gdx.files.internal("abutton_add.png"));
 			three_t = new Texture(Gdx.files.internal("abutton_multiply.png"));
 			four_t = new Texture(Gdx.files.internal("abutton_powers.png"));
@@ -384,11 +384,11 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="CARTESIAN"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "flip", ENDLESS, false));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add", ENDLESS, false));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add", ENDLESS, false));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "flip", ENDLESS, false));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,480-tp_y)){
@@ -468,7 +468,7 @@ public class LevelSelectScreen implements Screen {
 				
 				if (TOPIC=="ARGAND"){
 					if (one_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "errata", ENDLESS, false));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "function", ENDLESS, false));
 			            dispose();
 					}
 					if (two_r.contains(tp_x,480-tp_y)){
