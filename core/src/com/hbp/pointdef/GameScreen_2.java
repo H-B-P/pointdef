@@ -43,6 +43,9 @@ public class GameScreen_2 implements Screen {
    private Texture shieldImage_unhit;
    private Texture shieldImage_flicker;
    
+   private Texture snippet;
+   private Texture snippet_win;
+   private Texture snippet_lose;
    
    private SpriteBatch batch;
    private OrthographicCamera camera;
@@ -355,7 +358,7 @@ public class GameScreen_2 implements Screen {
     	  campaign_but_r.height=40;
     	  campaign_but_r.width=80;
     	  campaign_but_r.x=120;
-    	  campaign_but_r.y=160;
+    	  campaign_but_r.y=150;
     	  campaign_but_start_t=new Texture(Gdx.files.internal("campaign_button_start.png"));
     	  campaign_but_retry_t=new Texture(Gdx.files.internal("campaign_button_retry.png"));
     	  campaign_but_menu_t=new Texture(Gdx.files.internal("campaign_button_menu.png"));
@@ -373,6 +376,59 @@ public class GameScreen_2 implements Screen {
     	  c_textbox=campaign_tb_start;
     	  c_textbox_x=60;
     	  c_textbox_y=140;
+    	  
+    	  //set up snippets
+    	  if(MODE.equals("intro")){
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_intro_1.png"));
+    		  snippet_win=new Texture(Gdx.files.internal("snippets/snippet_intro_2.png"));
+    	  }
+    	  else if(TOPIC.equals("CARTESIAN") && !MODE.equals("lines")){
+    		  int sni=MathUtils.random(1,6);
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+sni+".png"));
+    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+cycled(sni,6)+".png"));
+    		  if (MODE.equals("add")){
+    			  snippet_win=new Texture(Gdx.files.internal("snippets/snippet_firstwin.png"));
+    		  }
+    		  else{
+    			  snippet_win=snippet_lose;
+    		  }
+    	  }
+    	  else if(TOPIC.equals("CARTESIAN") && MODE.equals("lines")){
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
+    	  }
+    	  else if(TOPIC.equals("POLAR")){
+    		  int sni=MathUtils.random(1,5);
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_polar_"+sni+".png"));
+    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_polar_"+cycled(sni,5)+".png"));
+    		  snippet_win=snippet_lose;
+    	  }
+    	  else if(TOPIC.equals("MATRIX") && !MODE.equals("singular")){
+    		  int sni=MathUtils.random(1,5);
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+sni+".png"));
+    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+cycled(sni,5)+".png"));
+    		  snippet_win=snippet_lose;
+    	  }
+    	  else if(TOPIC.equals("MATRIX") && MODE.equals("singular")){
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_sing_"+MathUtils.random(1,2)+".png"));
+    	  }
+    	  else if(TOPIC.equals("ARGAND") && !MODE.equals("power")){
+    		  int sni=MathUtils.random(1,8);
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_argand_"+sni+".png"));
+    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_argand_"+cycled(sni,8)+".png"));
+    		  snippet_win=snippet_lose;
+    	  }
+    	  else if(TOPIC.equals("ARGAND") && MODE.equals("power")){
+    		  int sni=MathUtils.random(1,3);
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_pow_"+sni+".png"));
+    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_pow_"+cycled(sni,3)+".png"));
+    		  snippet_win=snippet_lose;
+    	  }
+    	  else{
+    		  int sni=MathUtils.random(1,3);
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_meta_"+sni+".png"));
+    		  snippet_win=new Texture(Gdx.files.internal("snippets/snippet_meta_"+cycled(sni,3)+".png"));
+    		  snippet_lose=snippet_win;
+    	  }
       }
       
       
@@ -381,6 +437,12 @@ public class GameScreen_2 implements Screen {
       camera.setToOrtho(false, 320, 480);
       batch = new SpriteBatch();
       
+   }
+   
+   //--Set up the cycler--
+   
+   private int cycled(int top, int bottom){
+	   return ((top+MathUtils.random(0,1))%bottom)+1;
    }
    
    //---Set up functions to be called during Render---
@@ -395,7 +457,7 @@ public class GameScreen_2 implements Screen {
 	   int coin=MathUtils.random(0,1);
 	   return coin*2-1;
    }
-  
+   
    
    //--Create Dot Functions--
    
@@ -1388,7 +1450,9 @@ private void spawnRandomMine_r(){
       if (show_c_textbox){
     	  batch.draw(c_textbox, c_textbox_x, c_textbox_y);
     	  if (total_time==0){
+    		  //batch.draw(snippet, c_textbox_x+10, c_textbox_y+20);
     		  batch.draw(campaign_but_start_t, campaign_but_r.x, campaign_but_r.y);
+    		  batch.draw(snippet, c_textbox_x+10, c_textbox_y+60);
     		  font.draw(batch, TOPIC+": "+MODE.toUpperCase(), c_textbox_x+20, c_textbox_y+175);
     		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
     			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
