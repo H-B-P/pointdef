@@ -520,5 +520,27 @@ public class LevelSelectScreen implements Screen {
 
 	@Override
 	public void dispose() {
+
+		nxt_t.dispose();
+		
+		prv_t.dispose();
+		
+		one_t.dispose();
+		two_t.dispose();
+		three_t.dispose();
+		four_t.dispose();
+		
+		
+		font.dispose();
+		TRIM_t.dispose();
+		
+		selector_t.dispose();
+		
+		mode_background_t.dispose();
+		
+		abutton_corner_t.dispose();
+		abutton_corner_trim_t.dispose();
+		
+		difficulty_arrow_t.dispose();
 	}
 }
