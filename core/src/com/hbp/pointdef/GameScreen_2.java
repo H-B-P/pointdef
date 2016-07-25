@@ -1916,9 +1916,64 @@ private void spawnRandomMine_r(){
    //running doesn't appear to be causing any problems yet.)
    public void dispose() {
       // dispose of all the native resources
+      batch.dispose();
+      
       mineImage.dispose();
       dotImage.dispose();
-      batch.dispose();
+      standard_dot_r.dispose();
+      change_dot_r.dispose();
+      shipImage.dispose();
+      for (int si=0; si<9; si++){
+    	  shipImages[si].dispose();
+      }
+      gridImage.dispose();
+      statusbarImage.dispose();
+      explosionImage.dispose();
+      shieldImage.dispose();
+      shieldImage_unhit.dispose();
+      shieldImage_flicker.dispose();
+      
+      snippet.dispose();
+      snippet_win.dispose();
+      snippet_lose.dispose();
+      
+      
+      menu_button_t.dispose();
+      
+      
+      font.dispose();
+      dotfunction_font.dispose();
+      
+      campaign_but_t.dispose();
+      campaign_but_trim.dispose();
+      campaign_but_start_t.dispose();
+      campaign_but_retry_t.dispose();
+      campaign_but_menu_t.dispose();
+      campaign_but_next_t.dispose();
+      
+      campaign_tb_start.dispose();
+      campaign_tb_win.dispose();
+      campaign_tb_lose.dispose();
+      campaign_tb_final.dispose();
+      
+   	dot_r.dispose();
+   	dot_b.dispose();
+   	dot_c.dispose();
+   	dot_p.dispose();
+   	dot_y.dispose();
+   	dot_w.dispose();
+   	dot_g.dispose();
+   	
+   	textbox.dispose();
+   	textbox_1.dispose();
+   	textbox_2.dispose();
+   	textbox_3.dispose();
+   	textbox_4.dispose();
+   	textbox_5.dispose();
+   	textbox_6.dispose();
+   	
+   	c_textbox.dispose();
+      
    }
 
 @Override
