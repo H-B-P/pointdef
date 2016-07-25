@@ -64,6 +64,7 @@ public class GameScreen_2 implements Screen {
    
    private Rectangle menu_button_r;
    private Texture menu_button_t;
+   private Texture menu_button_trim_t;
    
    private Vector3 dotPos_g;
    
@@ -256,6 +257,7 @@ public class GameScreen_2 implements Screen {
       shipImage=shipImages[0];
       
       menu_button_t=new Texture(Gdx.files.internal("button_menu_smol.png"));
+      menu_button_trim_t=new Texture(Gdx.files.internal("button_menu_smol_trim.png"));
       show_textbox=false;
       
       
@@ -702,12 +704,22 @@ public class GameScreen_2 implements Screen {
 			   }
 		   }
 		   if (MODE.equals("diagonal")){
-			   if (seconds==0){
-				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
-				   TheMatrix.set(SI_Input);
+			   if (CAMPAIGN){
+				   if (seconds==0){
+					   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
+					   TheMatrix.set(SI_Input);
+				   }
+				   else{
+					   if ((seconds-50)%200<99){
+						   NewDiagMatrix_easy();
+					   }
+					   else{
+						   NewDiagMatrix_hard();
+					   }
+				   }
 			   }
 			   else{
-				   if ((seconds-50)%200<99){
+				   if (((seconds)%200)<99){
 					   NewDiagMatrix_easy();
 				   }
 				   else{
@@ -716,16 +728,26 @@ public class GameScreen_2 implements Screen {
 			   }
 		   }
 		   if (MODE.equals("rotation")){
-			   if (seconds==0){
-				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
-				   TheMatrix.set(SI_Input);
-			   }
-			   else{
-				   if ((seconds-50)%200<99){
+			   if (CAMPAIGN){
+				   if ((seconds)%200<149){
 					   NewRotMatrix_quarters_easy();
 				   }
 				   else{
 					   NewRotMatrix_quarters_hard();
+				   }
+			   }
+			   else{
+				   if (seconds==0){
+					   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
+					   TheMatrix.set(SI_Input);
+				   }
+				   else{
+					   if ((seconds-50)%200<99){
+						   NewRotMatrix_quarters_easy();
+					   }
+					   else{
+						   NewRotMatrix_quarters_hard();
+					   }
 				   }
 			   }
 		   }
@@ -1486,6 +1508,9 @@ private void spawnRandomMine_r(){
       batch.draw(shipImage, ship.x, ship.y);
       batch.draw(statusbarImage, 0, 400);
       batch.draw(menu_button_t,265,455);
+      if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+    	  batch.draw(menu_button_trim_t,265,455);
+      }
       //--PRESENT THE FUNCTION--
       //(That is: make it clear on the statusbar what is actually being done.)
       if (TOPIC.equals("CARTESIAN")){
@@ -1934,8 +1959,8 @@ private void spawnRandomMine_r(){
       shieldImage_flicker.dispose();
       
       snippet.dispose();
-      snippet_win.dispose();
-      snippet_lose.dispose();
+      //snippet_win.dispose();
+      //snippet_lose.dispose();
       
       
       menu_button_t.dispose();
@@ -1963,7 +1988,7 @@ private void spawnRandomMine_r(){
    	dot_y.dispose();
    	dot_w.dispose();
    	dot_g.dispose();
-   	
+   	if (MODE.equals("intro")){
    	textbox.dispose();
    	textbox_1.dispose();
    	textbox_2.dispose();
@@ -1971,7 +1996,7 @@ private void spawnRandomMine_r(){
    	textbox_4.dispose();
    	textbox_5.dispose();
    	textbox_6.dispose();
-   	
+   	}
    	c_textbox.dispose();
       
    }

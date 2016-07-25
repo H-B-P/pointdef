@@ -527,8 +527,8 @@ public class LevelSelectScreen implements Screen {
 		
 		one_t.dispose();
 		two_t.dispose();
-		three_t.dispose();
-		four_t.dispose();
+		//three_t.dispose();
+		//four_t.dispose();
 		
 		
 		font.dispose();
