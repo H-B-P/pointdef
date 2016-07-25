@@ -383,6 +383,7 @@ public class GameScreen_2 implements Screen {
     	  if(MODE.equals("intro")){
     		  snippet=new Texture(Gdx.files.internal("snippets/snippet_intro_1.png"));
     		  snippet_win=new Texture(Gdx.files.internal("snippets/snippet_intro_2.png"));
+    		  snippet_lose=snippet_win;
     	  }
     	  else if(TOPIC.equals("CARTESIAN") && !MODE.equals("lines")){
     		  int sni=MathUtils.random(1,6);
@@ -397,6 +398,8 @@ public class GameScreen_2 implements Screen {
     	  }
     	  else if(TOPIC.equals("CARTESIAN") && MODE.equals("lines")){
     		  snippet=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
+    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
+    		  snippet_win=snippet_lose;
     	  }
     	  else if(TOPIC.equals("POLAR")){
     		  int sni=MathUtils.random(1,5);
@@ -412,6 +415,8 @@ public class GameScreen_2 implements Screen {
     	  }
     	  else if(TOPIC.equals("MATRIX") && MODE.equals("singular")){
     		  snippet=new Texture(Gdx.files.internal("snippets/snippet_sing_"+MathUtils.random(1,2)+".png"));
+    		  snippet_lose=snippet;
+    		  snippet_win=snippet;
     	  }
     	  else if(TOPIC.equals("ARGAND") && !MODE.equals("power")){
     		  int sni=MathUtils.random(1,8);
@@ -1487,15 +1492,18 @@ private void spawnRandomMine_r(){
 	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
+	    		  
 	    	  }
 	    	  else if (total_time>=200 || MODE.equals("intro")){
 	    		  batch.draw(campaign_but_next_t, campaign_but_r.x, campaign_but_r.y);
+	    		  batch.draw(snippet_win, c_textbox_x+10, c_textbox_y+60);
 	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
 	    	  }
 	    	  else{
 	    		  batch.draw(campaign_but_retry_t, campaign_but_r.x, campaign_but_r.y);
+	    		  batch.draw(snippet_lose, c_textbox_x+10, c_textbox_y+60);
 	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
@@ -1959,8 +1967,8 @@ private void spawnRandomMine_r(){
       shieldImage_flicker.dispose();
       
       snippet.dispose();
-      //snippet_win.dispose();
-      //snippet_lose.dispose();
+      snippet_win.dispose();
+      snippet_lose.dispose();
       
       
       menu_button_t.dispose();
