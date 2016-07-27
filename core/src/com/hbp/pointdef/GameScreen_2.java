@@ -608,11 +608,11 @@ public class GameScreen_2 implements Screen {
 			   polar_b=0;
 		   }
 		   else{
-			   if (seconds%100==50){
+			   if (seconds%100==0){
 				   polar_a=2;
 				   polar_b=0;
 			   }
-			   if (seconds%100==0){
+			   if (seconds%100==50){
 				   polar_a=1;
 				   polar_b=plusorminus();
 			   }
@@ -649,6 +649,9 @@ public class GameScreen_2 implements Screen {
 		   while (old_argand_a==argand_a && old_argand_b==argand_b){
 			   if (MODE.equals("add")){
 				   argand_a=MathUtils.random(-1,1);
+				   if (seconds==0){
+					   argand_b=plusorminus();
+				   }
 				   argand_b=MathUtils.random(-4,4);
 			   }
 			   if (MODE.equals("multiply")){
@@ -827,7 +830,13 @@ public class GameScreen_2 implements Screen {
    //(The below functions are called when a new dot function is set up in the Matrix topic.)
    
    private void NewRotMatrix_quarters_easy(){
-	   int q = MathUtils.random(-2,2);
+	   
+	   int q = plusorminus()*MathUtils.random(1,2);
+	   
+	   if (MathUtils.random(1,4)>3){
+		   q=4;
+	   }
+	   
 	   int r = q*45;
 	   Double a = Math.cos(r*Math.PI/180);
 	   Double b = -Math.sin(r*Math.PI/180);
@@ -838,7 +847,7 @@ public class GameScreen_2 implements Screen {
    }
    
    private void NewRotMatrix_quarters_hard(){
-	   int q = MathUtils.random(3,5);
+	   int q = plusorminus()*3;
 	   int r = q*45;
 	   Double a = Math.cos(r*Math.PI/180);
 	   Double b = -Math.sin(r*Math.PI/180);
@@ -1285,9 +1294,6 @@ private void spawnRandomMine_r(){
 	   if (TOPIC.equals("MATRIX") && MODE.equals("rotation")){
 		   return "ARGAND";
 	   }
-	   if (TOPIC.equals("ARGAND") && MODE.equals("function")){
-		   return "ARGAND";
-	   }
 	   if (TOPIC.equals("ARGAND") && MODE.equals("add")){
 		   return "ARGAND";
 	   }
@@ -1299,10 +1305,10 @@ private void spawnRandomMine_r(){
 	   if (MODE.equals("intro")){
 		   return "add";
 	   }
-	   if (TOPIC.equals("CARTESIAN") && MODE.equals("flip")){
+	   if (TOPIC.equals("CARTESIAN") && MODE.equals("add")){
 		   return "flip";
 	   }
-	   if (TOPIC.equals("CARTESIAN") && MODE.equals("add")){
+	   if (TOPIC.equals("CARTESIAN") && MODE.equals("flip")){
 		   return "multiply";
 	   }
 	   if (TOPIC.equals("CARTESIAN") && MODE.equals("multiply")){
@@ -1318,9 +1324,6 @@ private void spawnRandomMine_r(){
 		   return "rotation";
 	   }
 	   if (TOPIC.equals("MATRIX") && MODE.equals("rotation")){
-		   return "function";
-	   }
-	   if (TOPIC.equals("ARGAND") && MODE.equals("function")){
 		   return "add";
 	   }
 	   if (TOPIC.equals("ARGAND") && MODE.equals("add")){
@@ -1442,11 +1445,24 @@ private void spawnRandomMine_r(){
     	  }
     	  if (!IS_TIME_HAPPENING){
     		  textbox=textbox_5;
-    		  if (total_paused_time>15 || total_time<20){
+    		  if (total_paused_time>10 || total_time<20){
     			  textbox=textbox_6;
     		  }
     	  }
-    	  if (total_time>30 && total_paused_time>3 || (total_paused_time+total_time)>50){
+    	  
+    	  if ((seconds==26 && (score-MINESPEED/5)==7) || (seconds==35 && (score-MINESPEED/5)>8)){
+    		  if(CAMPAIGN){
+    			  show_c_textbox=true;
+    			  META_PAUSE=true;
+    			  c_textbox=campaign_tb_win;
+    			  show_textbox=false;
+    		  }
+    		  else{
+    			  about_to_leave=true;
+    		  }
+    	  }
+    	  
+    	  if ((total_paused_time+total_time)>50){
     		  if(CAMPAIGN){
     			  show_c_textbox=true;
     			  META_PAUSE=true;
@@ -1820,6 +1836,12 @@ private void spawnRandomMine_r(){
     			  spawnRandomMine_r();
     		  }
     		  if (seconds==22){
+    			  spawnMine_II(-3);
+    			  spawnMine_II(-1);
+    			  spawnMine_II(1);
+    			  spawnMine_II(3);
+    		  }
+    		  if (seconds==27){
     			  spawnMine_II(-3);
     			  spawnMine_II(-1);
     			  spawnMine_II(1);

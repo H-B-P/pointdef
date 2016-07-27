@@ -18,6 +18,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class BookScreen_2 implements Screen {
+	
+	//---Set up variables---
+	
     final PointDef game;
 	OrthographicCamera camera;
 	
@@ -124,17 +127,25 @@ public class BookScreen_2 implements Screen {
 	   private boolean first_timestep;
 	   
 	   private String Function_Code;
+	   
+	 //----Initial setup----
 	
 	public BookScreen_2(final PointDef gam, String topic, String Bookname, int minespeed) {
+		
+		//--Pull in constants--
 		
 		MINESPEED=minespeed;
 		
 		TOPIC=topic;
 		BOOKNAME=Bookname;
 		
+		
+		//--Make font exist--
+		
 		font = new BitmapFont();
 	    font.setColor(Color.BLACK);
-		
+	    
+		//--Set zeroes to zero--
 	    argand_a=0;
 	    argand_b=0;
 	    
@@ -150,6 +161,10 @@ public class BookScreen_2 implements Screen {
 		Function_Code="Diag";
 		MODE="Diag";
 		
+		//---Set up rectangles---
+		
+		//--dots--
+		
 	    dot = new Rectangle();
 		dot.x = 0;
 		dot.y = 0;
@@ -161,6 +176,16 @@ public class BookScreen_2 implements Screen {
 		mirror_dot.y = 0;
 		mirror_dot.width = 11;
 		mirror_dot.height = 11;
+		
+		dot_r= new Texture(Gdx.files.internal("dots/dot_book_red.png"));
+		dot_b= new Texture(Gdx.files.internal("dots/dot_blue.png"));
+		dot_c= new Texture(Gdx.files.internal("dots/dot_cyan.png"));
+		dot_y= new Texture(Gdx.files.internal("dots/dot_book_yellow.png"));
+		dot_p= new Texture(Gdx.files.internal("dots/dot_pink.png"));
+		dot_w= new Texture(Gdx.files.internal("dots/dot_white.png"));
+		dot_g= new Texture(Gdx.files.internal("dots/dot_green.png"));
+		
+		//--Answerbuds--
 		
 		ab_1_r=new Rectangle();
 		ab_1_r.x=320+10;
@@ -186,6 +211,22 @@ public class BookScreen_2 implements Screen {
 		ab_4_r.height=40;
 		ab_4_r.width=140;
 		
+		if (Gdx.files.internal("Books/"+Bookname+"_ab_1_1.png").exists()){
+			ab_1_1_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_1_1.png"));
+			ab_1_2_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_1_2.png"));
+			ab_1_3_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_1_3.png"));
+			ab_1_4_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_1_4.png"));
+		}
+		
+		if (Gdx.files.internal("Books/"+Bookname+"_ab_2_1.png").exists()){
+			ab_2_1_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_2_1.png"));
+			ab_2_2_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_2_2.png"));
+			ab_2_3_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_2_3.png"));
+			ab_2_4_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_2_4.png"));
+		}
+		
+		//--Backgrounds--
+		
 		Page_r = new Rectangle();
 		Page_r.x=320;
 		Page_r.y=0;
@@ -196,10 +237,7 @@ public class BookScreen_2 implements Screen {
 		gridImage = new Texture(Gdx.files.internal("grid_t.png"));
 	    statusbarImage = new Texture(Gdx.files.internal("statusbar_blank.png"));
 		
-		game = gam;
-		
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 640, 480);
+	    //--Buttons--
 		
 		nxt_r = new Rectangle();
 		nxt_r.x=580;
@@ -229,29 +267,14 @@ public class BookScreen_2 implements Screen {
 		menu_button_r.width=40;
 		menu_button_t = new Texture(Gdx.files.internal("M_but.png"));
 		
-		dot_r= new Texture(Gdx.files.internal("dots/dot_book_red.png"));
-		dot_b= new Texture(Gdx.files.internal("dots/dot_blue.png"));
-		dot_c= new Texture(Gdx.files.internal("dots/dot_cyan.png"));
-		dot_y= new Texture(Gdx.files.internal("dots/dot_book_yellow.png"));
-		dot_p= new Texture(Gdx.files.internal("dots/dot_pink.png"));
-		dot_w= new Texture(Gdx.files.internal("dots/dot_white.png"));
-		dot_g= new Texture(Gdx.files.internal("dots/dot_green.png"));
 		
-		if (Gdx.files.internal("Books/"+Bookname+"_ab_1_1.png").exists()){
-			ab_1_1_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_1_1.png"));
-			ab_1_2_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_1_2.png"));
-			ab_1_3_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_1_3.png"));
-			ab_1_4_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_1_4.png"));
-		}
-		
-		if (Gdx.files.internal("Books/"+Bookname+"_ab_1_1.png").exists()){
-			ab_2_1_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_2_1.png"));
-			ab_2_2_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_2_2.png"));
-			ab_2_3_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_2_3.png"));
-			ab_2_4_t=new Texture(Gdx.files.internal("Books/"+Bookname+"_ab_2_4.png"));
-		}
+		//---Set up the pages---
 		
 		pageno=0;
+		
+		//--Decide how many total pages there are--
+		
+		//(this includes the title page)
 		
 		if (BOOKNAME=="Book_1"){
 			total_pages=4;
@@ -278,6 +301,9 @@ public class BookScreen_2 implements Screen {
 		if (BOOKNAME=="Book_8"){
 			total_pages=3;
 		}
+		
+		//--Load in the content--
+		
 		stepsin=new int[total_pages];
 		
 		int lastworking = 0;
@@ -297,9 +323,23 @@ public class BookScreen_2 implements Screen {
 		
 		Page_t=Book_Pages[pageno][stepsin[pageno]];
 		
+		//---Set up universal constants---
+		
+		//(just the one, so far)
+		
 		UNIT_LENGTH_IN_PIXELS=40;
 		
+		//---Game, Camera, Action!---
+	    
+		game = gam;
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 640, 480);
+		
 	}
+	
+	//----Set up functions to be called during Render----
+	
+	//---Apply functions---
 	
 	   private void apply_dot_function(double grx, double gry){
 		   posn_x=grx;
@@ -422,12 +462,16 @@ public class BookScreen_2 implements Screen {
 			new_posn_x=(double)dotPos_g.x;
 			new_posn_y=(double)dotPos_g.y;
 	   }
-
+	   
+	   //---Formatting of numbers for display---
+	   
 	   private String double_formatted(double doub){
 		   double a=Math.round(doub*10.0)/10.0;
 		   Float b=(Float)(float)a;
 		   return b.toString();
 	   }
+	   
+	   //(This is formatting of a number which has a plus behind it if it's positive)
 	   
 	   private String double_formatted_prepl(double doub){
 		   double a=Math.round(doub*10.0)/10.0;
@@ -439,8 +483,13 @@ public class BookScreen_2 implements Screen {
 		   return "+"+b.toString();
 	   }
 	   
+	   
+	   //----Do the things which are done every second----
 	@Override
 	public void render(float delta) {
+		
+		//---Setup camera etc---
+		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -448,7 +497,9 @@ public class BookScreen_2 implements Screen {
 		
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
-
+		
+		//---Draw page and buttons---
+		
 		game.batch.begin();
 		
 		game.batch.draw(Page_t, Page_r.x, Page_r.y);
@@ -458,7 +509,7 @@ public class BookScreen_2 implements Screen {
 		game.batch.draw(menu_button_t,menu_button_r.x,menu_button_r.y);
 		game.batch.draw(gridImage,0,0);
 		
-		//change pages when page-changing requested.
+		//---Change pages when requested---
 		
 		if (Gdx.input.justTouched()) {
 			tp_x=Gdx.input.getX();
