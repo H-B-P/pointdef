@@ -30,6 +30,9 @@ public class GameScreen_2 implements Screen {
 	
 	final PointDef game;
 	
+	private Texture pause_symbol;
+	
+	
 	private Texture mineImage;
    private Texture dotImage;
    private Texture standard_dot_r;
@@ -206,6 +209,8 @@ public class GameScreen_2 implements Screen {
       lives=10;
       
 	  //--Load images--
+      
+      pause_symbol=new Texture(Gdx.files.internal("pause_symbol.png"));
       
 		dot_r= new Texture(Gdx.files.internal("dots/dot_red.png"));
 		dot_b= new Texture(Gdx.files.internal("dots/dot_blue.png"));
@@ -1759,6 +1764,15 @@ private void spawnRandomMine_r(){
     	  font.draw(batch, "Score:", 200, 435);
     	  font.draw(batch, ((Integer)score).toString(), 250, 435);
       }
+      
+      
+      //----
+      
+      if(!IS_TIME_HAPPENING){
+    	  batch.draw(pause_symbol,0,0);
+      }
+      
+      
       batch.end();
       
       //--Exit the game when main menu button pressed--
