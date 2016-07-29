@@ -57,7 +57,7 @@ public class GameScreen_2 implements Screen {
    private Rectangle mirror_dot;
    private Rectangle ship;
    
-   private Array<Rectangle> mines;
+   private Array<Mine> mines;
    private Array<Kaboom> explosions;
    private Array<Kaboom> other_dots;
    
@@ -335,7 +335,7 @@ public class GameScreen_2 implements Screen {
       
       shields= new Array<Rectangle>();
       
-      mines = new Array<Rectangle>();
+      mines = new Array<Mine>();
       explosions = new Array<Kaboom>();
       other_dots = new Array<Kaboom>();
       
@@ -445,6 +445,7 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       
+      wavetype="dull";
       
       //--Batch, Camera, Action--
       camera = new OrthographicCamera();
@@ -1162,12 +1163,34 @@ public class GameScreen_2 implements Screen {
    }
    
    private void spawnMine_II(int xposn) {
-	      Rectangle mine = new Rectangle();
-	      Double xposn_II = (xposn*40.0+160.0)-20.0;
-	      mine.x = xposn_II.floatValue();
-	      mine.y = 440;
-	      mine.width = 40;
-	      mine.height = 40;
+	      Mine mine = new Mine();
+	      mine.rect = new Rectangle();
+	      double xposn_II = (xposn*40.0+160.0)-20.0;
+	      mine.rect.x = (float) xposn_II;
+	      mine.rect.y = 440;
+	      mine.rect.width = 40;
+	      mine.rect.height = 40;
+	      
+	      mine.vert_speed = MINESPEED;
+	      mine.horz_speed = 0;
+	      
+	      
+	      mines.add(mine);
+	   }
+   
+   private void spawnMine_horz(int xposn, int disp, float frac) {
+	      Mine mine = new Mine();
+	      mine.rect = new Rectangle();
+	      double xposn_II = (xposn*40.0+160.0)-20.0;
+	      mine.rect.x = (float) xposn_II - disp*(60f/8f);
+	      mine.rect.y = 440;
+	      mine.rect.width = 40;
+	      mine.rect.height = 40;
+	      
+	      mine.vert_speed = MINESPEED*frac;
+	      mine.horz_speed = (float) disp / 8f * MINESPEED*frac;
+	      
+	      
 	      mines.add(mine);
 	   }
    
@@ -1188,6 +1211,117 @@ private void spawnRandomMine_r(){
 	   spawnMine_II(k);
 	   
    }
+
+private void spawnRandomMine_horz(){
+	   int k=MathUtils.random(-3,3);
+	   if (k>1){
+		   spawnMine_horz(k,-2, 1);
+	   }
+	   else if (k<-1){
+		   spawnMine_horz(k,2,1);
+	   }
+	   else{
+		   spawnMine_horz(k,2*plusorminus(),1);
+	   }
+}
+
+private void spawnMinePair_horz(){
+	int typ=MathUtils.random(1,5);
+	if (typ==1){
+		spawnMine_horz(3,-2,1);
+		spawnMine_horz(-3,2,1);
+	}
+	if (typ==2 || typ==3){
+		int span=MathUtils.random(2,4);
+		int first=MathUtils.random(-3,1-span);
+		spawnMine_horz(first,2,1);
+		spawnMine_horz(first+span,2,1);
+	}
+	if (typ==4 || typ==5){
+		int span=MathUtils.random(2,4);
+		int first=MathUtils.random(-1+span,3);
+		spawnMine_horz(first,-2,1);
+		spawnMine_horz(first-span,-2,1);
+	}
+	
+}
+
+private void spawnMinePair_wall(){
+	int typ=MathUtils.random(1,3);
+	if (typ==1){
+		int k=MathUtils.random(-2,2);
+		spawnMine_horz(k+1,0,0.75f);
+		spawnMine_horz(k-1,0,0.75f);
+	}
+	if (typ==2){
+		int k=MathUtils.random(-2,0);
+		spawnMine_horz(k+1,2,0.75f);
+		spawnMine_horz(k-1,2,0.75f);
+	}
+	if (typ==3){
+		int k=MathUtils.random(0,2);
+		spawnMine_horz(k+1,-2,0.75f);
+		spawnMine_horz(k-1,-2,0.75f);
+	}
+	
+}
+
+private void spawnMineTrio_wall(){
+	int typ=MathUtils.random(1,4);
+	if (typ==1){
+		spawnMine_horz(-2,0,0.75f);
+		spawnMine_horz(0,0,0.75f);
+		spawnMine_horz(2,0,0.75f);
+	}
+	if (typ==2){
+		int q=plusorminus();
+		spawnMine_horz(-2+q,0,0.75f);
+		spawnMine_horz(0+q,0,0.75f);
+		spawnMine_horz(2+q,0,0.75f);
+	}
+	if (typ==3){
+		spawnMine_horz(-3,2,0.75f);
+		spawnMine_horz(-1,2,0.75f);
+		spawnMine_horz(1,2,0.75f);
+	}
+	if (typ==4){
+		spawnMine_horz(3,-2,0.75f);
+		spawnMine_horz(1,-2,0.75f);
+		spawnMine_horz(-1,-2,0.75f);
+	}
+	
+}
+
+private void spawnMinePair_curtain(){
+	int typ=MathUtils.random(1,2);
+	if (typ==1){
+		int k=MathUtils.random(-2,2);
+		spawnMine_horz(k+1,0,0.7f);
+		spawnMine_horz(k-1,0,1f);
+	}
+	if (typ==2){
+		int k=MathUtils.random(-2,2);
+		spawnMine_horz(k+1,0,1f);
+		spawnMine_horz(k-1,0,0.7f);
+	}
+}
+
+private void spawnMineTrio_curtain(){
+	int typ=MathUtils.random(1,2);
+	if (typ==1){
+		int k=MathUtils.random(-1,1);
+		spawnMine_horz(k+2,0,0.6f);
+		spawnMine_horz(k,0,0.8f);
+		spawnMine_horz(k-2,0,1f);
+	}
+	if (typ==2){
+		int k=MathUtils.random(-1,1);
+		spawnMine_horz(k+2,0,1f);
+		spawnMine_horz(k,0,0.8f);
+		spawnMine_horz(k-2,0,0.6f);
+	}
+}
+
    
    //(This creates the dot which actually detonates mines. Not to be confused with mirroring.)
    private void spawn_other_dot(float x,float y) {
@@ -1211,17 +1345,63 @@ private void spawnRandomMine_r(){
 	   explosions.add(boom);
    }
    
-   private void wave_without_pause(int ss){
-		  if (seconds==ss){
+   private void shuffle_wavetype() {
+	   int w = MathUtils.random(1,2);
+	   if (wavetype.equals("dull")){
+		   if (w==1){
+			   wavetype="dull_horz";
+		   }
+		   if (w==2){
+			   wavetype="wall";
+		   }
+	   }
+	   else if (wavetype.equals("dull_horz")){
+		   if (w==1){
+			   wavetype="dull";
+		   }
+		   if (w==2){
+			   wavetype="wall";
+		   }
+	   }
+	   else if (wavetype.equals("wall")){
+		   if (w==1){
+			   wavetype="dull";
+		   }
+		   if (w==2){
+			   wavetype="dull_horz";
+		   }
+	   }
+   }
+   
+   private void wave(int sss){
+	   
+	   if (seconds==sss){
 			  create_dot_function();
 			  dotfunction_font.setColor(Color.BLUE);
-			  if (ss>0){dotImage=change_dot_r;}
-		  }
-		  if (seconds==ss+1){
+			  if (sss>0){dotImage=change_dot_r;}
+	   }
+	   if (seconds==sss+1){
 			  dotfunction_font.setColor(Color.BLACK);
 			  dotImage=standard_dot_r;
-		  }
-		  int ts=ss+5;
+	   }
+	   
+	   if (wavetype.equals("dull")){
+		   wave_dull(sss);
+	   }
+	   else if(wavetype.equals("dull_horz")){
+		   wave_dull_horz(sss);
+	   }
+	   else if(wavetype.equals("wall")){
+		   wave_wall(sss);
+	   }
+	   else if(wavetype.equals("curtain")){
+		   wave_curtain(sss);
+	   }
+   }
+   
+   private void wave_dull(int ss){
+		  
+	       int ts=ss+5;
 		   if (seconds>=ts && seconds<ts+20){
 	 		  if((seconds-ts)%2 == 0) spawnRandomMine();
 	 		 dotfunction_font.setColor(Color.BLACK);
@@ -1233,8 +1413,45 @@ private void spawnRandomMine_r(){
 					spawnRandomMine_l();
 		 	   } 
 		   }
-	   }
+		   
+   }
    
+   private void wave_dull_horz(int ss){
+		  
+       int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMine_horz();
+ 		 dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%4 == 0) spawnRandomMine_horz();
+	 	   if((seconds-ts)%4 == 2){
+	 			spawnMinePair_horz();
+	 	   } 
+	   }
+	   
+}
+   private void wave_wall(int ss){
+       int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%4 == 0) spawnMinePair_wall();
+ 		 dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%4 == 0) spawnMineTrio_wall();
+	   }
+   }
+   
+   private void wave_curtain(int ss){
+       int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%4 == 0) spawnMinePair_curtain();
+ 		 dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%4 == 0) spawnMineTrio_curtain();
+	   }
+   }
    //---------
    
    
@@ -1381,8 +1598,8 @@ private void spawnRandomMine_r(){
       
       
       
-      for(Rectangle mine: mines) {
-         batch.draw(mineImage, mine.x-20, mine.y-20);
+      for(Mine mine: mines) {
+         batch.draw(mineImage, mine.rect.x-20, mine.rect.y-20);
       }
       
       
@@ -1830,15 +2047,18 @@ private void spawnRandomMine_r(){
     	  }
     	  //Events!
     	  
+    	  if ((seconds%50)==2){
+    		  shuffle_wavetype();
+    	  }
     	  
     	  if (!MODE.equals("intro") && !ENDLESS){
-	    	  wave_without_pause(0);
-	    	  wave_without_pause(50);
-	    	  wave_without_pause(100);
-	    	  wave_without_pause(150);
+	    	  wave(0);
+	    	  wave(50);
+	    	  wave(100);
+	    	  wave(150);
     	  }
     	  if (!MODE.equals("intro") && ENDLESS){
-    		  wave_without_pause(seconds-seconds%50);
+    		  wave(seconds-seconds%50);
     	  }
     	  if (MODE.equals("intro")){
     		  
@@ -1911,22 +2131,23 @@ private void spawnRandomMine_r(){
       
       shieldImage=shieldImage_unhit;
       
-      Iterator<Rectangle> iter = mines.iterator();
+      Iterator<Mine> iter = mines.iterator();
       
       if (IS_TIME_HAPPENING){
       
 		  while(iter.hasNext()) {
-		     Rectangle mine = iter.next();
-		     mine.y -= MINESPEED * Gdx.graphics.getDeltaTime();
-		     if(mine.y + 64 < 0) iter.remove();
+		     Mine mine = iter.next();
+		     mine.rect.y -= mine.vert_speed * Gdx.graphics.getDeltaTime();
+		     mine.rect.x += mine.horz_speed * Gdx.graphics.getDeltaTime();
+		     if(mine.rect.y + 64 < 0) iter.remove();
 		 
 		 boolean deadyet=false;
 		 
 		 Iterator<Rectangle> iters = shields.iterator();
 		 while(iters.hasNext()) {
 			 Rectangle shield = iters.next();
-			 if(mine.overlaps(shield) && !deadyet) {
-		     	spawnExplosion(mine.x,mine.y);
+			 if(mine.rect.overlaps(shield) && !deadyet) {
+		     	spawnExplosion(mine.rect.x,mine.rect.y);
 		        //iters.remove();
 		         	iter.remove();
 		         	deadyet=true;
@@ -1938,8 +2159,8 @@ private void spawnRandomMine_r(){
 		     Iterator<Kaboom> iterod = other_dots.iterator();
 		     while(iterod.hasNext()) {
 		    	 Kaboom other_dot = iterod.next();
-		    	 if(other_dot.rect.overlaps(mine) && !deadyet) {
-		         	spawnExplosion(mine.x,mine.y);
+		    	 if(other_dot.rect.overlaps(mine.rect) && !deadyet) {
+		         	spawnExplosion(mine.rect.x,mine.rect.y);
 		            iterod.remove();
 		         	iter.remove();
 		         	deadyet=true;
