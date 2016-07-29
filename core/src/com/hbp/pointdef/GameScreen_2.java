@@ -184,6 +184,8 @@ public class GameScreen_2 implements Screen {
 	private boolean about_to_leave;
 	
 	private int lives;
+	
+	private String wavetype;
  //---Do all the initial stuff that happens on rendering---
    
    public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign) {
