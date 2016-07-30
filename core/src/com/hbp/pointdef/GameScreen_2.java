@@ -1589,7 +1589,7 @@ private void spawnMineTrio_curtain(){
       
       //----
       
-      if (MODE.equals("square root") || MODE.equals("circle")){
+      if (Function_Code.equals("square root") || Function_Code.equals("circle")){
     	  MIRROR_THE_DOT=true;
       }
       
@@ -1638,8 +1638,7 @@ private void spawnMineTrio_curtain(){
     	  apply_dot_function(grx, gry);
       }
       
-      
-      
+    	  
       
       dotPos_i_x=new_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
       dotPos_i_y=new_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
@@ -2197,8 +2196,10 @@ private void spawnMineTrio_curtain(){
       //(also, pause/unpause if they untouched over the ship)
       if (Gdx.input.isTouched()){
     	  wastouched=true;
-      }else{
-    	  if(wastouched){
+      }
+    	  
+    	  //}else{if(wastouched){
+    	  if (Gdx.input.justTouched()){
     		  if(ship.contains(Gdx.input.getX(), 480-Gdx.input.getY()) && !META_PAUSE){
     			  IS_TIME_HAPPENING=!IS_TIME_HAPPENING;
     		  }
@@ -2215,7 +2216,7 @@ private void spawnMineTrio_curtain(){
     		  }
     	  }
     	  wastouched=false;
-      }
+      //}
       
       MIRROR_THE_DOT=false;
       
