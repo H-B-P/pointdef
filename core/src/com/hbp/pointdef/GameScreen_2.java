@@ -1587,6 +1587,12 @@ private void spawnMineTrio_curtain(){
     	  //charges=Math.min(charges+1, maxcharges);
       }
       
+      //----
+      
+      if (MODE.equals("square root") || MODE.equals("circle")){
+    	  MIRROR_THE_DOT=true;
+      }
+      
 	  //--Update ship image used--
       shipImage = shipImages[charges];
       
