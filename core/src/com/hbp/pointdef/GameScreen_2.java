@@ -8,7 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 //import com.badlogic.gdx.Input.Keys;
 //import com.badlogic.gdx.Input.Buttons;
 //import com.badlogic.gdx.audio.Music;
-//import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Sound;
 //import com.badlogic.gdx.utils.viewport.*;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -186,6 +186,10 @@ public class GameScreen_2 implements Screen {
 	private int lives;
 	
 	private String wavetype;
+	
+	private Sound hit_sound;
+	private Sound hitship_sound;
+	private Sound shot_sound;
  //---Do all the initial stuff that happens on rendering---
    
    public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign) {
@@ -446,6 +450,13 @@ public class GameScreen_2 implements Screen {
       }
       
       wavetype="dull";
+      
+      
+      //--Sounds--
+      
+      hitship_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341238__jeremysykes__explosion01.wav"));
+      hit_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341237__jeremysykes__explosion02.wav"));
+      shot_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341236__jeremysykes__laser00.wav"));
       
       //--Batch, Camera, Action--
       camera = new OrthographicCamera();
@@ -1215,33 +1226,33 @@ private void spawnRandomMine_r(){
 private void spawnRandomMine_horz(){
 	   int k=MathUtils.random(-3,3);
 	   if (k>1){
-		   spawnMine_horz(k,-2, 1);
+		   spawnMine_horz(k,-2, 0.9f);
 	   }
 	   else if (k<-1){
-		   spawnMine_horz(k,2,1);
+		   spawnMine_horz(k,2,0.9f);
 	   }
 	   else{
-		   spawnMine_horz(k,2*plusorminus(),1);
+		   spawnMine_horz(k,2*plusorminus(),0.9f);
 	   }
 }
 
 private void spawnMinePair_horz(){
 	int typ=MathUtils.random(1,5);
 	if (typ==1){
-		spawnMine_horz(3,-2,1);
-		spawnMine_horz(-3,2,1);
+		spawnMine_horz(3,-2,0.9f);
+		spawnMine_horz(-3,2,0.9f);
 	}
 	if (typ==2 || typ==3){
-		int span=MathUtils.random(2,4);
+		int span=MathUtils.random(3,4);
 		int first=MathUtils.random(-3,1-span);
-		spawnMine_horz(first,2,1);
-		spawnMine_horz(first+span,2,1);
+		spawnMine_horz(first,2,0.9f);
+		spawnMine_horz(first+span,2,0.9f);
 	}
 	if (typ==4 || typ==5){
-		int span=MathUtils.random(2,4);
+		int span=MathUtils.random(3,4);
 		int first=MathUtils.random(-1+span,3);
-		spawnMine_horz(first,-2,1);
-		spawnMine_horz(first-span,-2,1);
+		spawnMine_horz(first,-2,0.9f);
+		spawnMine_horz(first-span,-2,0.9f);
 	}
 	
 }
@@ -2152,7 +2163,8 @@ private void spawnMineTrio_curtain(){
 		         	iter.remove();
 		         	deadyet=true;
 		         	shieldImage=shieldImage_flicker;
-		            lives-=1; 
+		            lives-=1;
+		            hitship_sound.play();
 		          }
 		     }
 		     
@@ -2165,6 +2177,7 @@ private void spawnMineTrio_curtain(){
 		         	iter.remove();
 		         	deadyet=true;
 		            score+=1;
+		            hit_sound.play();
 		          }
 		     }
 		  }
@@ -2190,6 +2203,7 @@ private void spawnMineTrio_curtain(){
     					  spawn_other_dot(mirror_dot.x,mirror_dot.y);
     				  }
     				  charges-=1;
+    				  shot_sound.play();
     				  last_charge_event_time=total_time;
     			  }
     		  }
@@ -2266,6 +2280,9 @@ private void spawnMineTrio_curtain(){
    	}
    	c_textbox.dispose();
       
+   	hit_sound.dispose();
+   	shot_sound.dispose();
+   	hitship_sound.dispose();
    }
 
 @Override
