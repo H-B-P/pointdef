@@ -194,7 +194,7 @@ public class MainMenuScreen implements Screen {
 		if (Gdx.input.justTouched()) {
 			
 			if (!are_instructions_visible){
-				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>30){
+				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>50){
 					MINESPEED-=5;
 				}
 				if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<200){

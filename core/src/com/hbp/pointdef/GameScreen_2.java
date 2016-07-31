@@ -190,10 +190,19 @@ public class GameScreen_2 implements Screen {
 	private Sound hit_sound;
 	private Sound hitship_sound;
 	private Sound shot_sound;
+	
+	private float horz_coefficient;
+	private float wall_coefficient;
+	
+	private boolean ANDROID;
  //---Do all the initial stuff that happens on rendering---
    
    public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign) {
 	  
+	   
+	   ANDROID=true;
+	   
+	   
 	   //--Perform tautological actions--
 	   this.game = gam;
       
@@ -225,7 +234,14 @@ public class GameScreen_2 implements Screen {
 		dot_p= new Texture(Gdx.files.internal("dots/dot_pink.png"));
 		dot_w= new Texture(Gdx.files.internal("dots/dot_white.png"));
 		dot_g= new Texture(Gdx.files.internal("dots/dot_green.png"));
-		
+		if (ANDROID){
+			dot_c=new Texture(Gdx.files.internal("dots/dot_cyan_and.png"));
+			dot_w=new Texture(Gdx.files.internal("dots/dot_white_and.png"));
+			
+			dot_r= new Texture(Gdx.files.internal("dots/dot_red_and.png"));
+			dot_y= new Texture(Gdx.files.internal("dots/dot_yellow_and.png"));
+			dot_g= new Texture(Gdx.files.internal("dots/dot_green_and.png"));
+		}
 		
 
       mineImage = new Texture(Gdx.files.internal("a_mine_2.png"));
@@ -233,12 +249,19 @@ public class GameScreen_2 implements Screen {
       else if (TOPIC.equals("POLAR")){standard_dot_r = dot_g;}
       else if (TOPIC.equals("MATRIX")){standard_dot_r = dot_r;}
       else if (TOPIC.equals("ARGAND")){standard_dot_r = dot_c;}
-      else{standard_dot_r = new Texture(Gdx.files.internal("sniperdot.png"));}
-      
+      else{
+    	  if (ANDROID){
+    		  standard_dot_r = new Texture(Gdx.files.internal("sniperdot_and.png"));
+    	  }
+    	  else{
+    		  standard_dot_r = new Texture(Gdx.files.internal("sniperdot.png"));
+    	  }
+      }
       dotImage=standard_dot_r;
       
-      change_dot_r=dot_w;
-      
+
+   	  change_dot_r=dot_w;
+   	  
       shipImages = new Texture[10];
       
       if (TOPIC.equals("POLAR") && !MODE.equals("switch")){gridImage = new Texture(Gdx.files.internal("grid_polar_v5.png"));}
@@ -280,12 +303,21 @@ public class GameScreen_2 implements Screen {
       
       
       if (MODE.equals("intro")){
-	      textbox_1=new Texture(Gdx.files.internal("intro_tb_1.png"));
+	      
+    	  textbox_1=new Texture(Gdx.files.internal("intro_tb_1.png"));
 	      textbox_2=new Texture(Gdx.files.internal("intro_tb_2.png"));
 	      textbox_3=new Texture(Gdx.files.internal("intro_tb_3.png"));
 	      textbox_4=new Texture(Gdx.files.internal("intro_tb_4.png"));
 	      textbox_5=new Texture(Gdx.files.internal("intro_tb_5.png"));
 	      textbox_6=new Texture(Gdx.files.internal("intro_tb_6.png"));
+	      
+	      if (ANDROID){
+	    	  textbox_2=new Texture(Gdx.files.internal("intro_tb_2_and.png"));
+		      textbox_3=new Texture(Gdx.files.internal("intro_tb_3_and.png"));
+		      textbox_4=new Texture(Gdx.files.internal("intro_tb_4_and.png"));
+		      textbox_6=new Texture(Gdx.files.internal("intro_tb_6_and.png"));
+	      }
+	      
 	      textbox=textbox_1;
 	      textbox_x=10;
 	      textbox_y=90;
@@ -325,14 +357,24 @@ public class GameScreen_2 implements Screen {
       dot = new Rectangle();
       dot.x = 0;
       dot.y = 0;
-      dot.width = 11;
-      dot.height = 11;
       
       mirror_dot = new Rectangle();
       mirror_dot.x = 0;
       mirror_dot.y = 0;
       mirror_dot.width = 11;
       mirror_dot.height = 11;
+      
+      if (ANDROID){
+          	dot.width = 61;
+          	dot.height = 61;
+          	mirror_dot.width = 61;
+          	mirror_dot.height = 61;
+          }else{
+        	  dot.width = 11;
+              dot.height = 11;
+              mirror_dot.width = 11;
+              mirror_dot.height = 11;
+          }
       
       ship = new Rectangle(0,0, 320, 60);
       grid = new Rectangle();
@@ -359,7 +401,13 @@ public class GameScreen_2 implements Screen {
       font.setColor(Color.BLACK);
       dotfunction_font = new BitmapFont();
       dotfunction_font.setColor(Color.BLACK);
-      maxcharges=6;
+      
+      if (ANDROID){
+    	  maxcharges=4;
+      }
+      else{
+    	  maxcharges=6;
+      }
       create_dot_function();
       apply_dot_function(0,0);
       
@@ -451,6 +499,13 @@ public class GameScreen_2 implements Screen {
       
       wavetype="dull";
       
+      horz_coefficient=0.9f;
+      if (ANDROID){
+    	  wall_coefficient=0.9f;
+      }
+      else{
+    	  wall_coefficient=0.75f;
+      }
       
       //--Sounds--
       
@@ -1226,33 +1281,33 @@ private void spawnRandomMine_r(){
 private void spawnRandomMine_horz(){
 	   int k=MathUtils.random(-3,3);
 	   if (k>1){
-		   spawnMine_horz(k,-2, 0.9f);
+		   spawnMine_horz(k,-2, horz_coefficient);
 	   }
 	   else if (k<-1){
-		   spawnMine_horz(k,2,0.9f);
+		   spawnMine_horz(k,2,horz_coefficient);
 	   }
 	   else{
-		   spawnMine_horz(k,2*plusorminus(),0.9f);
+		   spawnMine_horz(k,2*plusorminus(),horz_coefficient);
 	   }
 }
 
 private void spawnMinePair_horz(){
 	int typ=MathUtils.random(1,5);
 	if (typ==1){
-		spawnMine_horz(3,-2,0.9f);
-		spawnMine_horz(-3,2,0.9f);
+		spawnMine_horz(3,-2,horz_coefficient);
+		spawnMine_horz(-3,2,horz_coefficient);
 	}
 	if (typ==2 || typ==3){
 		int span=MathUtils.random(3,4);
 		int first=MathUtils.random(-3,1-span);
-		spawnMine_horz(first,2,0.9f);
-		spawnMine_horz(first+span,2,0.9f);
+		spawnMine_horz(first,2,horz_coefficient);
+		spawnMine_horz(first+span,2,horz_coefficient);
 	}
 	if (typ==4 || typ==5){
 		int span=MathUtils.random(3,4);
 		int first=MathUtils.random(-1+span,3);
-		spawnMine_horz(first,-2,0.9f);
-		spawnMine_horz(first-span,-2,0.9f);
+		spawnMine_horz(first,-2,horz_coefficient);
+		spawnMine_horz(first-span,-2,horz_coefficient);
 	}
 	
 }
@@ -1261,18 +1316,18 @@ private void spawnMinePair_wall(){
 	int typ=MathUtils.random(1,3);
 	if (typ==1){
 		int k=MathUtils.random(-2,2);
-		spawnMine_horz(k+1,0,0.75f);
-		spawnMine_horz(k-1,0,0.75f);
+		spawnMine_horz(k+1,0,wall_coefficient);
+		spawnMine_horz(k-1,0,wall_coefficient);
 	}
 	if (typ==2){
 		int k=MathUtils.random(-2,0);
-		spawnMine_horz(k+1,2,0.75f);
-		spawnMine_horz(k-1,2,0.75f);
+		spawnMine_horz(k+1,2,wall_coefficient);
+		spawnMine_horz(k-1,2,wall_coefficient);
 	}
 	if (typ==3){
 		int k=MathUtils.random(0,2);
-		spawnMine_horz(k+1,-2,0.75f);
-		spawnMine_horz(k-1,-2,0.75f);
+		spawnMine_horz(k+1,-2,wall_coefficient);
+		spawnMine_horz(k-1,-2,wall_coefficient);
 	}
 	
 }
@@ -1280,25 +1335,25 @@ private void spawnMinePair_wall(){
 private void spawnMineTrio_wall(){
 	int typ=MathUtils.random(1,4);
 	if (typ==1){
-		spawnMine_horz(-2,0,0.75f);
-		spawnMine_horz(0,0,0.75f);
-		spawnMine_horz(2,0,0.75f);
+		spawnMine_horz(-2,0,wall_coefficient);
+		spawnMine_horz(0,0,wall_coefficient);
+		spawnMine_horz(2,0,wall_coefficient);
 	}
 	if (typ==2){
 		int q=plusorminus();
-		spawnMine_horz(-2+q,0,0.75f);
-		spawnMine_horz(0+q,0,0.75f);
-		spawnMine_horz(2+q,0,0.75f);
+		spawnMine_horz(-2+q,0,wall_coefficient);
+		spawnMine_horz(0+q,0,wall_coefficient);
+		spawnMine_horz(2+q,0,wall_coefficient);
 	}
 	if (typ==3){
-		spawnMine_horz(-3,2,0.75f);
-		spawnMine_horz(-1,2,0.75f);
-		spawnMine_horz(1,2,0.75f);
+		spawnMine_horz(-3,2,wall_coefficient);
+		spawnMine_horz(-1,2,wall_coefficient);
+		spawnMine_horz(1,2,wall_coefficient);
 	}
 	if (typ==4){
-		spawnMine_horz(3,-2,0.75f);
-		spawnMine_horz(1,-2,0.75f);
-		spawnMine_horz(-1,-2,0.75f);
+		spawnMine_horz(3,-2,wall_coefficient);
+		spawnMine_horz(1,-2,wall_coefficient);
+		spawnMine_horz(-1,-2,wall_coefficient);
 	}
 	
 }
@@ -1340,8 +1395,15 @@ private void spawnMineTrio_curtain(){
 	   Kaboom other_dot = new Kaboom();
 	   other_dot.birthtime=total_time;
 	      other_dot.rect= new Rectangle();
-	      other_dot.rect.width = 11;
-	      other_dot.rect.height = 11;
+	      if (ANDROID){
+	    	  other_dot.rect.width = 61;
+		      other_dot.rect.height = 61;
+	      }
+	      else{
+	    	  other_dot.rect.width = 11;
+		      other_dot.rect.height = 11;
+	      }
+	      
 	      other_dot.rect.x=x;
 	      other_dot.rect.y=y;
 	      other_dots.add(other_dot);
@@ -1658,7 +1720,7 @@ private void spawnMineTrio_curtain(){
       
       mirror_dot.setCenter((float)dotPos_j_x,(float)dotPos_j_y);
       
-      if(!Gdx.input.justTouched() && IS_TIME_HAPPENING && seconds>1){
+      if(((!Gdx.input.justTouched() && !ANDROID) || (ANDROID && !(!Gdx.input.isTouched()&&wastouched)))&& IS_TIME_HAPPENING && seconds>1){
     	  batch.draw(dotImage, dot.x, dot.y);
     	  if (MIRROR_THE_DOT){
     		  batch.draw(dotImage, mirror_dot.x, mirror_dot.y);
@@ -2178,7 +2240,7 @@ private void spawnMineTrio_curtain(){
 		    	 Kaboom other_dot = iterod.next();
 		    	 if(other_dot.rect.overlaps(mine.rect) && !deadyet) {
 		         	spawnExplosion(mine.rect.x,mine.rect.y);
-		            iterod.remove();
+		            //iterod.remove();
 		         	iter.remove();
 		         	deadyet=true;
 		            score+=1;
@@ -2199,11 +2261,9 @@ private void spawnMineTrio_curtain(){
       }
     	  
     	  //}else{if(wastouched){
-    	  if (Gdx.input.justTouched()){
-    		  if(ship.contains(Gdx.input.getX(), 480-Gdx.input.getY()) && !META_PAUSE){
-    			  IS_TIME_HAPPENING=!IS_TIME_HAPPENING;
-    		  }
-    		  else{
+    	  if (!ship.contains(Gdx.input.getX(), 480-Gdx.input.getY())&&((Gdx.input.justTouched() && !ANDROID) || (ANDROID && wastouched && !Gdx.input.isTouched()))){
+    		  
+    		  
     			  if( charges>0){
     				  spawn_other_dot(dot.x,dot.y);
     				  if (MIRROR_THE_DOT){
@@ -2213,10 +2273,14 @@ private void spawnMineTrio_curtain(){
     				  shot_sound.play();
     				  last_charge_event_time=total_time;
     			  }
-    		  }
+    		  
+    		  wastouched=false;
     	  }
-    	  wastouched=false;
-      //}
+    	
+    	  if(Gdx.input.justTouched() && ship.contains(Gdx.input.getX(), 480-Gdx.input.getY()) && !META_PAUSE){
+    		  IS_TIME_HAPPENING=!IS_TIME_HAPPENING;
+    	  }
+    	  
       
       MIRROR_THE_DOT=false;
       
