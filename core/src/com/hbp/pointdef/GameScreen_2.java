@@ -13,6 +13,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Color;
@@ -32,6 +33,7 @@ public class GameScreen_2 implements Screen {
 	
 	private Texture pause_symbol;
 	
+	private FitViewport viewport;
 	
 	private Texture mineImage;
    private Texture dotImage;
@@ -200,7 +202,7 @@ public class GameScreen_2 implements Screen {
    public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign) {
 	  
 	   
-	   ANDROID=true;
+	   ANDROID=false;
 	   
 	   
 	   //--Perform tautological actions--
@@ -516,6 +518,7 @@ public class GameScreen_2 implements Screen {
       //--Batch, Camera, Action--
       camera = new OrthographicCamera();
       camera.setToOrtho(false, 320, 480);
+      viewport = new FitViewport(640, 480, camera);
       batch = new SpriteBatch();
       
    }
@@ -1666,7 +1669,6 @@ private void spawnMineTrio_curtain(){
       //--Update Camera, update Batch--
       camera.update();
       batch.setProjectionMatrix(camera.combined);
-      
       //--Draw everything you can without transforming the dot--
       
       batch.begin();
@@ -2365,6 +2367,8 @@ public void show() {
 @Override
 public void resize(int width, int height) {
 	// TODO Auto-generated method stub
+	//viewport.update(width, height);
+    //camera.update();
 	
 }
 
