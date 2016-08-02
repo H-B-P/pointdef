@@ -518,7 +518,7 @@ public class GameScreen_2 implements Screen {
       //--Batch, Camera, Action--
       camera = new OrthographicCamera();
       camera.setToOrtho(false, 320, 480);
-      viewport = new FitViewport(640, 480, camera);
+      viewport = new FitViewport(320, 480, camera);
       batch = new SpriteBatch();
       
    }
@@ -2108,10 +2108,7 @@ private void spawnMineTrio_curtain(){
     	  }
       }
       
-      if (about_to_leave){
-    	  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
-    	  dispose();
-      }
+      
       
       //--Do the things which happen every second--
       
@@ -2286,6 +2283,10 @@ private void spawnMineTrio_curtain(){
       
       MIRROR_THE_DOT=false;
       
+      if (about_to_leave){
+    	  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
+    	  dispose();
+      }
    }
    @Override
    
@@ -2353,9 +2354,9 @@ private void spawnMineTrio_curtain(){
    	}
    	c_textbox.dispose();
       
-   	hit_sound.dispose();
-   	shot_sound.dispose();
-   	hitship_sound.dispose();
+   	//hit_sound.dispose();
+   	//shot_sound.dispose();
+   	//hitship_sound.dispose();
    }
 
 @Override
