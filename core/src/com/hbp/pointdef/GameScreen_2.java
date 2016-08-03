@@ -207,7 +207,7 @@ public class GameScreen_2 implements Screen {
    public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign) {
 	  
 	   
-	   ANDROID=false;
+	   ANDROID=true;
 	   
 	   
 	   //--Perform tautological actions--
@@ -456,6 +456,7 @@ public class GameScreen_2 implements Screen {
     		  snippet=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+sni+".png"));
     		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+cycled(sni,6)+".png"));
     		  if (MODE.equals("add")){
+    			  snippet=new Texture(Gdx.files.internal("snippets/snippet_pause.png"));
     			  snippet_win=new Texture(Gdx.files.internal("snippets/snippet_firstwin.png"));
     		  }
     		  else{
@@ -583,6 +584,9 @@ public class GameScreen_2 implements Screen {
 		   else if (seconds==50){
 			   cartesian_a=0;
 			   cartesian_b=plusorminus();
+			   if (ANDROID){
+				   cartesian_b=plusorminus()*2;
+			   }
 		   }
 		   else if(seconds==100){
 			   cartesian_a=plusorminus();
@@ -591,6 +595,9 @@ public class GameScreen_2 implements Screen {
 		   else if(seconds==150){
 			   cartesian_a=0;
 			   cartesian_b=plusorminus()*2;
+			   if (ANDROID){
+				   cartesian_b=plusorminus()*3;
+			   }
 		   }
 		   else{
 			   if (seconds%100==0){
