@@ -192,6 +192,7 @@ public class GameScreen_2 implements Screen {
 	private Sound hit_sound;
 	private Sound hitship_sound;
 	private Sound shot_sound;
+	private Sound select_sound;
 	
 	private float horz_coefficient;
 	private float wall_coefficient;
@@ -405,7 +406,7 @@ public class GameScreen_2 implements Screen {
       dotfunction_font.setColor(Color.BLACK);
       
       if (ANDROID){
-    	  maxcharges=4;
+    	  maxcharges=3;
       }
       else{
     	  maxcharges=6;
@@ -511,9 +512,11 @@ public class GameScreen_2 implements Screen {
       
       //--Sounds--
       
-      hitship_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341238__jeremysykes__explosion01.wav"));
-      hit_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341237__jeremysykes__explosion02.wav"));
-      shot_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341236__jeremysykes__laser00.wav"));
+      hit_sound=Gdx.audio.newSound(Gdx.files.internal("other_sfx/186945__readeonly__cannon-boom5.wav"));
+      hitship_sound=Gdx.audio.newSound(Gdx.files.internal("other_sfx/268553_cydon_bang_001.mp3"));
+      shot_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341235__jeremysykes__laser01.wav"));
+      
+      select_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341251__jeremysykes__select00.wav"));
       
       //--Batch, Camera, Action--
       camera = new OrthographicCamera();
@@ -2080,6 +2083,7 @@ private void spawnMineTrio_curtain(){
       
       if(Gdx.input.justTouched()){
     	  if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+    		  select_sound.play();
     		  game.setScreen(new MainMenuScreen(game, MINESPEED));
     		  dispose();
     	  }
@@ -2091,15 +2095,20 @@ private void spawnMineTrio_curtain(){
     		  if (total_time==0){
     			  META_PAUSE=false;
     			  show_c_textbox=false;
+    			  select_sound.play();
     		  }
     		  else if (total_time>=200 && MODE.equals("multiply") && TOPIC.equals("ARGAND")){
+    			  select_sound.play();
     			  game.setScreen(new MainMenuScreen(game, MINESPEED));
+    			  dispose();
     		  }
     		  else if (total_time>=200 || (MODE.equals("intro") && total_time>1)){
+    			  select_sound.play();
     			  game.setScreen(new GameScreen_2(game, MINESPEED, next_topic(), next_mode(), ENDLESS, true));
     			  dispose();
     		  }
     		  else {
+    			  select_sound.play();
     			  game.setScreen(new GameScreen_2(game, MINESPEED, TOPIC, MODE, ENDLESS, true));
     			  dispose();
     		  }
@@ -2260,7 +2269,7 @@ private void spawnMineTrio_curtain(){
       }
     	  
     	  //}else{if(wastouched){
-    	  if (!ship.contains(Gdx.input.getX(), 480-Gdx.input.getY())&&((Gdx.input.justTouched() && !ANDROID) || (ANDROID && wastouched && !Gdx.input.isTouched()))){
+    	  if (!ship.contains(Gdx.input.getX(), 480-Gdx.input.getY())&&(Gdx.input.getY()>80)&&(!META_PAUSE)&&((Gdx.input.justTouched() && !ANDROID) || (ANDROID && wastouched && !Gdx.input.isTouched()))){
     		  
     		  
     			  if( charges>0){
@@ -2354,9 +2363,12 @@ private void spawnMineTrio_curtain(){
    	}
    	c_textbox.dispose();
       
+   	//hit_sound.stop();
    	//hit_sound.dispose();
    	//shot_sound.dispose();
    	//hitship_sound.dispose();
+   	select_sound.stop();
+   	select_sound.dispose();
    }
 
 @Override

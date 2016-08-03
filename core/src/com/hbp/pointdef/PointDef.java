@@ -13,7 +13,9 @@ public class PointDef extends Game {
 
   	SpriteBatch batch;
 	BitmapFont font;
-
+	
+	
+	
 	public void create() {
 		batch = new SpriteBatch();
 		// Use LibGDX's default Arial font.
