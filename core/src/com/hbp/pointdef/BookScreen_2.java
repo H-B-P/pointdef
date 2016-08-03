@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+import com.badlogic.gdx.audio.Sound;
+
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -127,6 +129,8 @@ public class BookScreen_2 implements Screen {
 	   private boolean first_timestep;
 	   
 	   private String Function_Code;
+	   
+	   private Sound hellosound;
 	   
 	 //----Initial setup----
 	
@@ -334,6 +338,9 @@ public class BookScreen_2 implements Screen {
 		game = gam;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 640, 480);
+		
+		hellosound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341251__jeremysykes__select00.wav"));
+	    hellosound.play();
 		
 	}
 	
@@ -1055,5 +1062,37 @@ public class BookScreen_2 implements Screen {
 
 	@Override
 	public void dispose() {
+		Page_t.dispose();
+		
+		for(int i=0; i<Book_Pages.length; i++){
+			for(int j=0; j<Book_Pages[i].length; j++){
+				Book_Pages[i][j].dispose();
+			}
+		}
+		
+		nxt_t.dispose();
+		
+		prv_t.dispose();
+		
+		R_t.dispose();
+		
+		dot_r.dispose();
+		dot_b.dispose();
+		 dot_c.dispose();
+		 dot_p.dispose();
+		 dot_y.dispose();
+		 dot_w.dispose();
+		 dot_g.dispose();
+		
+		 statusbarImage.dispose();
+		
+		 menu_button_t.dispose();
+		
+		font.dispose();
+		
+		
+		
+		hellosound.stop();
+		hellosound.dispose();
 	}
 }

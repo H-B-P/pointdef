@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.audio.Sound;
 
 public class LibraryScreen implements Screen {
     final PointDef game;
@@ -33,6 +34,8 @@ public class LibraryScreen implements Screen {
 	private Texture title_trim_argand;
 	
 	private BitmapFont font;
+	
+	private Sound hellosound;
 	
 	public LibraryScreen(final PointDef gam, int minespeed) {
 		
@@ -105,6 +108,10 @@ public class LibraryScreen implements Screen {
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 320, 480);
+		
+		
+		hellosound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/344508__jeremysykes__select04.wav"));
+		hellosound.play();
 
 	}
 
@@ -175,7 +182,7 @@ public class LibraryScreen implements Screen {
 		if (Gdx.input.justTouched()) {
 			
 			if (B1_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new MainMenuScreen(game, MINESPEED));
+	            game.setScreen(new MainMenuScreen(game, MINESPEED, true));
 	            dispose();
 			}
 			if (Book1_r.contains(tp_x,480-tp_y)){
@@ -235,5 +242,15 @@ public class LibraryScreen implements Screen {
 
 	@Override
 	public void dispose() {
+		B1_t.dispose();
+		
+		title_button_t.dispose();
+		title_trim_matrix.dispose();
+		title_trim_argand.dispose();
+		
+		font.dispose();
+		
+		hellosound.stop();
+		hellosound.dispose();
 	}
 }

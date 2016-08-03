@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Sound;
 
 public class LevelSelectScreen implements Screen {
     final PointDef game;
@@ -70,6 +71,9 @@ public class LevelSelectScreen implements Screen {
 	
 	boolean are_instructions_visible;
 	
+	private Sound hellosound;
+	private Sound arrowsound;
+	
 	public LevelSelectScreen(final PointDef gam, String topic, int minespeed, boolean endless) {
 		
 		TOPIC=topic;
@@ -87,6 +91,8 @@ public class LevelSelectScreen implements Screen {
 			
 			one_t = new Texture(Gdx.files.internal("abutton_intro.png"));
 			two_t = new Texture(Gdx.files.internal("abutton_basis.png"));
+			three_t = new Texture(Gdx.files.internal("abutton_intro.png"));
+			four_t = new Texture(Gdx.files.internal("abutton_basis.png"));
 			
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
 		}
@@ -248,7 +254,9 @@ public class LevelSelectScreen implements Screen {
 		
 		font = new BitmapFont();
 		
-		
+		arrowsound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/344510__jeremysykes__select03.wav"));
+		hellosound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/344508__jeremysykes__select04.wav"));
+		hellosound.play();
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 320, 480);
@@ -351,12 +359,14 @@ public class LevelSelectScreen implements Screen {
 			if (!are_instructions_visible){
 				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>50){
 					MINESPEED-=5;
+					arrowsound.play();
 				}
 				if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<200){
 					MINESPEED+=5;
+					arrowsound.play();
 				}
 				if (menu_button_r.contains(tp_x, 480-tp_y)){
-					game.setScreen(new MainMenuScreen(game, MINESPEED));
+					game.setScreen(new MainMenuScreen(game, MINESPEED, true));
 		            dispose();
 				}
 				if (endless_button_r.contains(tp_x, 480-tp_y)){
@@ -527,8 +537,8 @@ public class LevelSelectScreen implements Screen {
 		
 		one_t.dispose();
 		two_t.dispose();
-		//three_t.dispose();
-		//four_t.dispose();
+		three_t.dispose();
+		four_t.dispose();
 		
 		
 		font.dispose();
@@ -542,5 +552,10 @@ public class LevelSelectScreen implements Screen {
 		abutton_corner_trim_t.dispose();
 		
 		difficulty_arrow_t.dispose();
+		
+		arrowsound.stop();
+		arrowsound.dispose();
+		hellosound.stop();
+		hellosound.dispose();
 	}
 }

@@ -192,7 +192,11 @@ public class GameScreen_2 implements Screen {
 	private Sound hit_sound;
 	private Sound hitship_sound;
 	private Sound shot_sound;
-	private Sound select_sound;
+	
+	
+	private Sound selectsound;
+	
+	private Sound hellosound;
 	
 	private float horz_coefficient;
 	private float wall_coefficient;
@@ -516,7 +520,10 @@ public class GameScreen_2 implements Screen {
       hitship_sound=Gdx.audio.newSound(Gdx.files.internal("other_sfx/268553_cydon_bang_001.mp3"));
       shot_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341235__jeremysykes__laser01.wav"));
       
-      select_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341251__jeremysykes__select00.wav"));
+      selectsound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/344509__jeremysykes__select05.wav"));
+      hellosound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341251__jeremysykes__select00.wav"));
+      
+      hellosound.play();
       
       //--Batch, Camera, Action--
       camera = new OrthographicCamera();
@@ -2083,8 +2090,7 @@ private void spawnMineTrio_curtain(){
       
       if(Gdx.input.justTouched()){
     	  if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
-    		  select_sound.play();
-    		  game.setScreen(new MainMenuScreen(game, MINESPEED));
+    		  game.setScreen(new MainMenuScreen(game, MINESPEED, true));
     		  dispose();
     	  }
     	  
@@ -2095,20 +2101,17 @@ private void spawnMineTrio_curtain(){
     		  if (total_time==0){
     			  META_PAUSE=false;
     			  show_c_textbox=false;
-    			  select_sound.play();
+    			  selectsound.play();
     		  }
     		  else if (total_time>=200 && MODE.equals("multiply") && TOPIC.equals("ARGAND")){
-    			  select_sound.play();
-    			  game.setScreen(new MainMenuScreen(game, MINESPEED));
+    			  game.setScreen(new MainMenuScreen(game, MINESPEED, true));
     			  dispose();
     		  }
     		  else if (total_time>=200 || (MODE.equals("intro") && total_time>1)){
-    			  select_sound.play();
     			  game.setScreen(new GameScreen_2(game, MINESPEED, next_topic(), next_mode(), ENDLESS, true));
     			  dispose();
     		  }
     		  else {
-    			  select_sound.play();
     			  game.setScreen(new GameScreen_2(game, MINESPEED, TOPIC, MODE, ENDLESS, true));
     			  dispose();
     		  }
@@ -2363,12 +2366,17 @@ private void spawnMineTrio_curtain(){
    	}
    	c_textbox.dispose();
       
-   	//hit_sound.stop();
-   	//hit_sound.dispose();
-   	//shot_sound.dispose();
-   	//hitship_sound.dispose();
-   	select_sound.stop();
-   	select_sound.dispose();
+   	hit_sound.stop();
+   	hit_sound.dispose();
+   	shot_sound.stop();
+   	shot_sound.dispose();
+   	hitship_sound.stop();
+   	hitship_sound.dispose();
+   	
+   	selectsound.stop();
+   	selectsound.dispose();
+   	hellosound.stop();
+   	hellosound.dispose();
    }
 
 @Override

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Sound;
 
 public class MainMenuScreen implements Screen {
     final PointDef game;
@@ -60,7 +61,10 @@ public class MainMenuScreen implements Screen {
 	private String preferred_mode;
 	private String preferred_topic;
 	
-	public MainMenuScreen(final PointDef gam, int minespeed) {
+	private Sound hellosound;
+	private Sound arrowsound;
+	
+	public MainMenuScreen(final PointDef gam, int minespeed, boolean play_the_sound) {
 		
 		MINESPEED=minespeed;
 		
@@ -141,7 +145,12 @@ public class MainMenuScreen implements Screen {
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 320, 480);
-
+		
+		hellosound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341250__jeremysykes__select01.wav"));
+		arrowsound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/344510__jeremysykes__select03.wav"));
+		if (play_the_sound){
+			hellosound.play();
+		}
 	}
 
 	@Override
@@ -196,9 +205,11 @@ public class MainMenuScreen implements Screen {
 			if (!are_instructions_visible){
 				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>50){
 					MINESPEED-=5;
+					arrowsound.play();
 				}
 				if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<200){
 					MINESPEED+=5;
+					arrowsound.play();
 				}
 				
 				if (CAMPAIGN_r.contains(tp_x,480-tp_y)){
@@ -242,5 +253,26 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void dispose() {
+		nxt_t.dispose();	
+		
+		prv_t.dispose();	
+		
+		CAMPAIGN_t.dispose();
+
+		LEVELS_t.dispose();
+		
+		LIBRARY_t.dispose();
+		
+		TRIM_t.dispose();
+		
+		contact_t.dispose();
+
+		font.dispose();
+		
+		selector_t.dispose();
+
+				
+		hellosound.stop();
+		hellosound.dispose();
 	}
 }
