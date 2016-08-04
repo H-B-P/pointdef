@@ -204,10 +204,10 @@ public class GameScreen_2 implements Screen {
 	private boolean ANDROID;
  //---Do all the initial stuff that happens on rendering---
    
-   public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign) {
+   public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
 	   
-	   ANDROID=true;
+	   ANDROID=android;
 	   
 	   
 	   //--Perform tautological actions--
@@ -2067,10 +2067,10 @@ private void spawnMineTrio_curtain(){
       
       //----
       if (!MODE.equals("intro") && ENDLESS){
-    	  font.draw(batch, "Hits:", 200, 450);
-    	  font.draw(batch, ((Integer)(score-MINESPEED/5)).toString(), 250, 450);
-    	  font.draw(batch, "Misses:", 200, 420);
-    	  font.draw(batch, ((Integer)(10-lives)).toString(), 250, 420);
+    	  font.draw(batch, "Hits:", 200, 445);
+    	  font.draw(batch, ((Integer)(score-MINESPEED/5)).toString(), 260, 450);
+    	  font.draw(batch, "Misses:", 200, 425);
+    	  font.draw(batch, ((Integer)(10-lives)).toString(), 260, 420);
       }
       else if (!MODE.equals("intro") && CAMPAIGN){
     	  font.draw(batch, "Lives:", 200, 435);
@@ -2097,7 +2097,7 @@ private void spawnMineTrio_curtain(){
       
       if(Gdx.input.justTouched()){
     	  if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
-    		  game.setScreen(new MainMenuScreen(game, MINESPEED, true));
+    		  game.setScreen(new MainMenuScreen(game, MINESPEED, ANDROID, true));
     		  dispose();
     	  }
     	  
@@ -2111,15 +2111,15 @@ private void spawnMineTrio_curtain(){
     			  selectsound.play();
     		  }
     		  else if (total_time>=200 && MODE.equals("multiply") && TOPIC.equals("ARGAND")){
-    			  game.setScreen(new MainMenuScreen(game, MINESPEED, true));
+    			  game.setScreen(new MainMenuScreen(game, MINESPEED, ANDROID, true));
     			  dispose();
     		  }
     		  else if (total_time>=200 || (MODE.equals("intro") && total_time>1)){
-    			  game.setScreen(new GameScreen_2(game, MINESPEED, next_topic(), next_mode(), ENDLESS, true));
+    			  game.setScreen(new GameScreen_2(game, MINESPEED, next_topic(), next_mode(), ENDLESS, true, ANDROID));
     			  dispose();
     		  }
     		  else {
-    			  game.setScreen(new GameScreen_2(game, MINESPEED, TOPIC, MODE, ENDLESS, true));
+    			  game.setScreen(new GameScreen_2(game, MINESPEED, TOPIC, MODE, ENDLESS, true, ANDROID));
     			  dispose();
     		  }
     		  
@@ -2204,7 +2204,7 @@ private void spawnMineTrio_curtain(){
     		  }
     		  else{
 	    		  
-	    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
+	    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS, ANDROID));
 	    		  dispose();
     		  }
     	  }
@@ -2274,9 +2274,7 @@ private void spawnMineTrio_curtain(){
       
       //--If the screen just finished being touched, kill any mines overlapping the dot--
       //(also, pause/unpause if they untouched over the ship)
-      if (Gdx.input.isTouched()){
-    	  wastouched=true;
-      }
+      
     	  
     	  //}else{if(wastouched){
     	  if (!ship.contains(Gdx.input.getX(), 480-Gdx.input.getY())&&(Gdx.input.getY()>80)&&(!META_PAUSE)&&((Gdx.input.justTouched() && !ANDROID) || (ANDROID && wastouched && !Gdx.input.isTouched()))){
@@ -2292,7 +2290,7 @@ private void spawnMineTrio_curtain(){
     				  last_charge_event_time=total_time;
     			  }
     		  
-    		  wastouched=false;
+    		  
     	  }
     	
     	  if(Gdx.input.justTouched() && ship.contains(Gdx.input.getX(), 480-Gdx.input.getY()) && !META_PAUSE){
@@ -2303,9 +2301,17 @@ private void spawnMineTrio_curtain(){
       MIRROR_THE_DOT=false;
       
       if (about_to_leave){
-    	  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS));
+    	  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS, ANDROID));
     	  dispose();
       }
+      
+      
+      wastouched=false;
+      
+      if (Gdx.input.isTouched()){
+    	  wastouched=true;
+      }
+      
    }
    @Override
    

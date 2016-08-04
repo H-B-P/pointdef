@@ -14,13 +14,15 @@ public class PointDef extends Game {
   	SpriteBatch batch;
 	BitmapFont font;
 	
-	
+	boolean is_android_on;
 	
 	public void create() {
+		
+		is_android_on=true;
 		batch = new SpriteBatch();
 		// Use LibGDX's default Arial font.
 		font = new BitmapFont();
-		this.setScreen(new MainMenuScreen(this, 100, false));
+		this.setScreen(new MainMenuScreen(this, 100, is_android_on, false));
 	}
 
 	public void render() {

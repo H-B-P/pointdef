@@ -182,7 +182,7 @@ public class LibraryScreen implements Screen {
 		if (Gdx.input.justTouched()) {
 			
 			if (B1_r.contains(tp_x,480-tp_y)){
-	            game.setScreen(new MainMenuScreen(game, MINESPEED, true));
+	            game.setScreen(new MainMenuScreen(game, MINESPEED, false, true));
 	            dispose();
 			}
 			if (Book1_r.contains(tp_x,480-tp_y)){

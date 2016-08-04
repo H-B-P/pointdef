@@ -64,7 +64,16 @@ public class MainMenuScreen implements Screen {
 	private Sound hellosound;
 	private Sound arrowsound;
 	
-	public MainMenuScreen(final PointDef gam, int minespeed, boolean play_the_sound) {
+	private boolean ANDROID;
+	
+	private boolean wastouched; 
+	
+	public MainMenuScreen(final PointDef gam, int minespeed, boolean android, boolean play_the_sound) {
+		
+		
+		wastouched=false;
+		
+		ANDROID=android;
 		
 		MINESPEED=minespeed;
 		
@@ -200,7 +209,7 @@ public class MainMenuScreen implements Screen {
 		tp_x=Gdx.input.getX();
 		tp_y=Gdx.input.getY();
 		
-		if (Gdx.input.justTouched()) {
+		if ((!ANDROID&&Gdx.input.justTouched())||(ANDROID&&wastouched&&!Gdx.input.isTouched())) {
 			
 			if (!are_instructions_visible){
 				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>50){
@@ -213,13 +222,13 @@ public class MainMenuScreen implements Screen {
 				}
 				
 				if (CAMPAIGN_r.contains(tp_x,480-tp_y)){
-					game.setScreen(new GameScreen_2(game, MINESPEED, prefs.getString("TOPIC"), prefs.getString("MODE"), false, true));
+					game.setScreen(new GameScreen_2(game, MINESPEED, prefs.getString("TOPIC"), prefs.getString("MODE"), false, true, ANDROID));
 					//game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", false, true));
 					//NOTE THE PROBLEM IS THAT I'M NOT USING ".equals()" IN GS2
 				}
 				
 				if (LEVELS_r.contains(tp_x,480-tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED, false));
+		            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED,  false, ANDROID));
 		            dispose();
 				}
 				
@@ -229,6 +238,12 @@ public class MainMenuScreen implements Screen {
 				}
 			}
 		}
+		
+		wastouched=false;
+	      
+	      if (Gdx.input.isTouched()){
+	    	  wastouched=true;
+	      }
 	}
 
 	@Override
