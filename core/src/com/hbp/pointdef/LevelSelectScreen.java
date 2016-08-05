@@ -133,7 +133,20 @@ public class LevelSelectScreen implements Screen {
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_green.png"));
 
 		}
-		
+		if (TOPIC=="POWERS"){
+			score_one=prefs.getInteger("score_CARTESIAN_positive");
+			score_two=prefs.getInteger("score_CARTESIAN_roots");
+			score_three=prefs.getInteger("score_CARTESIAN_negative");
+			score_four=prefs.getInteger("score_CARTESIAN_exponent");
+			
+			one_t = new Texture(Gdx.files.internal("abutton_positive.png"));
+			two_t = new Texture(Gdx.files.internal("abutton_roots.png"));
+			three_t = new Texture(Gdx.files.internal("abutton_negative.png"));
+			four_t = new Texture(Gdx.files.internal("abutton_exponent.png"));
+			
+			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_purple.png"));
+
+		}
 		if (TOPIC=="MATRIX"){
 			score_one=prefs.getInteger("score_MATRIX_rotation");
 			score_two=prefs.getInteger("score_MATRIX_diagonal");
@@ -450,12 +463,39 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (nxt_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED, ENDLESS, ANDROID));
+			            game.setScreen(new LevelSelectScreen(game, "POWERS", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
 	
 				}
 				
+				if (TOPIC=="POWERS"){
+					if (one_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POWERS", "positive", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (two_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POWERS", "roots", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (three_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POWERS", "negative", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (four_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "POWERS", "exponent", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (prv_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new LevelSelectScreen(game, "POLAR", MINESPEED, ENDLESS, ANDROID));
+			            dispose();
+					}
+					if (nxt_r.contains(tp_x,480-tp_y)){
+			            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED, ENDLESS, ANDROID));
+			            dispose();
+					}
+	
+				}
 				if (TOPIC=="MATRIX"){
 					if (one_r.contains(tp_x,480-tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "rotation", ENDLESS, false, ANDROID));
@@ -474,7 +514,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,480-tp_y)){
-			            game.setScreen(new LevelSelectScreen(game, "POLAR", MINESPEED, ENDLESS, ANDROID));
+			            game.setScreen(new LevelSelectScreen(game, "POWERS", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
 					if (nxt_r.contains(tp_x,480-tp_y)){

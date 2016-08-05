@@ -18,7 +18,7 @@ public class PointDef extends Game {
 	
 	public void create() {
 		
-		is_android_on=true;
+		is_android_on=false;
 		batch = new SpriteBatch();
 		// Use LibGDX's default Arial font.
 		font = new BitmapFont();

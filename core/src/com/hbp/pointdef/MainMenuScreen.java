@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 
+import com.badlogic.gdx.utils.viewport.*;
+
 public class MainMenuScreen implements Screen {
     final PointDef game;
 	OrthographicCamera camera;
@@ -66,10 +68,11 @@ public class MainMenuScreen implements Screen {
 	
 	private boolean ANDROID;
 	
-	private boolean wastouched; 
+	private boolean wastouched;
+	
+	private ScreenViewport viewport;
 	
 	public MainMenuScreen(final PointDef gam, int minespeed, boolean android, boolean play_the_sound) {
-		
 		
 		wastouched=false;
 		
@@ -154,6 +157,8 @@ public class MainMenuScreen implements Screen {
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 320, 480);
+		viewport=new ScreenViewport(camera);
+		
 		
 		hellosound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341250__jeremysykes__select01.wav"));
 		arrowsound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/344510__jeremysykes__select03.wav"));
@@ -171,6 +176,8 @@ public class MainMenuScreen implements Screen {
 		
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		//Gdx.graphics.setWindowedMode(320, 480);
 		
 		Gdx.graphics.setWindowedMode(320, 480);
 		

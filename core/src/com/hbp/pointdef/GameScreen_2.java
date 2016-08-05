@@ -90,6 +90,8 @@ public class GameScreen_2 implements Screen {
    private int cartesian_b;
    private int cartesian_c;
    
+   private int powers_n;
+   
    private Matrix3 TheMatrix;
    private Matrix3 OldMatrix;
    
@@ -238,7 +240,7 @@ public class GameScreen_2 implements Screen {
 		dot_b= new Texture(Gdx.files.internal("dots/dot_blue.png"));
 		dot_c= new Texture(Gdx.files.internal("dots/dot_cyan.png"));
 		dot_y= new Texture(Gdx.files.internal("dots/dot_yellow.png"));
-		dot_p= new Texture(Gdx.files.internal("dots/dot_pink.png"));
+		dot_p= new Texture(Gdx.files.internal("dots/dot_purple.png"));
 		dot_w= new Texture(Gdx.files.internal("dots/dot_white.png"));
 		dot_g= new Texture(Gdx.files.internal("dots/dot_green.png"));
 		if (ANDROID){
@@ -248,12 +250,15 @@ public class GameScreen_2 implements Screen {
 			dot_r= new Texture(Gdx.files.internal("dots/dot_red_and.png"));
 			dot_y= new Texture(Gdx.files.internal("dots/dot_yellow_and.png"));
 			dot_g= new Texture(Gdx.files.internal("dots/dot_green_and.png"));
+			
+			dot_p= new Texture(Gdx.files.internal("dots/dot_purple_and.png"));
 		}
 		
 
       mineImage = new Texture(Gdx.files.internal("a_mine_2.png"));
       if(TOPIC.equals("CARTESIAN")){standard_dot_r = dot_y;}
       else if (TOPIC.equals("POLAR")){standard_dot_r = dot_g;}
+      else if (TOPIC.equals("POWERS")){standard_dot_r = dot_p;}
       else if (TOPIC.equals("MATRIX")){standard_dot_r = dot_r;}
       else if (TOPIC.equals("ARGAND")){standard_dot_r = dot_c;}
       else{
@@ -275,6 +280,7 @@ public class GameScreen_2 implements Screen {
       else if (TOPIC.equals("CARTESIAN") && MODE.equals("mirror")){gridImage = new Texture(Gdx.files.internal("grid_t_mir.png"));}
       else if (TOPIC.equals("POLAR") && MODE.equals("switch")){gridImage = new Texture(Gdx.files.internal("grid_polar_v3.png"));}
       else if (TOPIC.equals("ARGAND") && MODE.equals("power")){gridImage = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
+      else if (TOPIC.equals("POWERS") && ANDROID){gridImage = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
       else {gridImage = new Texture(Gdx.files.internal("grid_t.png"));}
       if (TOPIC.equals("MATRIX")){statusbarImage = new Texture(Gdx.files.internal("statusbar.png"));}
       else {statusbarImage = new Texture(Gdx.files.internal("statusbar_blank.png"));}
@@ -392,7 +398,7 @@ public class GameScreen_2 implements Screen {
       explosions = new Array<Kaboom>();
       other_dots = new Array<Kaboom>();
       
-      if ((TOPIC.equals("POLAR") && !MODE.equals("switch")) || (TOPIC.equals("ARGAND") && MODE.equals("power"))){
+      if ((TOPIC.equals("POLAR") && !MODE.equals("switch")) || (TOPIC.equals("ARGAND") && MODE.equals("power")) || (TOPIC.equals("POWER")&& ANDROID)){
     	  UNIT_LENGTH_IN_PIXELS=80;
       }
       else{
@@ -567,6 +573,9 @@ public class GameScreen_2 implements Screen {
 	   if (TOPIC.equals("POLAR")){
 		   create_polar_dot_function();
 	   }
+	   if (TOPIC.equals("POWERS")){
+		   create_powers_dot_function();
+	   }
 	   if (TOPIC.equals("ARGAND")){
 		   create_argand_dot_function();
 	   }
@@ -732,6 +741,41 @@ public class GameScreen_2 implements Screen {
 	   }
 	   if (MODE.equals("switch")){
 		   DO_ABSOLUTELY_NOTHING();
+	   }
+   }
+   
+   private void create_powers_dot_function(){
+	   if (MODE.equals("positive") || MODE.equals("roots")){
+		   powers_n=seconds/50+1;
+	   }
+	   if (MODE.equals("negative")){
+		   if (seconds%100==0){
+			   powers_n=1;
+			   Function_Code="reciprocal_x";
+		   }
+		   if (seconds%100==50){
+			   powers_n=1;
+			   Function_Code="reciprocal_y";
+		   }
+		   if (seconds%400==150){
+			   powers_n=2+seconds-seconds%400;
+			   Function_Code="reciprocal_y";
+		   }
+	   }
+	   if (MODE.equals("exponent")){
+		   powers_n=seconds-seconds%200+2;
+		   if (seconds%200==0){
+			   Function_Code="exponent";
+		   }
+		   if (seconds%200==50){
+			   Function_Code="negative exponent";
+		   }
+		   if (seconds%200==100){
+			   Function_Code="exponent";
+		   }
+		   if (seconds%200==150){
+			   Function_Code="log";
+		   }
 	   }
    }
    
@@ -1046,6 +1090,9 @@ public class GameScreen_2 implements Screen {
 	   else if (TOPIC.equals("POLAR")){
 		   apply_polar_dot_function(grx, gry);
 	   }
+	   else if (TOPIC.equals("POWERS")){
+		   apply_powers_dot_function(grx, gry);
+	   }
 	   else if (TOPIC.equals("ARGAND")){
 		   apply_argand_dot_function(grx, gry);
 	   }
@@ -1171,6 +1218,57 @@ public class GameScreen_2 implements Screen {
 	   }
 	   new_posn_x=(new_posn_r*Math.cos(new_posn_theta));
 	   new_posn_y=(new_posn_r*Math.sin(new_posn_theta));
+   }
+   
+   private void apply_powers_dot_function(double grx, double gry){
+	   if (MODE.equals("positive")){
+		   new_posn_x=grx;
+		   new_posn_y=Math.pow(gry, powers_n);
+	   }
+	   if (MODE.equals("roots")){
+		   new_posn_x=grx;
+		   new_posn_y=Math.pow(gry, 1/((float)powers_n));
+		   if (powers_n%2==0){
+			   new_posn_y=Math.pow(gry, 1/((float)powers_n));
+			   MIRROR_THE_DOT=true;
+		   }
+		   else{
+			   if (gry>=0){
+				   new_posn_y=Math.pow(gry, 1/((float)powers_n));
+			   }
+			   else{
+				   new_posn_y=-Math.pow(-gry, 1/((float)powers_n));
+			   }
+		   }
+	   }
+	   if (MODE.equals("negative")){
+		   if (Function_Code=="reciprocal_x"){
+			   new_posn_x=Math.pow(grx, -powers_n);
+			   new_posn_y=gry;
+		   }
+		   if (Function_Code=="reciprocal_y"){
+			   new_posn_x=grx;
+			   new_posn_y=Math.pow(gry, -powers_n);
+		   }
+	   }
+	   if (MODE.equals("exponent")){
+		   if (Function_Code=="exponent"){
+			   new_posn_x=grx;
+			   new_posn_y=Math.pow(powers_n, gry);
+		   }
+		   if (Function_Code=="root"){
+			   new_posn_x=grx;
+			   new_posn_y=Math.pow(powers_n, 1.0/gry);
+		   }
+		   if (Function_Code=="negative exponent"){
+			   new_posn_x=grx;
+			   new_posn_y=Math.pow(powers_n, -gry);
+		   }
+		   if (Function_Code=="log"){
+			   new_posn_x=grx;
+			   new_posn_y=Math.log(gry)/Math.log(powers_n);
+		   }
+	   }
    }
    
    private void apply_argand_dot_function(double grx, double gry){
@@ -1671,7 +1769,7 @@ private void spawnMineTrio_curtain(){
       
       //----
       
-      if (Function_Code.equals("square root") || Function_Code.equals("circle")){
+      if (Function_Code.equals("square root") || Function_Code.equals("circle") || (Function_Code.equals("roots")&& (powers_n%2==0))){
     	  MIRROR_THE_DOT=true;
       }
       
@@ -1726,7 +1824,7 @@ private void spawnMineTrio_curtain(){
     		  
       dot.setCenter((float)dotPos_i_x,(float)dotPos_i_y);
       
-      if (MODE.equals("lines")){
+      if (MODE.equals("lines")|| TOPIC.equals("POWERS")){
     	  dotPos_j_x=new_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
           dotPos_j_y=-new_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
       }
@@ -2068,9 +2166,9 @@ private void spawnMineTrio_curtain(){
       //----
       if (!MODE.equals("intro") && ENDLESS){
     	  font.draw(batch, "Hits:", 200, 445);
-    	  font.draw(batch, ((Integer)(score-MINESPEED/5)).toString(), 260, 450);
+    	  font.draw(batch, ((Integer)(score-MINESPEED/5)).toString(), 260, 445);
     	  font.draw(batch, "Misses:", 200, 425);
-    	  font.draw(batch, ((Integer)(10-lives)).toString(), 260, 420);
+    	  font.draw(batch, ((Integer)(10-lives)).toString(), 260, 425);
       }
       else if (!MODE.equals("intro") && CAMPAIGN){
     	  font.draw(batch, "Lives:", 200, 435);
