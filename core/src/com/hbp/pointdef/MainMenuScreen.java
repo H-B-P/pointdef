@@ -19,6 +19,9 @@ public class MainMenuScreen implements Screen {
     final PointDef game;
 	OrthographicCamera camera;
 	
+	private FitViewport fitviewport;
+	private ScreenViewport fillviewport;
+	
 	private Rectangle nxt_r;
 	private Texture nxt_t;	
 	
@@ -157,9 +160,10 @@ public class MainMenuScreen implements Screen {
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 320, 480);
-		viewport=new ScreenViewport(camera);
+		fitviewport = new FitViewport(320, 480, camera);
+		fillviewport = new ScreenViewport(camera);
 		
-		
+		fitviewport.apply(true);
 		hellosound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341250__jeremysykes__select01.wav"));
 		arrowsound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/344510__jeremysykes__select03.wav"));
 		if (play_the_sound){
@@ -177,11 +181,10 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		//Gdx.graphics.setWindowedMode(320, 480);
 		
-		Gdx.graphics.setWindowedMode(320, 480);
+		if (!ANDROID){Gdx.graphics.setWindowedMode(320, 480);}
 		
-		camera.update();
+		//camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
@@ -255,6 +258,32 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
+		
+		float scale=0f;
+		if (width>=160 && height>=240){
+			scale=0.5f;
+		}
+		if (width>=320 && height>=480){
+			scale=1f;
+		}
+		while (width>=(320*(scale+1)) && height>=(480*(scale+1))){
+			scale+=1f;
+		}
+		System.out.println("Target scale is: "+ scale);
+		
+		if (((float)height/(float)width)>1.5f){
+			System.out.println("AT LEAST WE'RE TRYING!");
+			System.out.println(((float)width/(float)scale-320)/2);
+			System.out.println(((float)height/(float)scale-480)/2);
+			camera.setToOrtho(false, (float)width/(float)scale, (float)height/(float)scale);
+			camera.translate(-((float)width/(float)scale-320)/2, -((float)height/(float)scale-480)/2);
+			camera.update();
+		}
+		else{
+			camera.setToOrtho(false, 320, 480);
+			fitviewport.update(width, (int)(480f*scale), true);
+			fitviewport.apply();
+		}
 	}
 
 	@Override
