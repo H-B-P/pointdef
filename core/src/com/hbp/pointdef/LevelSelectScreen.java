@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 
@@ -287,15 +288,21 @@ public class LevelSelectScreen implements Screen {
 	public void render(float delta) {
 		//Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		
-		tp_x=Gdx.input.getX();
-		tp_y=Gdx.input.getY();
+		//tp_x=Gdx.input.getX();
+		//tp_y=Gdx.input.getY();
 		
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		Gdx.graphics.setWindowedMode(320, 480);
+		if (!ANDROID){Gdx.graphics.setWindowedMode(320, 480);}
 		
 		camera.update();
+		
+		Vector3 scr_vec= new Vector3(Gdx.input.getX(), Gdx.input.getY(),0);
+		Vector3 irl_vec=camera.unproject(scr_vec);
+		tp_x=irl_vec.x;
+		tp_y=irl_vec.y;
+		
 		game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
@@ -343,10 +350,10 @@ public class LevelSelectScreen implements Screen {
 	    	font.draw(game.batch, "ENDLESS: OFF", endless_button_r.x+5,endless_button_r.y+20);
 	    }
 	    
-	    if (menu_button_r.contains(tp_x,480-tp_y)){
+	    if (menu_button_r.contains(tp_x,tp_y)){
 			game.batch.draw(abutton_corner_trim_t, menu_button_r.x, menu_button_r.y);
 		}
-	    if (endless_button_r.contains(tp_x,480-tp_y)){
+	    if (endless_button_r.contains(tp_x,tp_y)){
 			game.batch.draw(abutton_corner_trim_t, endless_button_r.x, endless_button_r.y);
 		}
 	    
@@ -359,18 +366,18 @@ public class LevelSelectScreen implements Screen {
 		game.batch.draw(prv_t, selector_prv_r.x, selector_prv_r.y);
 		game.batch.draw(nxt_t, selector_nxt_r.x, selector_nxt_r.y);
 		font.draw(game.batch, ""+MINESPEED, selector_r.x+60, selector_r.y+25);
-		if (one_r.contains(tp_x,480-tp_y)){
+		if (one_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, one_r.x, one_r.y);
 		}
 		
-		if (two_r.contains(tp_x,480-tp_y)){
+		if (two_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, two_r.x, two_r.y);
 		}
 		if (TOPIC!="NONE"){
-			if (three_r.contains(tp_x,480-tp_y)){
+			if (three_r.contains(tp_x,tp_y)){
 				game.batch.draw(TRIM_t, three_r.x, three_r.y);
 			}
-			if (four_r.contains(tp_x,480-tp_y)){
+			if (four_r.contains(tp_x,tp_y)){
 				game.batch.draw(TRIM_t, four_r.x, four_r.y);
 			}
 		}
@@ -378,35 +385,35 @@ public class LevelSelectScreen implements Screen {
 
 		if ((!ANDROID&&Gdx.input.justTouched())||(ANDROID&&wastouched&&!Gdx.input.isTouched())) {
 			if (!are_instructions_visible){
-				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>50){
+				if (selector_prv_r.contains(tp_x, tp_y) && MINESPEED>50){
 					MINESPEED-=5;
 					arrowsound.play();
 				}
-				if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<200){
+				if (selector_nxt_r.contains(tp_x, tp_y) && MINESPEED<200){
 					MINESPEED+=5;
 					arrowsound.play();
 				}
-				if (menu_button_r.contains(tp_x, 480-tp_y)){
+				if (menu_button_r.contains(tp_x, tp_y)){
 					game.setScreen(new MainMenuScreen(game, MINESPEED, ANDROID, true));
 		            dispose();
 				}
-				if (endless_button_r.contains(tp_x, 480-tp_y)){
+				if (endless_button_r.contains(tp_x, tp_y)){
 					ENDLESS=!ENDLESS;
 				}
 				if (TOPIC=="NONE"){
-					if (one_r.contains(tp_x,480-tp_y)){
+					if (one_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (two_r.contains(tp_x,480-tp_y)){
+					if (two_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "basis", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (prv_r.contains(tp_x,480-tp_y)){
+					if (prv_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "ARGAND", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
-					if (nxt_r.contains(tp_x,480-tp_y)){
+					if (nxt_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "CARTESIAN", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
@@ -414,27 +421,27 @@ public class LevelSelectScreen implements Screen {
 				}
 				
 				if (TOPIC=="CARTESIAN"){
-					if (one_r.contains(tp_x,480-tp_y)){
+					if (one_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "add", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (two_r.contains(tp_x,480-tp_y)){
+					if (two_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "flip", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (three_r.contains(tp_x,480-tp_y)){
+					if (three_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "multiply", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (four_r.contains(tp_x,480-tp_y)){
+					if (four_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "lines", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (prv_r.contains(tp_x,480-tp_y)){
+					if (prv_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
-					if (nxt_r.contains(tp_x,480-tp_y)){
+					if (nxt_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "POLAR", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
@@ -442,27 +449,27 @@ public class LevelSelectScreen implements Screen {
 				}
 				
 				if (TOPIC=="POLAR"){
-					if (one_r.contains(tp_x,480-tp_y)){
+					if (one_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "theta", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (two_r.contains(tp_x,480-tp_y)){
+					if (two_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "r", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (three_r.contains(tp_x,480-tp_y)){
+					if (three_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "power", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (four_r.contains(tp_x,480-tp_y)){
+					if (four_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "POLAR", "switch", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (prv_r.contains(tp_x,480-tp_y)){
+					if (prv_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "CARTESIAN", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
-					if (nxt_r.contains(tp_x,480-tp_y)){
+					if (nxt_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "POWERS", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
@@ -470,54 +477,54 @@ public class LevelSelectScreen implements Screen {
 				}
 				
 				if (TOPIC=="POWERS"){
-					if (one_r.contains(tp_x,480-tp_y)){
+					if (one_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "POWERS", "positive", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (two_r.contains(tp_x,480-tp_y)){
+					if (two_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "POWERS", "roots", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (three_r.contains(tp_x,480-tp_y)){
+					if (three_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "POWERS", "negative", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (four_r.contains(tp_x,480-tp_y)){
+					if (four_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "POWERS", "exponent", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (prv_r.contains(tp_x,480-tp_y)){
+					if (prv_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "POLAR", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
-					if (nxt_r.contains(tp_x,480-tp_y)){
+					if (nxt_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
 	
 				}
 				if (TOPIC=="MATRIX"){
-					if (one_r.contains(tp_x,480-tp_y)){
+					if (one_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "rotation", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (two_r.contains(tp_x,480-tp_y)){
+					if (two_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "diagonal", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (three_r.contains(tp_x,480-tp_y)){
+					if (three_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "singular", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (four_r.contains(tp_x,480-tp_y)){
+					if (four_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "arbitrary", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (prv_r.contains(tp_x,480-tp_y)){
+					if (prv_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "POWERS", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
-					if (nxt_r.contains(tp_x,480-tp_y)){
+					if (nxt_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "ARGAND", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
@@ -525,27 +532,27 @@ public class LevelSelectScreen implements Screen {
 				}
 				
 				if (TOPIC=="ARGAND"){
-					if (one_r.contains(tp_x,480-tp_y)){
+					if (one_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "function", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (two_r.contains(tp_x,480-tp_y)){
+					if (two_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "add", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (three_r.contains(tp_x,480-tp_y)){
+					if (three_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "multiply", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (four_r.contains(tp_x,480-tp_y)){
+					if (four_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "ARGAND", "power", ENDLESS, false, ANDROID));
 			            dispose();
 					}
-					if (prv_r.contains(tp_x,480-tp_y)){
+					if (prv_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
-					if (nxt_r.contains(tp_x,480-tp_y)){
+					if (nxt_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
@@ -564,6 +571,21 @@ public class LevelSelectScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
+		float scale=0f;
+		if (width>=160 && height>=240){
+			scale=0.5f;
+		}
+		if (width>=320 && height>=480){
+			scale=1f;
+		}
+		while (width>=(320*(scale+1)) && height>=(480*(scale+1))){
+			scale+=1f;
+		}
+		System.out.println("Target scale is: "+ scale);
+		
+		camera.setToOrtho(false, (float)width/(float)scale, (float)height/(float)scale);
+		camera.translate(-((float)width/(float)scale-320)/2, -((float)height/(float)scale-480)/2);
+		//camera.update();
 	}
 
 	@Override

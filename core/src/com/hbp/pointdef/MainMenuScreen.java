@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Vector3;
 
 import com.badlogic.gdx.utils.viewport.*;
 
@@ -171,17 +172,22 @@ public class MainMenuScreen implements Screen {
 	public void render(float delta) {
 		//Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		
-		tp_x=Gdx.input.getX();
-		tp_y=Gdx.input.getY();
+		
 		
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		//Gdx.graphics.setWindowedMode(320, 480);
 		
-		Gdx.graphics.setWindowedMode(320, 480);
+		if (!ANDROID){Gdx.graphics.setWindowedMode(320, 480);}
 		
 		camera.update();
+		
+		Vector3 scr_vec= new Vector3(Gdx.input.getX(), Gdx.input.getY(),0);
+		Vector3 irl_vec=camera.unproject(scr_vec);
+		tp_x=irl_vec.x;
+		tp_y=irl_vec.y;
+		
 		game.batch.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
@@ -192,15 +198,15 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(LEVELS_t, LEVELS_r.x, LEVELS_r.y);
 		game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
 		
-		if (CAMPAIGN_r.contains(tp_x,480-tp_y)){
+		if (CAMPAIGN_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, CAMPAIGN_r.x, CAMPAIGN_r.y);
 		}
 		
-		if (LEVELS_r.contains(tp_x,480-tp_y)){
+		if (LEVELS_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, LEVELS_r.x, LEVELS_r.y);
 		}
 		
-		if (LIBRARY_r.contains(tp_x,480-tp_y)){
+		if (LIBRARY_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, LIBRARY_r.x, LIBRARY_r.y);
 		}
 		
@@ -213,33 +219,33 @@ public class MainMenuScreen implements Screen {
 		
 		game.batch.end();
 		
-		tp_x=Gdx.input.getX();
-		tp_y=Gdx.input.getY();
+		//tp_x=Gdx.input.getX();
+		//tp_y=Gdx.input.getY();
 		
 		if ((!ANDROID&&Gdx.input.justTouched())||(ANDROID&&wastouched&&!Gdx.input.isTouched())) {
 			
 			if (!are_instructions_visible){
-				if (selector_prv_r.contains(tp_x, 480-tp_y) && MINESPEED>50){
+				if (selector_prv_r.contains(tp_x, tp_y) && MINESPEED>50){
 					MINESPEED-=5;
 					arrowsound.play();
 				}
-				if (selector_nxt_r.contains(tp_x, 480-tp_y) && MINESPEED<200){
+				if (selector_nxt_r.contains(tp_x, tp_y) && MINESPEED<200){
 					MINESPEED+=5;
 					arrowsound.play();
 				}
 				
-				if (CAMPAIGN_r.contains(tp_x,480-tp_y)){
+				if (CAMPAIGN_r.contains(tp_x,tp_y)){
 					game.setScreen(new GameScreen_2(game, MINESPEED, prefs.getString("TOPIC"), prefs.getString("MODE"), false, true, ANDROID));
 					//game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", false, true));
 					//NOTE THE PROBLEM IS THAT I'M NOT USING ".equals()" IN GS2
 				}
 				
-				if (LEVELS_r.contains(tp_x,480-tp_y)){
+				if (LEVELS_r.contains(tp_x,tp_y)){
 		            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED,  false, ANDROID));
 		            dispose();
 				}
 				
-				if (LIBRARY_r.contains(tp_x,480-tp_y)){
+				if (LIBRARY_r.contains(tp_x,tp_y)){
 		            game.setScreen(new LibraryScreen(game, MINESPEED));
 		            dispose();
 				}
@@ -255,6 +261,21 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
+		float scale=0f;
+		if (width>=160 && height>=240){
+			scale=0.5f;
+		}
+		if (width>=320 && height>=480){
+			scale=1f;
+		}
+		while (width>=(320*(scale+1)) && height>=(480*(scale+1))){
+			scale+=1f;
+		}
+		System.out.println("Target scale is: "+ scale);
+		
+		camera.setToOrtho(false, (float)width/(float)scale, (float)height/(float)scale);
+		camera.translate(-((float)width/(float)scale-320)/2, -((float)height/(float)scale-480)/2);
+		//camera.update();
 	}
 
 	@Override
