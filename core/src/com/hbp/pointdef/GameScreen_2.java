@@ -480,6 +480,18 @@ public class GameScreen_2 implements Screen {
     		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_polar_"+cycled(sni,5)+".png"));
     		  snippet_win=snippet_lose;
     	  }
+    	  else if(TOPIC.equals("POWERS") && !MODE.equals("exponent")){
+    		  int sni=MathUtils.random(1,11);
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_powers_"+sni+".png"));
+    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_powers_"+cycled(sni,11)+".png"));
+    		  snippet_win=snippet_lose;
+    	  }
+    	  else if(TOPIC.equals("POWERS") && MODE.equals("exponent")){
+    		  int sni=MathUtils.random(1,2);
+    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_expon_"+sni+".png"));
+    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_expon_"+((sni%2)+1)+".png"));
+    		  snippet_win=snippet_lose;
+    	  }
     	  else if(TOPIC.equals("MATRIX") && !MODE.equals("singular")){
     		  int sni=MathUtils.random(1,5);
     		  snippet=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+sni+".png"));
@@ -1769,7 +1781,7 @@ private void spawnMineTrio_curtain(){
       
       //----
       
-      if (Function_Code.equals("square root") || Function_Code.equals("circle") || (Function_Code.equals("roots")&& (powers_n%2==0))){
+      if (Function_Code.equals("square root") || Function_Code.equals("circle") || (MODE.equals("roots")&& (powers_n%2==0))){
     	  MIRROR_THE_DOT=true;
       }
       
@@ -2097,7 +2109,40 @@ private void spawnMineTrio_curtain(){
     		  font.draw(batch, "Theta="+double_formatted(posn_r), 30, 435);
     	  }
       }
-      
+      if (TOPIC.equals("POWERS")){
+    	  if (MODE.equals("positive")){
+    		  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+    		  dotfunction_font.draw(batch, "y=("+double_formatted(posn_y)+")^"+powers_n, 30, 435);
+    	  }
+    	  if (MODE.equals("roots")){
+    		  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+    		  dotfunction_font.draw(batch, "y=("+double_formatted(posn_y)+")^(1/"+powers_n+")", 30, 435);
+    	  }
+    	  if (MODE.equals("negative")){
+    		  if (Function_Code.equals("reciprocal_x")){
+    			  dotfunction_font.draw(batch, "x=("+double_formatted(posn_x)+")^-"+powers_n, 30, 455);
+    			  dotfunction_font.draw(batch, "y="+double_formatted(posn_y), 30, 435);
+    		  }
+    		  if (Function_Code.equals("reciprocal_y")){
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+    			  dotfunction_font.draw(batch, "y=("+double_formatted(posn_y)+")^-"+powers_n, 30, 435);
+    		  }
+    	  }
+    	  if (MODE.equals("exponent")){
+    		  if (Function_Code.equals("exponent")){
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+        		  dotfunction_font.draw(batch, "y="+powers_n+"^("+double_formatted(posn_y)+")", 30, 435);
+    		  }
+    		  if (Function_Code.equals("negative exponent")){
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+        		  dotfunction_font.draw(batch, "y="+powers_n+"^-("+double_formatted(posn_y)+")", 30, 435);
+    		  }
+    		  if (Function_Code.equals("log")){
+    			  dotfunction_font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
+        		  dotfunction_font.draw(batch, "y=log"+powers_n+"("+double_formatted(posn_y)+")", 30, 435);
+    		  }
+    	  }
+      }
       if (TOPIC.equals("ARGAND")){
     	  if (MODE.equals("add")){
     		  //dotfunction_font.draw(batch, "z=("+double_formatted(posn_x)+double_formatted_prepl(posn_y)+"i) + ("+ argand_a + "+" + argand_b + "i)", 30, 455);

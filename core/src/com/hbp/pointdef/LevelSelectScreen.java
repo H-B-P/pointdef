@@ -134,10 +134,10 @@ public class LevelSelectScreen implements Screen {
 
 		}
 		if (TOPIC=="POWERS"){
-			score_one=prefs.getInteger("score_CARTESIAN_positive");
-			score_two=prefs.getInteger("score_CARTESIAN_roots");
-			score_three=prefs.getInteger("score_CARTESIAN_negative");
-			score_four=prefs.getInteger("score_CARTESIAN_exponent");
+			score_one=prefs.getInteger("score_POWERS_positive");
+			score_two=prefs.getInteger("score_POWERS_roots");
+			score_three=prefs.getInteger("score_POWERS_negative");
+			score_four=prefs.getInteger("score_POWERS_exponent");
 			
 			one_t = new Texture(Gdx.files.internal("abutton_positive.png"));
 			two_t = new Texture(Gdx.files.internal("abutton_roots.png"));
