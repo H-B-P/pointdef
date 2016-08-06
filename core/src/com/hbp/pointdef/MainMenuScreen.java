@@ -129,21 +129,31 @@ public class MainMenuScreen implements Screen {
 		CAMPAIGN_r.width=200;
 		CAMPAIGN_t = new Texture(Gdx.files.internal("abutton_long_campaign.png"));
 		
-		LIBRARY_r = new Rectangle();
-		LIBRARY_r.x=60;
-		LIBRARY_r.y=160;
-		LIBRARY_r.height=60;
-		LIBRARY_r.width=200;
-		LIBRARY_t = new Texture(Gdx.files.internal("abutton_long_library.png"));
+		if (!ANDROID){
 		
-		
-		LEVELS_r = new Rectangle();
-		LEVELS_r.x=60;
-		LEVELS_r.y=60;
-		LEVELS_r.height=60;
-		LEVELS_r.width=200;
-		LEVELS_t = new Texture(Gdx.files.internal("abutton_long_freeplay.png"));
-		
+			LIBRARY_r = new Rectangle();
+			LIBRARY_r.x=60;
+			LIBRARY_r.y=160;
+			LIBRARY_r.height=60;
+			LIBRARY_r.width=200;
+			LIBRARY_t = new Texture(Gdx.files.internal("abutton_long_library.png"));
+			
+			
+			LEVELS_r = new Rectangle();
+			LEVELS_r.x=60;
+			LEVELS_r.y=60;
+			LEVELS_r.height=60;
+			LEVELS_r.width=200;
+			LEVELS_t = new Texture(Gdx.files.internal("abutton_long_freeplay.png"));
+		}
+		else{
+			LEVELS_r = new Rectangle();
+			LEVELS_r.x=60;
+			LEVELS_r.y=160;
+			LEVELS_r.height=60;
+			LEVELS_r.width=200;
+			LEVELS_t = new Texture(Gdx.files.internal("abutton_long_freeplay.png"));
+		}
 
 		TRIM_t = new Texture(Gdx.files.internal("abutton_long_trim.png"));
 		
@@ -196,7 +206,9 @@ public class MainMenuScreen implements Screen {
 		
 		game.batch.draw(CAMPAIGN_t, CAMPAIGN_r.x, CAMPAIGN_r.y);
 		game.batch.draw(LEVELS_t, LEVELS_r.x, LEVELS_r.y);
-		game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
+		if (!ANDROID){
+			game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
+		}
 		
 		if (CAMPAIGN_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, CAMPAIGN_r.x, CAMPAIGN_r.y);
@@ -205,11 +217,11 @@ public class MainMenuScreen implements Screen {
 		if (LEVELS_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, LEVELS_r.x, LEVELS_r.y);
 		}
-		
-		if (LIBRARY_r.contains(tp_x,tp_y)){
-			game.batch.draw(TRIM_t, LIBRARY_r.x, LIBRARY_r.y);
+		if (!ANDROID){
+			if (LIBRARY_r.contains(tp_x,tp_y)){
+				game.batch.draw(TRIM_t, LIBRARY_r.x, LIBRARY_r.y);
+			}
 		}
-		
 		game.batch.draw(selector_t, selector_r.x, selector_r.y);
 		game.batch.draw(prv_t, selector_prv_r.x, selector_prv_r.y);
 		game.batch.draw(nxt_t, selector_nxt_r.x, selector_nxt_r.y);
@@ -244,10 +256,11 @@ public class MainMenuScreen implements Screen {
 		            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED,  false, ANDROID));
 		            dispose();
 				}
-				
-				if (LIBRARY_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LibraryScreen(game, MINESPEED));
-		            dispose();
+				if (!ANDROID){
+					if (LIBRARY_r.contains(tp_x,tp_y)){
+			            game.setScreen(new LibraryScreen(game, MINESPEED));
+			            dispose();
+					}
 				}
 			}
 		}
@@ -272,9 +285,10 @@ public class MainMenuScreen implements Screen {
 			scale+=1f;
 		}
 		System.out.println("Target scale is: "+ scale);
-		
+		//System.out.println("width: "+ width);
+		//System.out.println("height: "+ height);
 		camera.setToOrtho(false, (float)width/(float)scale, (float)height/(float)scale);
-		camera.translate(-((float)width/(float)scale-320)/2, -((float)height/(float)scale-480)/2);
+		camera.translate(-((float)width/(float)scale-320)/2f, -((float)height/(float)scale-480)/2f);
 		//camera.update();
 	}
 
@@ -304,7 +318,7 @@ public class MainMenuScreen implements Screen {
 
 		LEVELS_t.dispose();
 		
-		LIBRARY_t.dispose();
+		if(!ANDROID){LIBRARY_t.dispose();}
 		
 		TRIM_t.dispose();
 		

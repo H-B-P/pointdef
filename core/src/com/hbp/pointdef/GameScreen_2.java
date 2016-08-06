@@ -66,6 +66,8 @@ public class GameScreen_2 implements Screen {
    private Rectangle grid;
    private Array<Rectangle> shields;
    
+   private float tp_x;
+   private float tp_y;
    
    private Rectangle menu_button_r;
    private Texture menu_button_t;
@@ -206,6 +208,8 @@ public class GameScreen_2 implements Screen {
 	private boolean ANDROID;
  //---Do all the initial stuff that happens on rendering---
    
+	private Texture bb_poncho;
+	
    public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
 	   
@@ -271,7 +275,9 @@ public class GameScreen_2 implements Screen {
       }
       dotImage=standard_dot_r;
       
-
+      tp_x=0;
+      tp_y=0;
+      
    	  change_dot_r=dot_w;
    	  
       shipImages = new Texture[10];
@@ -398,7 +404,7 @@ public class GameScreen_2 implements Screen {
       explosions = new Array<Kaboom>();
       other_dots = new Array<Kaboom>();
       
-      if ((TOPIC.equals("POLAR") && !MODE.equals("switch")) || (TOPIC.equals("ARGAND") && MODE.equals("power")) || (TOPIC.equals("POWER")&& ANDROID)){
+      if ((TOPIC.equals("POLAR") && !MODE.equals("switch")) || (TOPIC.equals("ARGAND") && MODE.equals("power")) || (TOPIC.equals("POWERS")&& ANDROID)){
     	  UNIT_LENGTH_IN_PIXELS=80;
       }
       else{
@@ -549,6 +555,8 @@ public class GameScreen_2 implements Screen {
       camera.setToOrtho(false, 320, 480);
       viewport = new FitViewport(320, 480, camera);
       batch = new SpriteBatch();
+      
+      bb_poncho = new Texture(Gdx.files.internal("blackbar_poncho.png"));
       
    }
    
@@ -1791,10 +1799,16 @@ private void spawnMineTrio_curtain(){
 	  Gdx.gl.glClearColor(0, 0, 0, 1);
       Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
       
-      Gdx.graphics.setWindowedMode(320, 480);
+      if (!ANDROID){Gdx.graphics.setWindowedMode(320, 480);}
 
       //--Update Camera, update Batch--
       camera.update();
+      
+      Vector3 scr_vec= new Vector3(Gdx.input.getX(), Gdx.input.getY(),0);
+      Vector3 irl_vec=camera.unproject(scr_vec);
+      tp_x=irl_vec.x;
+      tp_y=irl_vec.y;
+      
       batch.setProjectionMatrix(camera.combined);
       //--Draw everything you can without transforming the dot--
       
@@ -1823,9 +1837,9 @@ private void spawnMineTrio_curtain(){
       
       //--Apply the transformation; draw dots--
       
-      if(Gdx.input.getY()>80 && Gdx.input.getY()<480 && Gdx.input.getX()>0 && Gdx.input.getX()<320){
-    	  double grx=(Gdx.input.getX()-160)/UNIT_LENGTH_IN_PIXELS;
-    	  double gry=-(Gdx.input.getY()-240)/UNIT_LENGTH_IN_PIXELS;
+      if(tp_y>0 && tp_y<400 && tp_x>0 && tp_x<320){
+    	  double grx=(tp_x-160)/UNIT_LENGTH_IN_PIXELS;
+    	  double gry=(tp_y-240)/UNIT_LENGTH_IN_PIXELS;
     	  apply_dot_function(grx, gry);
       }
       
@@ -1928,15 +1942,20 @@ private void spawnMineTrio_curtain(){
     		  batch.draw(campaign_but_start_t, campaign_but_r.x, campaign_but_r.y);
     		  batch.draw(snippet, c_textbox_x+10, c_textbox_y+60);
     		  font.draw(batch, TOPIC+": "+MODE.toUpperCase(), c_textbox_x+20, c_textbox_y+175);
-    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+    		  if(campaign_but_r.contains(tp_x, tp_y)){
     			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
     		  }
     	  }
     	  else if (CAMPAIGN){
 	    	  if (total_time>=200 && MODE.equals("multiply") && TOPIC.equals("ARGAND")){
 	    		  batch.draw(campaign_but_menu_t, campaign_but_r.x, campaign_but_r.y);
-	    		  font.draw(batch, "Congratulations, you finished the campaign! Use freeplay to try more levels, or visit the library to learn the math behind the things you did.", c_textbox_x+20, c_textbox_y+175, 160, 1, true);
-	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+	    		  if (!ANDROID){
+	    			  font.draw(batch, "Congratulations, you finished the campaign! Use freeplay to try more levels, or visit the library to learn the math behind the things you did.", c_textbox_x+20, c_textbox_y+175, 160, 1, true);
+	    		  }
+	    		  else{
+	    			  font.draw(batch, "Congratulations, you finished the campaign! Use freeplay to try more levels, or try the web version for more content.", c_textbox_x+20, c_textbox_y+175, 160, 1, true);
+	    		  }
+	    		  if(campaign_but_r.contains(tp_x, tp_y)){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
 	    		  
@@ -1944,14 +1963,14 @@ private void spawnMineTrio_curtain(){
 	    	  else if (total_time>=200 || MODE.equals("intro")){
 	    		  batch.draw(campaign_but_next_t, campaign_but_r.x, campaign_but_r.y);
 	    		  batch.draw(snippet_win, c_textbox_x+10, c_textbox_y+60);
-	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+	    		  if(campaign_but_r.contains(tp_x, tp_y)){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
 	    	  }
 	    	  else{
 	    		  batch.draw(campaign_but_retry_t, campaign_but_r.x, campaign_but_r.y);
 	    		  batch.draw(snippet_lose, c_textbox_x+10, c_textbox_y+60);
-	    		  if(campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+	    		  if(campaign_but_r.contains(tp_x, tp_y)){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
 	    	  }
@@ -1963,7 +1982,7 @@ private void spawnMineTrio_curtain(){
       batch.draw(shipImage, ship.x, ship.y);
       batch.draw(statusbarImage, 0, 400);
       batch.draw(menu_button_t,265,455);
-      if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+      if (menu_button_r.contains(tp_x, tp_y)){
     	  batch.draw(menu_button_trim_t,265,455);
       }
       //--PRESENT THE FUNCTION--
@@ -2231,7 +2250,9 @@ private void spawnMineTrio_curtain(){
     	  batch.draw(pause_symbol,0,0);
       }
       
+      //----
       
+      batch.draw(bb_poncho, -640, -960);
       batch.end();
       
       //--Exit the game when main menu button pressed--
@@ -2239,7 +2260,7 @@ private void spawnMineTrio_curtain(){
       //(Do NOT move this back to inside the batch. Weird, weird bugs crop up if you do.)
       
       if(Gdx.input.justTouched()){
-    	  if (menu_button_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+    	  if (menu_button_r.contains(tp_x, tp_y)){
     		  game.setScreen(new MainMenuScreen(game, MINESPEED, ANDROID, true));
     		  dispose();
     	  }
@@ -2247,7 +2268,7 @@ private void spawnMineTrio_curtain(){
     	  
     	  
     	  
-    	  if(META_PAUSE && campaign_but_r.contains(Gdx.input.getX(), 480-Gdx.input.getY())){
+    	  if(META_PAUSE && campaign_but_r.contains(tp_x, tp_y)){
     		  if (total_time==0){
     			  META_PAUSE=false;
     			  show_c_textbox=false;
@@ -2259,6 +2280,9 @@ private void spawnMineTrio_curtain(){
     		  }
     		  else if (total_time>=200 || (MODE.equals("intro") && total_time>1)){
     			  game.setScreen(new GameScreen_2(game, MINESPEED, next_topic(), next_mode(), ENDLESS, true, ANDROID));
+    			  prefs.putString("TOPIC", next_topic());
+    	    	  prefs.putString("MODE", next_mode());
+    	    	  prefs.flush();
     			  dispose();
     		  }
     		  else {
@@ -2336,6 +2360,7 @@ private void spawnMineTrio_curtain(){
     		  if (CAMPAIGN){
     			  prefs.putString("TOPIC", next_topic());
     	    	  prefs.putString("MODE", next_mode());
+    	    	  prefs.flush();
     			  show_c_textbox=true;
     			  META_PAUSE=true;
     			  if (MODE.equals("multiply") && TOPIC.equals("ARGAND")){
@@ -2420,7 +2445,7 @@ private void spawnMineTrio_curtain(){
       
     	  
     	  //}else{if(wastouched){
-    	  if (!ship.contains(Gdx.input.getX(), 480-Gdx.input.getY())&&(Gdx.input.getY()>80)&&(!META_PAUSE)&&((Gdx.input.justTouched() && !ANDROID) || (ANDROID && wastouched && !Gdx.input.isTouched()))){
+    	  if (!ship.contains(tp_x, tp_y)&&(tp_y<400)&&(!META_PAUSE)&&((Gdx.input.justTouched() && !ANDROID) || (ANDROID && wastouched && !Gdx.input.isTouched()))){
     		  
     		  
     			  if( charges>0){
@@ -2436,7 +2461,7 @@ private void spawnMineTrio_curtain(){
     		  
     	  }
     	
-    	  if(Gdx.input.justTouched() && ship.contains(Gdx.input.getX(), 480-Gdx.input.getY()) && !META_PAUSE){
+    	  if(Gdx.input.justTouched() && ship.contains(tp_x, tp_y) && !META_PAUSE){
     		  IS_TIME_HAPPENING=!IS_TIME_HAPPENING;
     	  }
     	  
@@ -2520,6 +2545,10 @@ private void spawnMineTrio_curtain(){
    	textbox_5.dispose();
    	textbox_6.dispose();
    	}
+   	
+   	bb_poncho.dispose();
+   	
+   	
    	c_textbox.dispose();
       
    	hit_sound.stop();
@@ -2546,7 +2575,21 @@ public void resize(int width, int height) {
 	// TODO Auto-generated method stub
 	//viewport.update(width, height);
     //camera.update();
+	float scale=0f;
+	if (width>=160 && height>=240){
+		scale=0.5f;
+	}
+	if (width>=320 && height>=480){
+		scale=1f;
+	}
+	while (width>=(320*(scale+1)) && height>=(480*(scale+1))){
+		scale+=1f;
+	}
+	System.out.println("Target scale is: "+ scale);
 	
+	camera.setToOrtho(false, (float)width/(float)scale, (float)height/(float)scale);
+	camera.translate(-((float)width/(float)scale-320)/2, -((float)height/(float)scale-480)/2);
+	//camera.update();
 }
 
 @Override
