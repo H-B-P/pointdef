@@ -532,7 +532,7 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       
-      wavetype="dull";
+      wavetype="massed";
       
       horz_coefficient=0.9f;
       if (ANDROID){
@@ -1385,6 +1385,23 @@ public class GameScreen_2 implements Screen {
 	      mines.add(mine);
 	   }
    
+   private void spawnMine_queueable(int xposn, int yposn, float m_speed) {
+	      Mine mine = new Mine();
+	      mine.rect = new Rectangle();
+	      double xposn_II = (xposn*40.0+160.0)-20.0;
+	      double yposn_II = 440+(yposn*40.0);
+	      mine.rect.x = (float) xposn_II;
+	      mine.rect.y = (float) yposn_II;
+	      mine.rect.width = 40;
+	      mine.rect.height = 40;
+	      
+	      mine.vert_speed = m_speed;
+	      mine.horz_speed = 0;
+	      
+	      
+	      mines.add(mine);
+	   }
+   
    private void spawnMine_horz(int xposn, int disp, float frac) {
 	      Mine mine = new Mine();
 	      mine.rect = new Rectangle();
@@ -1498,38 +1515,52 @@ private void spawnMineTrio_wall(){
 	}
 	
 }
-
-private void spawnMinePair_curtain(){
-	int typ=MathUtils.random(1,2);
-	if (typ==1){
-		int k=MathUtils.random(-2,2);
-		spawnMine_horz(k+1,0,0.7f);
-		spawnMine_horz(k-1,0,1f);
-	}
-	if (typ==2){
-		int k=MathUtils.random(-2,2);
-		spawnMine_horz(k+1,0,1f);
-		spawnMine_horz(k-1,0,0.7f);
-	}
-}
-
-private void spawnMineTrio_curtain(){
-	int typ=MathUtils.random(1,2);
-	if (typ==1){
-		int k=MathUtils.random(-1,1);
-		spawnMine_horz(k+2,0,0.6f);
-		spawnMine_horz(k,0,0.8f);
-		spawnMine_horz(k-2,0,1f);
-	}
-	if (typ==2){
-		int k=MathUtils.random(-1,1);
-		spawnMine_horz(k+2,0,1f);
-		spawnMine_horz(k,0,0.8f);
-		spawnMine_horz(k-2,0,0.6f);
-	}
-}
-
    
+
+private void spawnMineLine(int linelen){
+	int k=MathUtils.random(-3,3);
+	for(int i=0; i<linelen; i++){
+		spawnMine_queueable(k, i*2, 150);
+	}
+	
+}
+
+private void spawnFirstMineSquare(){
+	int m_sp=35;
+	spawnMine_queueable(-2, 0, m_sp);
+	spawnMine_queueable(0, 0, m_sp);
+	spawnMine_queueable(2, 0, m_sp);
+	spawnMine_queueable(-2, 2, m_sp);
+	spawnMine_queueable(0, 2, m_sp);
+	spawnMine_queueable(2, 2, m_sp);
+	spawnMine_queueable(-2, 4, m_sp);
+	spawnMine_queueable(0, 4, m_sp);
+	spawnMine_queueable(2, 4, m_sp);
+}
+
+private void spawnSecondMineSquare(){
+	int m_sp=30;
+	spawnMine_queueable(-3, 0, m_sp);
+	spawnMine_queueable(-1, 0, m_sp);
+	spawnMine_queueable(1, 0, m_sp);
+	spawnMine_queueable(3, 0, m_sp);
+	
+	spawnMine_queueable(-3, 2, m_sp);
+	spawnMine_queueable(-1, 2, m_sp);
+	spawnMine_queueable(1, 2, m_sp);
+	spawnMine_queueable(3, 2, m_sp);
+	
+	spawnMine_queueable(-3, 4, m_sp);
+	spawnMine_queueable(-1, 4, m_sp);
+	spawnMine_queueable(1, 4, m_sp);
+	spawnMine_queueable(3, 4, m_sp);
+	
+	spawnMine_queueable(-3, 6, m_sp);
+	spawnMine_queueable(-1, 6, m_sp);
+	spawnMine_queueable(1, 6, m_sp);
+	spawnMine_queueable(3, 6, m_sp);
+}
+
    //(This creates the dot which actually detonates mines. Not to be confused with mirroring.)
    private void spawn_other_dot(float x,float y) {
  	     
@@ -1608,8 +1639,11 @@ private void spawnMineTrio_curtain(){
 	   else if(wavetype.equals("wall")){
 		   wave_wall(sss);
 	   }
-	   else if(wavetype.equals("curtain")){
-		   wave_curtain(sss);
+	   else if(wavetype.equals("lined")){
+		   wave_lined(sss);
+	   }
+	   else if(wavetype.equals("massed")){
+		   wave_massed(sss);
 	   }
    }
    
@@ -1656,14 +1690,26 @@ private void spawnMineTrio_curtain(){
 	   }
    }
    
-   private void wave_curtain(int ss){
-       int ts=ss+5;
+   private void wave_lined(int ss){
+	   int ts=ss+5;
 	   if (seconds>=ts && seconds<ts+20){
- 		  if((seconds-ts)%4 == 0) spawnMinePair_curtain();
+ 		  if((seconds-ts)%5 == 0) spawnMineLine(3);
  		 dotfunction_font.setColor(Color.BLACK);
  	   }
 	   if (seconds>=ts+20 && seconds<ts+40){
-		   if((seconds-ts)%4 == 0) spawnMineTrio_curtain();
+		   if((seconds-ts)%8 == 0) spawnMineLine(2);
+		   if((seconds-ts)%8 == 4) spawnMineLine(4);
+	   }
+   }
+   
+   private void wave_massed(int ss){
+	   int ts=ss+5;
+	   if (seconds==ts){
+ 		  spawnFirstMineSquare();
+ 		 dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds==ts+20){
+		   spawnSecondMineSquare();
 	   }
    }
    //---------
