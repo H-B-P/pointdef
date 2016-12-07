@@ -134,6 +134,34 @@ public class LevelSelectScreen implements Screen {
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_green.png"));
 
 		}
+		if (TOPIC=="CURVES"){
+			score_one=0;
+			score_two=0;
+			score_three=0;
+			score_four=0;
+			
+			one_t = new Texture(Gdx.files.internal("angle_button.png"));
+			two_t = new Texture(Gdx.files.internal("angle_button.png"));
+			three_t = new Texture(Gdx.files.internal("angle_button.png"));
+			four_t = new Texture(Gdx.files.internal("angle_button.png"));
+			
+			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
+
+		}
+		if (TOPIC=="TRIG"){
+			score_one=0;
+			score_two=0;
+			score_three=0;
+			score_four=0;
+			
+			one_t = new Texture(Gdx.files.internal("angle_button.png"));
+			two_t = new Texture(Gdx.files.internal("angle_button.png"));
+			three_t = new Texture(Gdx.files.internal("angle_button.png"));
+			four_t = new Texture(Gdx.files.internal("angle_button.png"));
+			
+			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
+
+		}
 		if (TOPIC=="POWERS"){
 			score_one=prefs.getInteger("score_POWERS_positive");
 			score_two=prefs.getInteger("score_POWERS_roots");
@@ -498,11 +526,68 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (nxt_r.contains(tp_x,tp_y)){
+			            game.setScreen(new LevelSelectScreen(game, "CURVES", MINESPEED, ENDLESS, ANDROID));
+			            dispose();
+					}
+	
+				}
+				
+				if (TOPIC=="CURVES"){
+					if (one_r.contains(tp_x,tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CURVES", "line", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (two_r.contains(tp_x,tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CURVES", "circle", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (three_r.contains(tp_x,tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CURVES", "reciprocal", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (four_r.contains(tp_x,tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CURVES", "polynomial", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (prv_r.contains(tp_x,tp_y)){
+			            game.setScreen(new LevelSelectScreen(game, "POWERS", MINESPEED, ENDLESS, ANDROID));
+			            dispose();
+					}
+					if (nxt_r.contains(tp_x,tp_y)){
+			            game.setScreen(new LevelSelectScreen(game, "TRIG", MINESPEED, ENDLESS, ANDROID));
+			            dispose();
+					}
+	
+				}
+				
+				if (TOPIC=="TRIG"){
+					if (one_r.contains(tp_x,tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "TRIG", "sin", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (two_r.contains(tp_x,tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "TRIG", "parameters", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (three_r.contains(tp_x,tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "TRIG", "squared", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (four_r.contains(tp_x,tp_y)){
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "TRIG", "inverse", ENDLESS, false, ANDROID));
+			            dispose();
+					}
+					if (prv_r.contains(tp_x,tp_y)){
+			            game.setScreen(new LevelSelectScreen(game, "CURVES", MINESPEED, ENDLESS, ANDROID));
+			            dispose();
+					}
+					if (nxt_r.contains(tp_x,tp_y)){
 			            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED, ENDLESS, ANDROID));
 			            dispose();
 					}
 	
 				}
+				
 				if (TOPIC=="MATRIX"){
 					if (one_r.contains(tp_x,tp_y)){
 			            game.setScreen(new GameScreen_2(game, MINESPEED, "MATRIX", "rotation", ENDLESS, false, ANDROID));

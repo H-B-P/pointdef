@@ -92,6 +92,16 @@ public class GameScreen_2 implements Screen {
    private int cartesian_b;
    private int cartesian_c;
    
+   private int curves_a;
+   private int curves_b;
+   private int curves_c;
+   private int curves_r;
+   
+   private int trig_a;
+   private int trig_b;
+   private int trig_c;
+   private int trig_d;
+   
    private int powers_n;
    
    private Matrix3 TheMatrix;
@@ -532,7 +542,7 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       
-      wavetype="massed";
+      wavetype="dull";
       
       horz_coefficient=0.9f;
       if (ANDROID){
@@ -598,6 +608,12 @@ public class GameScreen_2 implements Screen {
 	   }
 	   if (TOPIC.equals("POWERS")){
 		   create_powers_dot_function();
+	   }
+	   if (TOPIC.equals("CURVES")){
+		   create_curves_dot_function();
+	   }
+	   if (TOPIC.equals("TRIG")){
+		   create_trig_dot_function();
 	   }
 	   if (TOPIC.equals("ARGAND")){
 		   create_argand_dot_function();
@@ -704,26 +720,46 @@ public class GameScreen_2 implements Screen {
 			   cartesian_b=1;
 		   }
 	   }
-	   if (MODE.equals("lines")){
+   }
+   
+   private void create_curves_dot_function(){
+	   if (MODE.equals("line")){
 		   if (seconds%200==0){
 			   Function_Code="y_is_c";
-			   cartesian_c=plusorminus()*MathUtils.random(1,2);
+			   curves_c=plusorminus()*MathUtils.random(1,2);
 		   }
-		   if (seconds%200==50){
+		   if (seconds%200==50 || seconds%200==100){
 			   Function_Code="y_is_mx";
-			   cartesian_b=MathUtils.random(2,4);
-			   cartesian_a=plusorminus()*MathUtils.random(1,cartesian_b-1);
-		   }
-		   if (seconds%200==100){
-			   Function_Code="y_is_mx_plus_c";
-			   cartesian_c=plusorminus();
-			   cartesian_a=plusorminus();
-			   cartesian_b=MathUtils.random(2,4);
+			   curves_b=MathUtils.random(2,4);
+			   curves_a=plusorminus()*MathUtils.random(1,cartesian_b-1);
 		   }
 		   if (seconds%200==150){
-			   Function_Code="circle";
+			   Function_Code="y_is_mx_plus_c";
+			   curves_c=plusorminus();
+			   curves_a=plusorminus();
+			   curves_b=MathUtils.random(2,4);
 		   }
 	   }
+	   if (MODE.equals("circle")){
+		   if (seconds==0){
+			   curves_a=0;
+			   curves_b=0;
+			   curves_r=3;
+		   }
+		   if (seconds%200==50){
+			   curves_b=plusorminus()*MathUtils.random(1,3);
+		   }
+		   if (seconds%200==100){
+			   curves_r=3+MathUtils.random(1,Math.abs(curves_b));
+		   }
+		   if (seconds%200==150){
+			   curves_a=plusorminus()*MathUtils.random(1, curves_r-3);
+		   }
+	   }
+   }
+   
+   private void create_trig_dot_function(){
+	   
    }
    
    private void create_polar_dot_function(){
@@ -1134,6 +1170,12 @@ public class GameScreen_2 implements Screen {
 	   else if (TOPIC.equals("POWERS")){
 		   apply_powers_dot_function(grx, gry);
 	   }
+	   else if (TOPIC.equals("CURVES")){
+		   apply_curve_dot_function(grx, gry);
+	   }
+	   else if (TOPIC.equals("TRIG")){
+		   apply_powers_dot_function(grx, gry);
+	   }
 	   else if (TOPIC.equals("ARGAND")){
 		   apply_argand_dot_function(grx, gry);
 	   }
@@ -1189,28 +1231,6 @@ public class GameScreen_2 implements Screen {
 		   if (Function_Code=="flip_neg_diag"){
 			   new_posn_x=-posn_y;
 			   new_posn_y=-posn_x;
-		   }
-	   }
-	   if (MODE.equals("lines")){
-		   new_posn_x=posn_x;
-		   if (Function_Code=="y_is_c"){
-			   new_posn_y=(double)cartesian_c;
-		   }
-		   if (Function_Code=="y_is_mx"){
-			   new_posn_y=cartesian_a*posn_x/cartesian_b;
-		   }
-		   if (Function_Code=="y_is_mx_plus_c"){
-			   new_posn_y=cartesian_a*posn_x/cartesian_b +cartesian_c;
-		   }
-		   if (Function_Code=="circle"){
-			   MIRROR_THE_DOT=true;
-			   if (Math.abs(posn_x)<=3){
-				   new_posn_y=Math.sqrt(9-posn_x*posn_x);
-			   }
-			   else{
-				   //Basically just send it off the screen.
-				   new_posn_y=-13.0;
-			   }
 		   }
 	   }
 	   if (MODE.equals("switch")){
@@ -1315,7 +1335,30 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
    }
-   
+   private void apply_curve_dot_function(double grx, double gry){
+	   new_posn_x=posn_x;
+	   if (MODE.equals("line")){
+		   if (Function_Code=="y_is_c"){
+			   new_posn_y=(double)curves_c;
+		   }
+		   if (Function_Code=="y_is_mx"){
+			   new_posn_y=curves_a*posn_x/curves_b;
+		   }
+		   if (Function_Code=="y_is_mx_plus_c"){
+			   new_posn_y=curves_a*posn_x/curves_b +curves_c;
+		   }
+	   }
+	   if (MODE.equals("circle")){
+		   MIRROR_THE_DOT=true;
+		   if (Math.abs(posn_x)<=curves_r){
+			   new_posn_y=Math.sqrt(curves_r*curves_r-(posn_x-curves_a)*(posn_x-curves_a))+curves_b;
+		   }
+		   else{
+			   //Basically just send it off the screen.
+			   new_posn_y=-13.0;
+		   }
+	   }
+   }
    private void apply_argand_dot_function(double grx, double gry){
 	   if (MODE.equals("add")){
 		   new_posn_x=grx+argand_a;
@@ -1923,7 +1966,7 @@ private void spawnSecondMineSquare(){
     		  
       dot.setCenter((float)dotPos_i_x,(float)dotPos_i_y);
       
-      if (MODE.equals("lines")|| TOPIC.equals("POWERS")){
+      if (TOPIC.equals("CURVES")|| TOPIC.equals("POWERS")){
     	  dotPos_j_x=new_posn_x*UNIT_LENGTH_IN_PIXELS+160.0;
           dotPos_j_y=-new_posn_y*UNIT_LENGTH_IN_PIXELS+240.0;
       }
@@ -2125,7 +2168,7 @@ private void spawnSecondMineSquare(){
     		  dotfunction_font.draw(batch, "x="+double_formatted(new_posn_x), 30, 455);
     		  dotfunction_font.draw(batch, "y="+double_formatted(new_posn_y), 30, 435);
     	  }
-    	  if (MODE.equals("lines")){
+    	  if (MODE.equals("line")){
     		  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);
     		  if (Function_Code=="y_is_c"){
         		  dotfunction_font.draw(batch, "y="+cartesian_c, 30, 435);
