@@ -686,6 +686,24 @@ public class GameScreen_2 implements Screen {
 			   Function_Code="flip_y";
 		   }
 	   }
+	   if (MODE.equals("switch")){
+		   if (seconds%200==0){
+			   cartesian_a=1;
+			   cartesian_b=1;
+		   }
+		   if (seconds%200==50){
+			   cartesian_a=1;
+			   cartesian_b=-1;
+		   }
+		   if (seconds%200==100){
+			   cartesian_a=-1;
+			   cartesian_b=-1;
+		   }
+		   if (seconds%200==150){
+			   cartesian_a=-1;
+			   cartesian_b=1;
+		   }
+	   }
 	   if (MODE.equals("lines")){
 		   if (seconds%200==0){
 			   Function_Code="y_is_c";
@@ -1194,6 +1212,10 @@ public class GameScreen_2 implements Screen {
 				   new_posn_y=-13.0;
 			   }
 		   }
+	   }
+	   if (MODE.equals("switch")){
+		   new_posn_x=posn_y*cartesian_a;
+		   new_posn_y=posn_x*cartesian_b;
 	   }
    }
    
@@ -2098,6 +2120,10 @@ private void spawnSecondMineSquare(){
     			  dotfunction_font.draw(batch, "x=-("+double_formatted(posn_y)+")", 30, 455);
         		  dotfunction_font.draw(batch, "y=-("+double_formatted(posn_x)+")", 30, 435);
     		  }
+    	  }
+    	  if (MODE.equals("switch")){
+    		  dotfunction_font.draw(batch, "x="+double_formatted(new_posn_x), 30, 455);
+    		  dotfunction_font.draw(batch, "y="+double_formatted(new_posn_y), 30, 435);
     	  }
     	  if (MODE.equals("lines")){
     		  font.draw(batch, "x="+double_formatted(posn_x), 30, 455);

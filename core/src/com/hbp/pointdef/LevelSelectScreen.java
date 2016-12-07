@@ -109,12 +109,12 @@ public class LevelSelectScreen implements Screen {
 			score_one=prefs.getInteger("score_CARTESIAN_add");
 			score_two=prefs.getInteger("score_CARTESIAN_flip");
 			score_three=prefs.getInteger("score_CARTESIAN_multiply");
-			score_four=prefs.getInteger("score_CARTESIAN_lines");
+			score_four=prefs.getInteger("score_CARTESIAN_switch");
 			
 			one_t = new Texture(Gdx.files.internal("abutton_add.png"));
 			two_t = new Texture(Gdx.files.internal("abutton_flip.png"));
 			three_t = new Texture(Gdx.files.internal("abutton_multiply.png"));
-			four_t = new Texture(Gdx.files.internal("abutton_lines.png"));
+			four_t = new Texture(Gdx.files.internal("abutton_switch.png"));
 			
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_yellow.png"));
 
@@ -434,7 +434,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (four_r.contains(tp_x,tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "lines", ENDLESS, false, ANDROID));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, "CARTESIAN", "switch", ENDLESS, false, ANDROID));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,tp_y)){
