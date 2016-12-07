@@ -108,6 +108,7 @@ public class GameScreen_2 implements Screen {
    
    private int maxcharges;
    
+   private float effective_delta;
    
    private boolean wastouched;
    
@@ -141,7 +142,8 @@ public class GameScreen_2 implements Screen {
    
    private String MODE;
    private String TOPIC;
-   private int MINESPEED;
+   private int GAMESPEED;
+   private int GAMESPEED_ORI;
    private boolean ENDLESS;
    
    private boolean CAMPAIGN;
@@ -210,7 +212,7 @@ public class GameScreen_2 implements Screen {
    
 	private Texture bb_poncho;
 	
-   public GameScreen_2(final PointDef gam, int minespeed, String topic, String mode, boolean endless, boolean campaign, boolean android) {
+   public GameScreen_2(final PointDef gam, int gamespeed, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
 	   
 	   ANDROID=android;
@@ -222,7 +224,8 @@ public class GameScreen_2 implements Screen {
 	   ENDLESS=endless;
       MODE=mode;
       TOPIC=topic;
-      MINESPEED=minespeed;
+      GAMESPEED=gamespeed;
+      GAMESPEED_ORI=gamespeed;
       CAMPAIGN=campaign;
       META_PAUSE=true;
       
@@ -343,7 +346,7 @@ public class GameScreen_2 implements Screen {
 	      //show_textbox=true;
       }
       //--Set zeroes to zero--
-      score=MINESPEED/5;
+      score=GAMESPEED/5;
       Function_Code="None";
       total_time=0;
       total_paused_time=0;
@@ -425,7 +428,7 @@ public class GameScreen_2 implements Screen {
     	  maxcharges=3;
       }
       else{
-    	  maxcharges=6;
+    	  maxcharges=9;
       }
       create_dot_function();
       apply_dot_function(0,0);
@@ -1375,7 +1378,7 @@ public class GameScreen_2 implements Screen {
 	      mine.rect.width = 40;
 	      mine.rect.height = 40;
 	      
-	      mine.vert_speed = MINESPEED;
+	      mine.vert_speed = 100;
 	      mine.horz_speed = 0;
 	      
 	      
@@ -1391,8 +1394,8 @@ public class GameScreen_2 implements Screen {
 	      mine.rect.width = 40;
 	      mine.rect.height = 40;
 	      
-	      mine.vert_speed = MINESPEED*frac;
-	      mine.horz_speed = (float) disp / 8f * MINESPEED*frac;
+	      mine.vert_speed = 100*frac;
+	      mine.horz_speed = (float) disp / 8f * 100*frac;
 	      
 	      
 	      mines.add(mine);
@@ -1771,14 +1774,16 @@ private void spawnMineTrio_curtain(){
    @Override
    public void render(float delta) {
 	   
+	   effective_delta=delta*((float)GAMESPEED)/100f;
+	   
 	   //--Adjust time--
 	   //if (META_PAUSE){IS_TIME_HAPPENING=false;}
 	   if (!META_PAUSE){
 	      if(IS_TIME_HAPPENING){
-		   total_time+=Gdx.graphics.getDeltaTime();
+		   total_time+=effective_delta;
 	      }
 	      else{
-	    	  total_paused_time+=Gdx.graphics.getDeltaTime();
+	    	  total_paused_time+=effective_delta;
 	      }
 	   }
       
@@ -1895,7 +1900,7 @@ private void spawnMineTrio_curtain(){
     		  }
     	  }
     	  
-    	  if ((seconds==26 && (score-MINESPEED/5)==7) || (seconds==35 && (score-MINESPEED/5)>8)){
+    	  if ((seconds==26 && (score-GAMESPEED_ORI/5)==7) || (seconds==35 && (score-GAMESPEED_ORI/5)>8)){
     		  if(CAMPAIGN){
     			  show_c_textbox=true;
     			  META_PAUSE=true;
@@ -1920,7 +1925,7 @@ private void spawnMineTrio_curtain(){
     	  }
       }
       
-      if ((score-MINESPEED/5)==7 && MODE.equals("intro")){
+      if ((score-GAMESPEED_ORI/5)==7 && MODE.equals("intro")){
     	  show_textbox=false;
       }
       
@@ -2230,7 +2235,7 @@ private void spawnMineTrio_curtain(){
       //----
       if (!MODE.equals("intro") && ENDLESS){
     	  font.draw(batch, "Hits:", 200, 445);
-    	  font.draw(batch, ((Integer)(score-MINESPEED/5)).toString(), 260, 445);
+    	  font.draw(batch, ((Integer)(score-GAMESPEED_ORI/5)).toString(), 260, 445);
     	  font.draw(batch, "Misses:", 200, 425);
     	  font.draw(batch, ((Integer)(10-lives)).toString(), 260, 425);
       }
@@ -2261,7 +2266,7 @@ private void spawnMineTrio_curtain(){
       
       if(Gdx.input.justTouched()){
     	  if (menu_button_r.contains(tp_x, tp_y)){
-    		  game.setScreen(new MainMenuScreen(game, MINESPEED, ANDROID, true));
+    		  game.setScreen(new MainMenuScreen(game, GAMESPEED_ORI, ANDROID, true));
     		  dispose();
     	  }
     	  
@@ -2275,18 +2280,18 @@ private void spawnMineTrio_curtain(){
     			  selectsound.play();
     		  }
     		  else if (total_time>=200 && MODE.equals("multiply") && TOPIC.equals("ARGAND")){
-    			  game.setScreen(new MainMenuScreen(game, MINESPEED, ANDROID, true));
+    			  game.setScreen(new MainMenuScreen(game, GAMESPEED_ORI, ANDROID, true));
     			  dispose();
     		  }
     		  else if (total_time>=200 || (MODE.equals("intro") && total_time>1)){
-    			  game.setScreen(new GameScreen_2(game, MINESPEED, next_topic(), next_mode(), ENDLESS, true, ANDROID));
+    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, next_topic(), next_mode(), ENDLESS, true, ANDROID));
     			  prefs.putString("TOPIC", next_topic());
     	    	  prefs.putString("MODE", next_mode());
     	    	  prefs.flush();
     			  dispose();
     		  }
     		  else {
-    			  game.setScreen(new GameScreen_2(game, MINESPEED, TOPIC, MODE, ENDLESS, true, ANDROID));
+    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, TOPIC, MODE, ENDLESS, true, ANDROID));
     			  dispose();
     		  }
     		  
@@ -2372,7 +2377,7 @@ private void spawnMineTrio_curtain(){
     		  }
     		  else{
 	    		  
-	    		  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS, ANDROID));
+	    		  game.setScreen(new LevelSelectScreen(game, TOPIC, GAMESPEED_ORI, ENDLESS, ANDROID));
 	    		  dispose();
     		  }
     	  }
@@ -2401,8 +2406,8 @@ private void spawnMineTrio_curtain(){
       
 		  while(iter.hasNext()) {
 		     Mine mine = iter.next();
-		     mine.rect.y -= mine.vert_speed * Gdx.graphics.getDeltaTime();
-		     mine.rect.x += mine.horz_speed * Gdx.graphics.getDeltaTime();
+		     mine.rect.y -= mine.vert_speed * effective_delta;
+		     mine.rect.x += mine.horz_speed * effective_delta;
 		     if(mine.rect.y + 64 < 0) iter.remove();
 		 
 		 boolean deadyet=false;
@@ -2469,7 +2474,7 @@ private void spawnMineTrio_curtain(){
       MIRROR_THE_DOT=false;
       
       if (about_to_leave){
-    	  game.setScreen(new LevelSelectScreen(game, TOPIC, MINESPEED, ENDLESS, ANDROID));
+    	  game.setScreen(new LevelSelectScreen(game, TOPIC, GAMESPEED_ORI, ENDLESS, ANDROID));
     	  dispose();
       }
       
