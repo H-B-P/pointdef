@@ -119,10 +119,6 @@ public class GameScreen_2 implements Screen {
    
    //I should make this about an array of dots, not just one. I'll need that for when they are.
    
-   private Rectangle dot;
-   
-   private Rectangle mirror_dot;
-   
    private Rectangle[] dots;
    
    private Rectangle ship;
@@ -202,8 +198,6 @@ public class GameScreen_2 implements Screen {
    //REPLACE MIRRORING WITH NUMBER_OF_DOTS
    
    //---Space---
-   
-   private boolean MIRROR_THE_DOT;
    
    private int NUMBER_OF_DOTS;
    
@@ -450,7 +444,7 @@ public class GameScreen_2 implements Screen {
       //(I should set up a more rigorous way of doing this, but all the dot functions which create multiple
       //dots (sqrt, for example) create only two, mirrored about the origin. So for now we just have this boolean
       //which creates a mirrored dot whenever needed instead of doing anything clever.)
-      MIRROR_THE_DOT=false;
+      NUMBER_OF_DOTS=1;
       
       //(Even though this is a 2D game, we use 3D matrices and vectors simply because matrix2d doesn't exist in libgdx's setup.)
       //(All vectors have a z-value of 0; all matrices have 1s at zz and 0s at [xz, yz, zy, zx].)
@@ -467,15 +461,6 @@ public class GameScreen_2 implements Screen {
       
       menu_button_r=new Rectangle(240,450,100,40);
       
-      dot = new Rectangle();
-      dot.x = 0;
-      dot.y = 0;
-      
-      mirror_dot = new Rectangle();
-      mirror_dot.x = 0;
-      mirror_dot.y = 0;
-      mirror_dot.width = 11;
-      mirror_dot.height = 11;
       
       dots=new Rectangle[10];
       
@@ -484,17 +469,23 @@ public class GameScreen_2 implements Screen {
       dots_posns_r=new double[10];
       dots_posns_theta=new double[10];
       
+      int zvb=0;
+      while (zvb<10){
+    	  dots[zvb]=new Rectangle();
+    	  zvb+=1;
+      }
       
       if (ANDROID){
-          	dot.width = 61;
-          	dot.height = 61;
-          	mirror_dot.width = 61;
-          	mirror_dot.height = 61;
+    	  
+	    	  for(Rectangle dot: dots) {
+	          	dot.width = 61;
+	          	dot.height = 61;
+	    	  }
           }else{
-        	  dot.width = 11;
-              dot.height = 11;
-              mirror_dot.width = 11;
-              mirror_dot.height = 11;
+	    	  for(Rectangle dot: dots) {
+	            	dot.width = 11;
+	            	dot.height = 11;
+	      	  }
           }
       
       ship = new Rectangle(0,0, 320, 60);
@@ -1367,7 +1358,8 @@ public class GameScreen_2 implements Screen {
 		   dots_posns_r[0]=mouse_posn_r;
 		   if (Function_Code=="divide"){
 			   dots_posns_theta[0]=mouse_posn_theta/polar_a+polar_b*Math.PI/4f;
-			   MIRROR_THE_DOT=true;
+			   dots_posns_theta[1]=-dots_posns_theta[0];
+			   NUMBER_OF_DOTS=2;
 		   }
 		   else{
 			   dots_posns_theta[0]=mouse_posn_theta*polar_a+polar_b*Math.PI/4f;
@@ -1375,6 +1367,8 @@ public class GameScreen_2 implements Screen {
 		   
 	   }
 	   if (MODE.equals("power")){
+		   
+		   dots_posns_theta[0]=mouse_posn_theta;
 		   
 		   if (Function_Code=="square"){
 			   dots_posns_r[0]=mouse_posn_r*mouse_posn_r;
@@ -1387,9 +1381,11 @@ public class GameScreen_2 implements Screen {
 		   }
 		   if (Function_Code=="square root"){
 			   dots_posns_r[0]=Math.sqrt(mouse_posn_r);
-			   MIRROR_THE_DOT=true;
+			   dots_posns_r[1]=Math.sqrt(mouse_posn_r);
+			   dots_posns_theta[1]=Math.PI+dots_posns_theta[0];
+			   NUMBER_OF_DOTS=2;
 		   }
-		   dots_posns_theta[0]=mouse_posn_theta;
+		   
 	   }
 	   if (MODE.equals("switch")){
 		   dots_posns_r[0]=mouse_posn_theta;
@@ -1406,10 +1402,12 @@ public class GameScreen_2 implements Screen {
 	   }
 	   if (MODE.equals("roots")){
 		   dots_posns_x[0]=grx;
+		   dots_posns_x[1]=grx;
 		   dots_posns_y[0]=Math.pow(gry, 1/((float)powers_n));
 		   if (powers_n%2==0){
 			   dots_posns_y[0]=Math.pow(gry, 1/((float)powers_n));
-			   MIRROR_THE_DOT=true;
+			   dots_posns_y[1]=-dots_posns_y[0];
+			   NUMBER_OF_DOTS=2;
 		   }
 		   else{
 			   if (gry>=0){
@@ -1451,6 +1449,7 @@ public class GameScreen_2 implements Screen {
    }
    private void apply_curve_dot_function(double grx, double gry){
 	   dots_posns_x[0]=mouse_posn_x;
+	   dots_posns_x[1]=mouse_posn_x;
 	   if (MODE.equals("line")){
 		   if (Function_Code=="y_is_c"){
 			   dots_posns_y[0]=(double)curves_c;
@@ -1463,9 +1462,10 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
 	   if (MODE.equals("circle")){
-		   MIRROR_THE_DOT=true;
+		   NUMBER_OF_DOTS=2;
 		   if (Math.abs(mouse_posn_x)<=curves_r){
 			   dots_posns_y[0]=Math.sqrt(curves_r*curves_r-(mouse_posn_x-curves_a)*(mouse_posn_x-curves_a))+curves_b;
+			   dots_posns_y[1]=-dots_posns_y[0];
 		   }
 		   else{
 			   //Basically just send it off the screen.
@@ -1502,10 +1502,14 @@ public class GameScreen_2 implements Screen {
 		   		  mouse_posn_theta=-mouse_posn_theta;
 		       }
 		       dots_posns_theta[0]=mouse_posn_theta/2;
+		       dots_posns_theta[1]=Math.PI+dots_posns_theta[0];
 		       dots_posns_r[0]=Math.sqrt(mouse_posn_r);
+		       dots_posns_r[1]=dots_posns_r[0];
 		       dots_posns_x[0]=(dots_posns_r[0]*Math.cos(dots_posns_theta[0]));
 			   dots_posns_y[0]=(dots_posns_r[0]*Math.sin(dots_posns_theta[0]));
-			   MIRROR_THE_DOT=true;
+			   dots_posns_x[1]=(dots_posns_r[1]*Math.cos(dots_posns_theta[1]));
+			   dots_posns_y[1]=(dots_posns_r[1]*Math.sin(dots_posns_theta[1]));
+			   NUMBER_OF_DOTS=2;
 		   }
 	   }
 	   if (MODE.equals("function")){
@@ -2020,7 +2024,7 @@ private void spawnSecondMineSquare(){
       //----
       
       if (Function_Code.equals("square root") || Function_Code.equals("circle") || (MODE.equals("roots")&& (powers_n%2==0))){
-    	  MIRROR_THE_DOT=true;
+    	  NUMBER_OF_DOTS=2;
       }
       
 	  //--Update ship image used--
@@ -2075,18 +2079,18 @@ private void spawnSecondMineSquare(){
       
     	  
       
+      int zvbx=0;
       
-      dot.setCenter(find_screen_x_posn(dots_posns_x[0]),find_screen_y_posn(dots_posns_y[0]));
+      while (zvbx<NUMBER_OF_DOTS){
+    	  dots[zvbx].setCenter(find_screen_x_posn(dots_posns_x[zvbx]),find_screen_y_posn(dots_posns_y[zvbx]));
+    	  if (IS_TIME_HAPPENING){
+    		  batch.draw(dot_t, dots[zvbx].x, dots[zvbx].y);
+    	  }
+    	  zvbx+=1;
+      }
       
       
       //HERE HERE HERE HERE HERE
-      
-      if(((!Gdx.input.justTouched() && !ANDROID) || (ANDROID && !(!Gdx.input.isTouched()&&wastouched)))&& IS_TIME_HAPPENING && seconds>1){
-    	  batch.draw(dot_t, dot.x, dot.y);
-    	  if (MIRROR_THE_DOT){
-    		  batch.draw(dot_t, mirror_dot.x, mirror_dot.y);
-    	  }
-      }
       
       //--Render any textboxes that happen to need it--
       
@@ -2671,10 +2675,14 @@ private void spawnSecondMineSquare(){
     		  
     		  
     			  if( charges>0){
-    				  spawn_other_dot(dot.x,dot.y);
-    				  if (MIRROR_THE_DOT){
-    					  spawn_other_dot(mirror_dot.x,mirror_dot.y);
-    				  }
+    				  
+    				  int zvbxr=0;
+    			      
+    			      while (zvbxr<NUMBER_OF_DOTS){
+    			    	  spawn_other_dot(dots[zvbxr].x,dots[zvbxr].y);
+    			    	  zvbxr+=1;
+    			      }
+    			      
     				  charges-=1;
     				  shot_sound.play();
     				  last_charge_event_time=total_time;
@@ -2688,7 +2696,7 @@ private void spawnSecondMineSquare(){
     	  }
     	  
       
-      MIRROR_THE_DOT=false;
+      NUMBER_OF_DOTS=1;
       
       if (about_to_leave){
     	  game.setScreen(new LevelSelectScreen(game, TOPIC, GAMESPEED_ORI, ENDLESS, ANDROID));
