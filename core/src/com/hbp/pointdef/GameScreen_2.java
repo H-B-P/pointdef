@@ -31,29 +31,93 @@ public class GameScreen_2 implements Screen {
 	
 	final PointDef game;
 	
-	private Texture pause_symbol;
+	
 	
 	private FitViewport viewport;
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
 	
-	private Texture mineImage;
-   private Texture dotImage;
-   private Texture standard_dot_r;
-   private Texture change_dot_r;
-   private Texture shipImage;
-   private Texture[] shipImages;
-   private Texture gridImage;
-   private Texture statusbarImage;
-   private Texture explosionImage;
-   private Texture shieldImage;
-   private Texture shieldImage_unhit;
-   private Texture shieldImage_flicker;
+	
+	// ---Textures---
+	
+	// AKA the images used.
+	
+	//Some objects need a Rectangle to define their body and a Texture to define their appearance.
+	//For these, the Rectangle has an _r and the Texture has a _t.
+	
+	//(It may be a good idea to eventually refactor these to share an object.)
+	
+	private Texture pause_symbol_t;
+	
+	private Texture mine_t;
+   private Texture dot_t;
+   private Texture standard_dot_t;
+   private Texture change_dot_t;
+   private Texture ship_t;
+   private Texture[] ship_t_plural;
+   private Texture grid_t;
+   private Texture statusbar_t;
+   private Texture explosion_t;
+   private Texture shield_t;
+   private Texture shield_unhit_t;
+   private Texture shield_flicker_t;
    
-   private Texture snippet;
-   private Texture snippet_win;
-   private Texture snippet_lose;
    
-   private SpriteBatch batch;
-   private OrthographicCamera camera;
+   private Texture snippet_t;
+   private Texture snippet_win_t;
+   private Texture snippet_lose_t;
+   
+   private Texture menu_button_t;
+   private Texture menu_button_trim_t;
+   
+   
+   private Texture campaign_but_t;
+   private Texture campaign_but_trim;
+   private Texture campaign_but_start_t;
+   private Texture campaign_but_retry_t;
+   private Texture campaign_but_menu_t;
+   private Texture campaign_but_next_t;
+   
+   private Texture campaign_tb_start;
+   private Texture campaign_tb_win;
+   private Texture campaign_tb_lose;
+   private Texture campaign_tb_final;
+   
+   private Texture dot_r;
+	private Texture dot_b;
+	private Texture dot_c;
+	private Texture dot_p;
+	private Texture dot_y;
+	private Texture dot_w;
+	private Texture dot_g;
+	
+	private Texture textbox;
+	private Texture textbox_1;
+	private Texture textbox_2;
+	private Texture textbox_3;
+	private Texture textbox_4;
+	private Texture textbox_5;
+	private Texture textbox_6;
+   
+	private Texture c_textbox;
+	
+   //How do you keep dark the parts of the screen which shouldn't show anything, when on an oddly-proportioned mobile device?
+   //You put a massive black shape over everything which is out of bounds.
+   
+   private Texture bb_poncho_t;
+   
+   //---Sounds---
+   
+    private Sound hit_sound;
+	private Sound hitship_sound;
+	private Sound shot_sound;
+	
+	private Sound select_sound;
+	private Sound hello_sound;
+   
+   //--Make the dots exist--
+   
+   //I should make this about an array of dots, not just one. I'll need that for when they are.
    
    private Rectangle dot;
    private Rectangle mirror_dot;
@@ -70,14 +134,20 @@ public class GameScreen_2 implements Screen {
    private float tp_y;
    
    private Rectangle menu_button_r;
-   private Texture menu_button_t;
-   private Texture menu_button_trim_t;
+   
    
    private Vector3 dotPos_g;
    
    private int score;
    
    private int prefs_score;
+   
+   //---List of variables used in applying the functions---
+   
+   //For example, argand_a and argand_b are the displacements of the dot from the mouse position during a wave of attacks.
+   
+   //It might make sense to just have one set of variables, but that caused interference when setting up new features.
+   //Also, this will make it easier to have multiple dot types active at the same time, which is the long-term plan.
    
    private int argand_a;
    private int argand_b;
@@ -107,29 +177,34 @@ public class GameScreen_2 implements Screen {
    private Matrix3 TheMatrix;
    private Matrix3 OldMatrix;
    
-   private BitmapFont font;
-   private BitmapFont dotfunction_font;
    
-   private Preferences prefs;
    
-   private int seconds;
-   
-   private int charges;
-   
-   private int maxcharges;
+   //---Time---
    
    private float effective_delta;
+   
+   private int seconds;
    
    private boolean wastouched;
    
    private boolean IS_TIME_HAPPENING;
    
-   private boolean MIRROR_THE_DOT;
-   
    private float total_time;
    private float total_paused_time;
    
    private float last_charge_event_time;
+   
+   
+   //REPLACE MIRRORING WITH NUMBER_OF_DOTS
+   
+   //---Space---
+   
+   private boolean MIRROR_THE_DOT;
+   
+   private int NUMBER_OF_DOTS;
+   
+   
+   //REFACTOR ALL OF THIS!
    
    private double posn_x;
    private double posn_y;
@@ -148,7 +223,23 @@ public class GameScreen_2 implements Screen {
    private double dotPos_j_x;
    private double dotPos_j_y;
    
+   //NEW STUFF
+   
+   private double mouse_posn_x;
+   private double mouse_posn_y;
+   
+   private double mouse_posn_r;
+   private double mouse_posn_theta;
+   
+   private double[] dots_posns_x;
+   private double[] dots_posns_y;
+   
+   private double[] dots_posns_r;
+   private double[] dots_posns_theta;
+   
    private double UNIT_LENGTH_IN_PIXELS;
+   
+   //---The input parameters---
    
    private String MODE;
    private String TOPIC;
@@ -159,40 +250,35 @@ public class GameScreen_2 implements Screen {
    private boolean CAMPAIGN;
    private boolean META_PAUSE;
    
-   private Rectangle campaign_but_r;
-   private Texture campaign_but_t;
-   private Texture campaign_but_trim;
-   private Texture campaign_but_start_t;
-   private Texture campaign_but_retry_t;
-   private Texture campaign_but_menu_t;
-   private Texture campaign_but_next_t;
    
-   private Texture campaign_tb_start;
-   private Texture campaign_tb_win;
-   private Texture campaign_tb_lose;
-   private Texture campaign_tb_final;
    
-   private String Function_Code;
    
-	private Texture dot_r;
-	private Texture dot_b;
-	private Texture dot_c;
-	private Texture dot_p;
-	private Texture dot_y;
-	private Texture dot_w;
-	private Texture dot_g;
+   
+//---miscellaneous other things---
+   
+   //--fonts--
+   
+   private BitmapFont font;
+   private BitmapFont dotfunction_font;
+   
+   //--preferences--
+   
+   //(AKA save and load data)
+   
+   private Preferences prefs;
+   
+   //--charges--
+   
+   //(AKA how many shots we can take)
+   
+   private int charges;
+   private int maxcharges;
 	
-	private Texture textbox;
-	private Texture textbox_1;
-	private Texture textbox_2;
-	private Texture textbox_3;
-	private Texture textbox_4;
-	private Texture textbox_5;
-	private Texture textbox_6;
+	
 	private float textbox_x;
 	private float textbox_y;
 	
-	private Texture c_textbox;
+	
 	private float c_textbox_x;
 	private float c_textbox_y;
 	
@@ -205,22 +291,24 @@ public class GameScreen_2 implements Screen {
 	
 	private String wavetype;
 	
-	private Sound hit_sound;
-	private Sound hitship_sound;
-	private Sound shot_sound;
 	
-	
-	private Sound selectsound;
-	
-	private Sound hellosound;
 	
 	private float horz_coefficient;
 	private float wall_coefficient;
 	
-	private boolean ANDROID;
- //---Do all the initial stuff that happens on rendering---
-   
-	private Texture bb_poncho;
+	
+ 
+	private Rectangle campaign_but_r;
+	   
+	   
+	   private String Function_Code;
+	
+	   ///---ANDROID---
+	   
+	   //Whether or not we are on a mobile device.
+	   private boolean ANDROID;
+	
+	//---Do all the initial tasks that happen on rendering---
 	
    public GameScreen_2(final PointDef gam, int gamespeed, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
@@ -237,7 +325,14 @@ public class GameScreen_2 implements Screen {
       GAMESPEED=gamespeed;
       GAMESPEED_ORI=gamespeed;
       CAMPAIGN=campaign;
+      
+      //--Ensure it starts paused--
+      
+      //This variable has to exist because otherwise people could unfreeze at the start/end of levels.
+      
       META_PAUSE=true;
+      
+      //--Shout!--
       
       System.out.println("TOPIC IS " + TOPIC + "XXXX");
       System.out.println("MODE IS " + MODE + "XXXX");
@@ -251,7 +346,7 @@ public class GameScreen_2 implements Screen {
       
 	  //--Load images--
       
-      pause_symbol=new Texture(Gdx.files.internal("pause_symbol.png"));
+      pause_symbol_t=new Texture(Gdx.files.internal("pause_symbol.png"));
       
 		dot_r= new Texture(Gdx.files.internal("dots/dot_red.png"));
 		dot_b= new Texture(Gdx.files.internal("dots/dot_blue.png"));
@@ -272,55 +367,55 @@ public class GameScreen_2 implements Screen {
 		}
 		
 
-      mineImage = new Texture(Gdx.files.internal("a_mine_2.png"));
-      if(TOPIC.equals("CARTESIAN")){standard_dot_r = dot_y;}
-      else if (TOPIC.equals("POLAR")){standard_dot_r = dot_g;}
-      else if (TOPIC.equals("POWERS")){standard_dot_r = dot_p;}
-      else if (TOPIC.equals("MATRIX")){standard_dot_r = dot_r;}
-      else if (TOPIC.equals("ARGAND")){standard_dot_r = dot_c;}
+      mine_t = new Texture(Gdx.files.internal("a_mine_2.png"));
+      if(TOPIC.equals("CARTESIAN")){standard_dot_t = dot_y;}
+      else if (TOPIC.equals("POLAR")){standard_dot_t = dot_g;}
+      else if (TOPIC.equals("POWERS")){standard_dot_t = dot_p;}
+      else if (TOPIC.equals("MATRIX")){standard_dot_t = dot_r;}
+      else if (TOPIC.equals("ARGAND")){standard_dot_t = dot_c;}
       else{
     	  if (ANDROID){
-    		  standard_dot_r = new Texture(Gdx.files.internal("sniperdot_and.png"));
+    		  standard_dot_t = new Texture(Gdx.files.internal("sniperdot_and.png"));
     	  }
     	  else{
-    		  standard_dot_r = new Texture(Gdx.files.internal("sniperdot.png"));
+    		  standard_dot_t = new Texture(Gdx.files.internal("sniperdot.png"));
     	  }
       }
-      dotImage=standard_dot_r;
+      dot_t=standard_dot_t;
       
       tp_x=0;
       tp_y=0;
       
-   	  change_dot_r=dot_w;
+   	  change_dot_t=dot_w;
    	  
-      shipImages = new Texture[10];
+      ship_t_plural = new Texture[10];
       
-      if (TOPIC.equals("POLAR") && !MODE.equals("switch")){gridImage = new Texture(Gdx.files.internal("grid_polar_v5.png"));}
-      else if (TOPIC.equals("CARTESIAN") && MODE.equals("mirror")){gridImage = new Texture(Gdx.files.internal("grid_t_mir.png"));}
-      else if (TOPIC.equals("POLAR") && MODE.equals("switch")){gridImage = new Texture(Gdx.files.internal("grid_polar_v3.png"));}
-      else if (TOPIC.equals("ARGAND") && MODE.equals("power")){gridImage = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
-      else if (TOPIC.equals("POWERS") && ANDROID){gridImage = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
-      else {gridImage = new Texture(Gdx.files.internal("grid_t.png"));}
-      if (TOPIC.equals("MATRIX")){statusbarImage = new Texture(Gdx.files.internal("statusbar.png"));}
-      else {statusbarImage = new Texture(Gdx.files.internal("statusbar_blank.png"));}
-      explosionImage = new Texture(Gdx.files.internal("explosion.png"));
-      shieldImage_unhit = new Texture(Gdx.files.internal("shield.png"));
-      shieldImage_flicker = new Texture(Gdx.files.internal("shield_flicker.png"));
-      shieldImage=shieldImage_unhit;
+      if (TOPIC.equals("POLAR") && !MODE.equals("switch")){grid_t = new Texture(Gdx.files.internal("grid_polar_v5.png"));}
+      else if (TOPIC.equals("CARTESIAN") && MODE.equals("mirror")){grid_t = new Texture(Gdx.files.internal("grid_t_mir.png"));}
+      else if (TOPIC.equals("POLAR") && MODE.equals("switch")){grid_t = new Texture(Gdx.files.internal("grid_polar_v3.png"));}
+      else if (TOPIC.equals("ARGAND") && MODE.equals("power")){grid_t = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
+      else if (TOPIC.equals("POWERS") && ANDROID){grid_t = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
+      else {grid_t = new Texture(Gdx.files.internal("grid_t.png"));}
+      if (TOPIC.equals("MATRIX")){statusbar_t = new Texture(Gdx.files.internal("statusbar.png"));}
+      else {statusbar_t = new Texture(Gdx.files.internal("statusbar_blank.png"));}
+      explosion_t = new Texture(Gdx.files.internal("explosion.png"));
+      shield_unhit_t = new Texture(Gdx.files.internal("shield.png"));
+      shield_flicker_t = new Texture(Gdx.files.internal("shield_flicker.png"));
+      shield_t=shield_unhit_t;
       new Texture(Gdx.files.internal("Head.png"));
       
-      shipImages[0] = new Texture(Gdx.files.internal("Head.png"));
-      shipImages[1] = new Texture(Gdx.files.internal("Head_1_1.png"));
-      shipImages[2] = new Texture(Gdx.files.internal("Head_1_2.png"));
-      shipImages[3] = new Texture(Gdx.files.internal("Head_1_3.png"));
-      shipImages[4] = new Texture(Gdx.files.internal("Head_2_1.png"));
-      shipImages[5] = new Texture(Gdx.files.internal("Head_2_2.png"));
-      shipImages[6] = new Texture(Gdx.files.internal("Head_2_3.png"));
-      shipImages[7] = new Texture(Gdx.files.internal("Head_3_1.png"));
-      shipImages[8] = new Texture(Gdx.files.internal("Head_3_2.png"));
-      shipImages[9] = new Texture(Gdx.files.internal("Head_3_3.png"));
+      ship_t_plural[0] = new Texture(Gdx.files.internal("Head.png"));
+      ship_t_plural[1] = new Texture(Gdx.files.internal("Head_1_1.png"));
+      ship_t_plural[2] = new Texture(Gdx.files.internal("Head_1_2.png"));
+      ship_t_plural[3] = new Texture(Gdx.files.internal("Head_1_3.png"));
+      ship_t_plural[4] = new Texture(Gdx.files.internal("Head_2_1.png"));
+      ship_t_plural[5] = new Texture(Gdx.files.internal("Head_2_2.png"));
+      ship_t_plural[6] = new Texture(Gdx.files.internal("Head_2_3.png"));
+      ship_t_plural[7] = new Texture(Gdx.files.internal("Head_3_1.png"));
+      ship_t_plural[8] = new Texture(Gdx.files.internal("Head_3_2.png"));
+      ship_t_plural[9] = new Texture(Gdx.files.internal("Head_3_3.png"));
       
-      shipImage=shipImages[0];
+      ship_t=ship_t_plural[0];
       
       menu_button_t=new Texture(Gdx.files.internal("button_menu_smol.png"));
       menu_button_trim_t=new Texture(Gdx.files.internal("button_menu_smol_trim.png"));
@@ -425,7 +520,7 @@ public class GameScreen_2 implements Screen {
       }
       
       
-      //--Set up basics--
+      //--Set up presentation--
       spawnShield(1);
       //spawnShield(2);
       //spawnShield(3);
@@ -435,7 +530,7 @@ public class GameScreen_2 implements Screen {
       dotfunction_font.setColor(Color.BLACK);
       
       if (ANDROID){
-    	  maxcharges=3;
+    	  maxcharges=9;
       }
       else{
     	  maxcharges=9;
@@ -472,73 +567,73 @@ public class GameScreen_2 implements Screen {
     	  
     	  //set up snippets
     	  if(MODE.equals("intro")){
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_intro_1.png"));
-    		  snippet_win=new Texture(Gdx.files.internal("snippets/snippet_intro_2.png"));
-    		  snippet_lose=snippet_win;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_intro_1.png"));
+    		  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_intro_2.png"));
+    		  snippet_lose_t=snippet_win_t;
     	  }
     	  else if(TOPIC.equals("CARTESIAN") && !MODE.equals("lines")){
     		  int sni=MathUtils.random(1,6);
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+sni+".png"));
-    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+cycled(sni,6)+".png"));
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+sni+".png"));
+    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+cycled(sni,6)+".png"));
     		  if (MODE.equals("add")){
-    			  snippet=new Texture(Gdx.files.internal("snippets/snippet_pause.png"));
-    			  snippet_win=new Texture(Gdx.files.internal("snippets/snippet_firstwin.png"));
+    			  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_pause.png"));
+    			  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_firstwin.png"));
     		  }
     		  else{
-    			  snippet_win=snippet_lose;
+    			  snippet_win_t=snippet_lose_t;
     		  }
     	  }
     	  else if(TOPIC.equals("CARTESIAN") && MODE.equals("lines")){
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
-    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
-    		  snippet_win=snippet_lose;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
+    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
+    		  snippet_win_t=snippet_lose_t;
     	  }
     	  else if(TOPIC.equals("POLAR")){
     		  int sni=MathUtils.random(1,5);
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_polar_"+sni+".png"));
-    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_polar_"+cycled(sni,5)+".png"));
-    		  snippet_win=snippet_lose;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_polar_"+sni+".png"));
+    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_polar_"+cycled(sni,5)+".png"));
+    		  snippet_win_t=snippet_lose_t;
     	  }
     	  else if(TOPIC.equals("POWERS") && !MODE.equals("exponent")){
     		  int sni=MathUtils.random(1,11);
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_powers_"+sni+".png"));
-    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_powers_"+cycled(sni,11)+".png"));
-    		  snippet_win=snippet_lose;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_powers_"+sni+".png"));
+    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_powers_"+cycled(sni,11)+".png"));
+    		  snippet_win_t=snippet_lose_t;
     	  }
     	  else if(TOPIC.equals("POWERS") && MODE.equals("exponent")){
     		  int sni=MathUtils.random(1,2);
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_expon_"+sni+".png"));
-    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_expon_"+((sni%2)+1)+".png"));
-    		  snippet_win=snippet_lose;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_expon_"+sni+".png"));
+    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_expon_"+((sni%2)+1)+".png"));
+    		  snippet_win_t=snippet_lose_t;
     	  }
     	  else if(TOPIC.equals("MATRIX") && !MODE.equals("singular")){
     		  int sni=MathUtils.random(1,5);
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+sni+".png"));
-    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+cycled(sni,5)+".png"));
-    		  snippet_win=snippet_lose;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+sni+".png"));
+    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+cycled(sni,5)+".png"));
+    		  snippet_win_t=snippet_lose_t;
     	  }
     	  else if(TOPIC.equals("MATRIX") && MODE.equals("singular")){
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_sing_"+MathUtils.random(1,2)+".png"));
-    		  snippet_lose=snippet;
-    		  snippet_win=snippet;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_sing_"+MathUtils.random(1,2)+".png"));
+    		  snippet_lose_t=snippet_t;
+    		  snippet_win_t=snippet_t;
     	  }
     	  else if(TOPIC.equals("ARGAND") && !MODE.equals("power")){
     		  int sni=MathUtils.random(1,8);
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_argand_"+sni+".png"));
-    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_argand_"+cycled(sni,8)+".png"));
-    		  snippet_win=snippet_lose;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_argand_"+sni+".png"));
+    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_argand_"+cycled(sni,8)+".png"));
+    		  snippet_win_t=snippet_lose_t;
     	  }
     	  else if(TOPIC.equals("ARGAND") && MODE.equals("power")){
     		  int sni=MathUtils.random(1,3);
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_pow_"+sni+".png"));
-    		  snippet_lose=new Texture(Gdx.files.internal("snippets/snippet_pow_"+cycled(sni,3)+".png"));
-    		  snippet_win=snippet_lose;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_pow_"+sni+".png"));
+    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_pow_"+cycled(sni,3)+".png"));
+    		  snippet_win_t=snippet_lose_t;
     	  }
     	  else{
     		  int sni=MathUtils.random(1,3);
-    		  snippet=new Texture(Gdx.files.internal("snippets/snippet_meta_"+sni+".png"));
-    		  snippet_win=new Texture(Gdx.files.internal("snippets/snippet_meta_"+cycled(sni,3)+".png"));
-    		  snippet_lose=snippet_win;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_meta_"+sni+".png"));
+    		  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_meta_"+cycled(sni,3)+".png"));
+    		  snippet_lose_t=snippet_win_t;
     	  }
       }
       
@@ -558,10 +653,10 @@ public class GameScreen_2 implements Screen {
       hitship_sound=Gdx.audio.newSound(Gdx.files.internal("other_sfx/268553_cydon_bang_001.mp3"));
       shot_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341235__jeremysykes__laser01.wav"));
       
-      selectsound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/344509__jeremysykes__select05.wav"));
-      hellosound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341251__jeremysykes__select00.wav"));
+      select_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/344509__jeremysykes__select05.wav"));
+      hello_sound=Gdx.audio.newSound(Gdx.files.internal("js_sfx/341251__jeremysykes__select00.wav"));
       
-      hellosound.play();
+      hello_sound.play();
       
       //--Batch, Camera, Action--
       camera = new OrthographicCamera();
@@ -569,15 +664,11 @@ public class GameScreen_2 implements Screen {
       viewport = new FitViewport(320, 480, camera);
       batch = new SpriteBatch();
       
-      bb_poncho = new Texture(Gdx.files.internal("blackbar_poncho.png"));
+      bb_poncho_t = new Texture(Gdx.files.internal("blackbar_poncho.png"));
       
    }
    
-   //--Set up the cycler--
    
-   private int cycled(int top, int bottom){
-	   return ((top+MathUtils.random(0,1))%bottom)+1;
-   }
    
    //---Set up functions to be called during Render---
    
@@ -591,6 +682,35 @@ public class GameScreen_2 implements Screen {
 	   int coin=MathUtils.random(0,1);
 	   return coin*2-1;
    }
+   
+   //--Set up the cycler--
+   
+   private int cycled(int top, int bottom){
+	   return ((top+MathUtils.random(0,1))%bottom)+1;
+   }
+   
+   //--Converter functions!--
+   
+   private float find_screen_x_posn(double grid_x){
+	   double temp___x = grid_x*UNIT_LENGTH_IN_PIXELS;
+	   return (float)(temp___x+160.0);
+   }
+   
+   private float find_screen_y_posn(double grid_y){
+	   double temp___y = grid_y*UNIT_LENGTH_IN_PIXELS;
+	   return (float)(temp___y+240.0);
+   }
+   
+   private double find_grid_x_posn(float screen_x){
+	   float temp___x=screen_x-160;
+	   return (double)Math.floor(temp___x/UNIT_LENGTH_IN_PIXELS);
+   }
+   
+   private double find_grid_y_posn(float screen_y){
+	   float temp___y=screen_y-240;
+	   return (double)Math.floor(temp___y/UNIT_LENGTH_IN_PIXELS);
+   }
+   
    
    
    //--Create Dot Functions--
@@ -1688,11 +1808,11 @@ private void spawnSecondMineSquare(){
 	   if (seconds==sss){
 			  create_dot_function();
 			  dotfunction_font.setColor(Color.BLUE);
-			  if (sss>0){dotImage=change_dot_r;}
+			  if (sss>0){dot_t=change_dot_t;}
 	   }
 	   if (seconds==sss+1){
 			  dotfunction_font.setColor(Color.BLACK);
-			  dotImage=standard_dot_r;
+			  dot_t=standard_dot_t;
 	   }
 	   
 	   if (wavetype.equals("dull")){
@@ -1910,7 +2030,7 @@ private void spawnSecondMineSquare(){
       }
       
 	  //--Update ship image used--
-      shipImage = shipImages[charges];
+      ship_t = ship_t_plural[charges];
       
 	  Gdx.gl.glClearColor(0, 0, 0, 1);
       Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -1929,24 +2049,24 @@ private void spawnSecondMineSquare(){
       //--Draw everything you can without transforming the dot--
       
       batch.begin();
-      batch.draw(gridImage, grid.x, grid.y);
+      batch.draw(grid_t, grid.x, grid.y);
       for(Kaboom boom: explosions) {
-          batch.draw(explosionImage, boom.rect.x-20, boom.rect.y-20);
+          batch.draw(explosion_t, boom.rect.x-20, boom.rect.y-20);
        }
       
       
       
       for(Mine mine: mines) {
-         batch.draw(mineImage, mine.rect.x-20, mine.rect.y-20);
+         batch.draw(mine_t, mine.rect.x-20, mine.rect.y-20);
       }
       
       
       for(Kaboom other_dot: other_dots) {
-    	  batch.draw(dotImage, other_dot.rect.x, other_dot.rect.y);
+    	  batch.draw(dot_t, other_dot.rect.x, other_dot.rect.y);
        }
 
       for(Rectangle shield: shields) {
-          batch.draw(shieldImage, shield.x, shield.y-3);
+          batch.draw(shield_t, shield.x, shield.y-3);
        }
       
       
@@ -1980,9 +2100,9 @@ private void spawnSecondMineSquare(){
       mirror_dot.setCenter((float)dotPos_j_x,(float)dotPos_j_y);
       
       if(((!Gdx.input.justTouched() && !ANDROID) || (ANDROID && !(!Gdx.input.isTouched()&&wastouched)))&& IS_TIME_HAPPENING && seconds>1){
-    	  batch.draw(dotImage, dot.x, dot.y);
+    	  batch.draw(dot_t, dot.x, dot.y);
     	  if (MIRROR_THE_DOT){
-    		  batch.draw(dotImage, mirror_dot.x, mirror_dot.y);
+    		  batch.draw(dot_t, mirror_dot.x, mirror_dot.y);
     	  }
       }
       
@@ -2056,7 +2176,7 @@ private void spawnSecondMineSquare(){
     	  if (total_time==0){
     		  //batch.draw(snippet, c_textbox_x+10, c_textbox_y+20);
     		  batch.draw(campaign_but_start_t, campaign_but_r.x, campaign_but_r.y);
-    		  batch.draw(snippet, c_textbox_x+10, c_textbox_y+60);
+    		  batch.draw(snippet_t, c_textbox_x+10, c_textbox_y+60);
     		  font.draw(batch, TOPIC+": "+MODE.toUpperCase(), c_textbox_x+20, c_textbox_y+175);
     		  if(campaign_but_r.contains(tp_x, tp_y)){
     			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
@@ -2078,14 +2198,14 @@ private void spawnSecondMineSquare(){
 	    	  }
 	    	  else if (total_time>=200 || MODE.equals("intro")){
 	    		  batch.draw(campaign_but_next_t, campaign_but_r.x, campaign_but_r.y);
-	    		  batch.draw(snippet_win, c_textbox_x+10, c_textbox_y+60);
+	    		  batch.draw(snippet_win_t, c_textbox_x+10, c_textbox_y+60);
 	    		  if(campaign_but_r.contains(tp_x, tp_y)){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
 	    	  }
 	    	  else{
 	    		  batch.draw(campaign_but_retry_t, campaign_but_r.x, campaign_but_r.y);
-	    		  batch.draw(snippet_lose, c_textbox_x+10, c_textbox_y+60);
+	    		  batch.draw(snippet_lose_t, c_textbox_x+10, c_textbox_y+60);
 	    		  if(campaign_but_r.contains(tp_x, tp_y)){
 	    			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
 	    		  }
@@ -2095,8 +2215,8 @@ private void spawnSecondMineSquare(){
       
       //--Draw status bar, ship, and menu button--
       //(These have to be drawn last so the dot doesn't go over them.)
-      batch.draw(shipImage, ship.x, ship.y);
-      batch.draw(statusbarImage, 0, 400);
+      batch.draw(ship_t, ship.x, ship.y);
+      batch.draw(statusbar_t, 0, 400);
       batch.draw(menu_button_t,265,455);
       if (menu_button_r.contains(tp_x, tp_y)){
     	  batch.draw(menu_button_trim_t,265,455);
@@ -2367,12 +2487,12 @@ private void spawnSecondMineSquare(){
       //----
       
       if(!IS_TIME_HAPPENING){
-    	  batch.draw(pause_symbol,0,0);
+    	  batch.draw(pause_symbol_t,0,0);
       }
       
       //----
       
-      batch.draw(bb_poncho, -640, -960);
+      batch.draw(bb_poncho_t, -640, -960);
       batch.end();
       
       //--Exit the game when main menu button pressed--
@@ -2392,7 +2512,7 @@ private void spawnSecondMineSquare(){
     		  if (total_time==0){
     			  META_PAUSE=false;
     			  show_c_textbox=false;
-    			  selectsound.play();
+    			  select_sound.play();
     		  }
     		  else if (total_time>=200 && MODE.equals("multiply") && TOPIC.equals("ARGAND")){
     			  game.setScreen(new MainMenuScreen(game, GAMESPEED_ORI, ANDROID, true));
@@ -2513,7 +2633,7 @@ private void spawnSecondMineSquare(){
       
       //--Check for overlap between mines and mine-detonators; act appropriately if found--
       
-      shieldImage=shieldImage_unhit;
+      shield_t=shield_unhit_t;
       
       Iterator<Mine> iter = mines.iterator();
       
@@ -2535,7 +2655,7 @@ private void spawnSecondMineSquare(){
 		        //iters.remove();
 		         	iter.remove();
 		         	deadyet=true;
-		         	shieldImage=shieldImage_flicker;
+		         	shield_t=shield_flicker_t;
 		            lives-=1;
 		            hitship_sound.play();
 		          }
@@ -2611,24 +2731,24 @@ private void spawnSecondMineSquare(){
       // dispose of all the native resources
       batch.dispose();
       
-      mineImage.dispose();
-      dotImage.dispose();
-      standard_dot_r.dispose();
-      change_dot_r.dispose();
-      shipImage.dispose();
+      mine_t.dispose();
+      dot_t.dispose();
+      standard_dot_t.dispose();
+      change_dot_t.dispose();
+      ship_t.dispose();
       for (int si=0; si<9; si++){
-    	  shipImages[si].dispose();
+    	  ship_t_plural[si].dispose();
       }
-      gridImage.dispose();
-      statusbarImage.dispose();
-      explosionImage.dispose();
-      shieldImage.dispose();
-      shieldImage_unhit.dispose();
-      shieldImage_flicker.dispose();
+      grid_t.dispose();
+      statusbar_t.dispose();
+      explosion_t.dispose();
+      shield_t.dispose();
+      shield_unhit_t.dispose();
+      shield_flicker_t.dispose();
       
-      snippet.dispose();
-      snippet_win.dispose();
-      snippet_lose.dispose();
+      snippet_t.dispose();
+      snippet_win_t.dispose();
+      snippet_lose_t.dispose();
       
       
       menu_button_t.dispose();
@@ -2666,7 +2786,7 @@ private void spawnSecondMineSquare(){
    	textbox_6.dispose();
    	}
    	
-   	bb_poncho.dispose();
+   	bb_poncho_t.dispose();
    	
    	
    	c_textbox.dispose();
@@ -2678,10 +2798,10 @@ private void spawnSecondMineSquare(){
    	hitship_sound.stop();
    	hitship_sound.dispose();
    	
-   	selectsound.stop();
-   	selectsound.dispose();
-   	hellosound.stop();
-   	hellosound.dispose();
+   	select_sound.stop();
+   	select_sound.dispose();
+   	hello_sound.stop();
+   	hello_sound.dispose();
    }
 
 @Override
