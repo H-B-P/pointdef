@@ -374,14 +374,31 @@ public class GameScreen_2 implements Screen {
    	  
       ship_t_plural = new Texture[10];
       
-      if (TOPIC.equals("POLAR") && !MODE.equals("switch")){grid_t = new Texture(Gdx.files.internal("grid_polar_v5.png"));}
-      else if (TOPIC.equals("CARTESIAN") && MODE.equals("mirror")){grid_t = new Texture(Gdx.files.internal("grid_t_mir.png"));}
-      else if (TOPIC.equals("POLAR") && MODE.equals("switch")){grid_t = new Texture(Gdx.files.internal("grid_polar_v3.png"));}
-      else if (TOPIC.equals("ARGAND") && MODE.equals("power")){grid_t = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
-      else if (TOPIC.equals("POWERS") && ANDROID){grid_t = new Texture(Gdx.files.internal("grid_t_halves_2.png"));}
-      else {grid_t = new Texture(Gdx.files.internal("grid_t.png"));}
+      //Load in the background du jour.
+      
+      if (TOPIC.equals("POLAR")){
+    	  if (SCALE==2){
+    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v3.png"));
+    	  }
+    	  else if (SCALE==4){
+    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v5.png"));
+    	  }
+      }
+      else if (SCALE==2){
+    	  grid_t = new Texture(Gdx.files.internal("grid_t_halves_2.png"));
+      }
+      else{
+    	  grid_t = new Texture(Gdx.files.internal("grid_t.png"));
+      }
+      
+      
+      
+      
+      
       if (TOPIC.equals("MATRIX")){statusbar_t = new Texture(Gdx.files.internal("statusbar.png"));}
       else {statusbar_t = new Texture(Gdx.files.internal("statusbar_blank.png"));}
+      
+      
       explosion_t = new Texture(Gdx.files.internal("explosion.png"));
       shield_unhit_t = new Texture(Gdx.files.internal("shield.png"));
       shield_flicker_t = new Texture(Gdx.files.internal("shield_flicker.png"));
@@ -735,72 +752,68 @@ public class GameScreen_2 implements Screen {
    
    private void create_cartesian_dot_function(){
 	   if (MODE.equals("add")){
-		   if (SCALE==4){
-			   if (seconds==0){
-				   cartesian_a=0;
-				   cartesian_b=0;
-			   }
-			   else if (seconds==50){
-				   cartesian_a=0;
-				   cartesian_b=plusorminus();
-				   if (ANDROID){
-					   cartesian_b=plusorminus()*2;
+		   if (seconds==0){
+			   cartesian_a=0;
+			   cartesian_b=0;
+		   }else{
+			   if (SCALE==4){
+				   if (seconds==50){
+					   cartesian_a=0;
+					   cartesian_b=plusorminus();
+					   if (ANDROID){
+						   cartesian_b=plusorminus()*2;
+					   }
 				   }
-			   }
-			   else if(seconds==100){
-				   cartesian_a=plusorminus();
-				   cartesian_b=0;
-			   }
-			   else if(seconds==150){
-				   cartesian_a=0;
-				   cartesian_b=plusorminus()*2;
-				   if (ANDROID){
-					   cartesian_b=plusorminus()*3;
-				   }
-			   }
-			   else{
-				   if (seconds%100==0){
+				   else if(seconds==100){
 					   cartesian_a=plusorminus();
 					   cartesian_b=0;
 				   }
-				   if (seconds%100==50){
+				   else if(seconds==150){
 					   cartesian_a=0;
-					   cartesian_b=plusorminus()*MathUtils.random(1,3);
+					   cartesian_b=plusorminus()*2;
+					   if (ANDROID){
+						   cartesian_b=plusorminus()*3;
+					   }
 				   }
-			   }
-			   
-		   }else if (SCALE==8){
-			   
-			   if (seconds==0){
-				   cartesian_a=0;
-				   cartesian_b=0;
-			   }
-			   else if (seconds==50){
-				   cartesian_a=0;
-				   cartesian_b=plusorminus()*MathUtils.random(1,2);
-				   if (ANDROID){
-					   cartesian_b=plusorminus()*MathUtils.random(3,4);
+				   else{
+					   if (seconds%100==0){
+						   cartesian_a=plusorminus();
+						   cartesian_b=0;
+					   }
+					   if (seconds%100==50){
+						   cartesian_a=0;
+						   cartesian_b=plusorminus()*MathUtils.random(1,3);
+					   }
 				   }
-			   }
-			   else if(seconds==100){
-				   cartesian_a=plusorminus()*MathUtils.random(1,2);
-				   cartesian_b=0;
-			   }
-			   else if(seconds==150){
-				   cartesian_a=0;
-				   cartesian_b=plusorminus()*MathUtils.random(3,6);
-				   if (ANDROID){
-					   cartesian_b=plusorminus()*6;
+				   
+			   }else if (SCALE==8){
+				   if (seconds==50){
+					   cartesian_a=0;
+					   cartesian_b=plusorminus()*MathUtils.random(1,2);
+					   if (ANDROID){
+						   cartesian_b=plusorminus()*MathUtils.random(3,4);
+					   }
 				   }
-			   }
-			   else{
-				   if (seconds%100==0){
+				   else if(seconds==100){
 					   cartesian_a=plusorminus()*MathUtils.random(1,2);
 					   cartesian_b=0;
 				   }
-				   if (seconds%100==50){
+				   else if(seconds==150){
 					   cartesian_a=0;
-					   cartesian_b=plusorminus()*MathUtils.random(1,6);
+					   cartesian_b=plusorminus()*MathUtils.random(3,6);
+					   if (ANDROID){
+						   cartesian_b=plusorminus()*6;
+					   }
+				   }
+				   else{
+					   if (seconds%100==0){
+						   cartesian_a=plusorminus()*MathUtils.random(1,2);
+						   cartesian_b=0;
+					   }
+					   if (seconds%100==50){
+						   cartesian_a=0;
+						   cartesian_b=plusorminus()*MathUtils.random(1,6);
+					   }
 				   }
 			   }
 		   }
@@ -861,56 +874,56 @@ public class GameScreen_2 implements Screen {
    private void create_polar_dot_function(){   
 	   
 	   if (MODE.equals("add")){
-		   if (SCALE<4){
-			   if (seconds%100==50){
-				   polar_a=MathUtils.random(1,2);
-				   polar_b=0;
-			   }
-			   else if (seconds%100==0){
-				   polar_a=-MathUtils.random(1,2);
-				   polar_b=0;
-			   }
-		   }
-		   else if (SCALE==4){
-			   if (seconds%200==50){
-				   polar_a=MathUtils.random(1,2);
-				   polar_b=0;
-			   }
-			   if (seconds%200==100){
-				   polar_a=0;
-				   polar_b=1;
-			   }
-			   if (seconds%200==150){
-				   polar_a=-MathUtils.random(1,2);
-				   polar_b=0;
-			   }
-			   if (seconds%200==0){
-				   polar_a=0;
-				   polar_b=-1;
-			   }
-		   }
-		   else if (SCALE==8){
-			   if (seconds%200==50){
-				   polar_a=MathUtils.random(1,2);
-				   polar_b=0;
-			   }
-			   if (seconds%200==100){
-				   polar_a=0;
-				   polar_b=MathUtils.random(1,2);
-			   }
-			   if (seconds%200==150){
-				   polar_a=-MathUtils.random(1,2);
-				   polar_b=0;
-			   }
-			   if (seconds%200==0){
-				   polar_a=0;
-				   polar_b=-MathUtils.random(1,2);
-			   }
-		   }
-
 		   if (seconds==0){
 			   polar_a=0;
 			   polar_b=0;
+		   }else{
+			   if (SCALE<4){
+				   if (seconds%100==50){
+					   polar_a=MathUtils.random(1,2);
+					   polar_b=0;
+				   }
+				   else if (seconds%100==0){
+					   polar_a=-MathUtils.random(1,2);
+					   polar_b=0;
+				   }
+			   }
+			   else if (SCALE==4){
+				   if (seconds%200==50){
+					   polar_a=MathUtils.random(1,2);
+					   polar_b=0;
+				   }
+				   if (seconds%200==100){
+					   polar_a=0;
+					   polar_b=1;
+				   }
+				   if (seconds%200==150){
+					   polar_a=-MathUtils.random(1,2);
+					   polar_b=0;
+				   }
+				   if (seconds%200==0){
+					   polar_a=0;
+					   polar_b=-1;
+				   }
+			   }
+			   else if (SCALE==8){
+				   if (seconds%200==50){
+					   polar_a=MathUtils.random(1,2);
+					   polar_b=0;
+				   }
+				   if (seconds%200==100){
+					   polar_a=0;
+					   polar_b=MathUtils.random(1,2);
+				   }
+				   if (seconds%200==150){
+					   polar_a=-MathUtils.random(1,2);
+					   polar_b=0;
+				   }
+				   if (seconds%200==0){
+					   polar_a=0;
+					   polar_b=-MathUtils.random(1,2);
+				   }
+			   }
 		   }
 	   }
 	   
@@ -1447,22 +1460,6 @@ public class GameScreen_2 implements Screen {
        if (gry<0){
    		  mouse_posn_theta=-mouse_posn_theta;
     	  }
-//	   if (MODE.equals("r")){
-//		   dots_posns_r[0]= mouse_posn_r*polar_a + polar_b;
-//		   dots_posns_theta[0]=mouse_posn_theta;
-//	   }
-//	   if (MODE.equals("theta")){
-//		   dots_posns_r[0]=mouse_posn_r;
-//		   if (Function_Code=="divide"){
-//			   dots_posns_theta[0]=mouse_posn_theta/polar_a+polar_b*Math.PI/4f;
-//			   dots_posns_theta[1]=-dots_posns_theta[0];
-//			   NUMBER_OF_DOTS=2;
-//		   }
-//		   else{
-//			   dots_posns_theta[0]=mouse_posn_theta*polar_a+polar_b*Math.PI/4f;
-//		   }
-//		   
-//	   }
        
 	   if (MODE.equals("add")){
 		   dots_posns_theta[0]=mouse_posn_theta + polar_a;
@@ -1487,11 +1484,7 @@ public class GameScreen_2 implements Screen {
 				   dots_posns_r[1]=-dots_posns_r[0];
 				   NUMBER_OF_DOTS=2;
 			   }
-		   }
-		   if (Function_Code=="reciprocal"){
-			   dots_posns_r[0]=1/mouse_posn_r;
-		   }
-		   
+		   }		   
 	   }
 	   if (MODE.equals("switch")){
 		   dots_posns_r[0]=mouse_posn_theta;
