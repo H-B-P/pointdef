@@ -151,16 +151,18 @@ public class GameScreen_2 implements Screen {
    
    private int argand_a;
    private int argand_b;
+   private int argand_n;
    
    private int old_argand_a;
    private int old_argand_b;
    
    private int polar_a;
    private int polar_b;
+   private int polar_n;
    
    private int cartesian_a;
    private int cartesian_b;
-   private int cartesian_c;
+   private int cartesian_n;
    
    private int curves_a;
    private int curves_b;
@@ -225,6 +227,7 @@ public class GameScreen_2 implements Screen {
    private String TOPIC;
    private int GAMESPEED;
    private int GAMESPEED_ORI;
+   private int SCALE;
    private boolean ENDLESS;
    
    private boolean CAMPAIGN;
@@ -290,7 +293,7 @@ public class GameScreen_2 implements Screen {
 	
 	//---Do all the initial tasks that happen on rendering---
 	
-   public GameScreen_2(final PointDef gam, int gamespeed, String topic, String mode, boolean endless, boolean campaign, boolean android) {
+   public GameScreen_2(final PointDef gam, int gamespeed, int scale, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
 	   
 	   ANDROID=android;
@@ -299,6 +302,7 @@ public class GameScreen_2 implements Screen {
 	   //--Perform tautological actions--
 	   this.game = gam;
       
+	   SCALE=scale;
 	   ENDLESS=endless;
       MODE=mode;
       TOPIC=topic;
@@ -497,13 +501,14 @@ public class GameScreen_2 implements Screen {
       explosions = new Array<Kaboom>();
       other_dots = new Array<Kaboom>();
       
-      if ((TOPIC.equals("POLAR") && !MODE.equals("switch")) || (TOPIC.equals("ARGAND") && MODE.equals("power")) || (TOPIC.equals("POWERS")&& ANDROID)){
-    	  UNIT_LENGTH_IN_PIXELS=80;
-      }
-      else{
-    	  UNIT_LENGTH_IN_PIXELS=40;
-      }
+//      if ((TOPIC.equals("POLAR") && !MODE.equals("switch")) || (TOPIC.equals("ARGAND") && MODE.equals("power")) || (TOPIC.equals("POWERS")&& ANDROID)){
+//    	  UNIT_LENGTH_IN_PIXELS=80;
+//      }
+//      else{
+//    	  UNIT_LENGTH_IN_PIXELS=40;
+//      }
       
+      UNIT_LENGTH_IN_PIXELS=160/SCALE;
       
       //--Set up presentation--
       spawnShield(1);
@@ -704,7 +709,7 @@ public class GameScreen_2 implements Screen {
    //(Implication: if you want to change the timeline of a given level, you edit this part of the code.)
    
    private void create_dot_function(){
-	   
+	   NUMBER_OF_DOTS=1;
 	   if (TOPIC.equals("CARTESIAN")){
 		   create_cartesian_dot_function();
 	   }
@@ -730,37 +735,88 @@ public class GameScreen_2 implements Screen {
    
    private void create_cartesian_dot_function(){
 	   if (MODE.equals("add")){
-		   if (seconds==0){
-			   cartesian_a=0;
-			   cartesian_b=0;
-		   }
-		   else if (seconds==50){
-			   cartesian_a=0;
-			   cartesian_b=plusorminus();
-			   if (ANDROID){
-				   cartesian_b=plusorminus()*2;
+		   if (SCALE==4){
+			   if (seconds==0){
+				   cartesian_a=0;
+				   cartesian_b=0;
 			   }
-		   }
-		   else if(seconds==100){
-			   cartesian_a=plusorminus();
-			   cartesian_b=0;
-		   }
-		   else if(seconds==150){
-			   cartesian_a=0;
-			   cartesian_b=plusorminus()*2;
-			   if (ANDROID){
-				   cartesian_b=plusorminus()*3;
+			   else if (seconds==50){
+				   cartesian_a=0;
+				   cartesian_b=plusorminus();
+				   if (ANDROID){
+					   cartesian_b=plusorminus()*2;
+				   }
 			   }
-		   }
-		   else{
-			   if (seconds%100==0){
+			   else if(seconds==100){
 				   cartesian_a=plusorminus();
 				   cartesian_b=0;
 			   }
-			   if (seconds%100==50){
+			   else if(seconds==150){
 				   cartesian_a=0;
-				   cartesian_b=plusorminus()*MathUtils.random(1,3);
+				   cartesian_b=plusorminus()*2;
+				   if (ANDROID){
+					   cartesian_b=plusorminus()*3;
+				   }
 			   }
+			   else{
+				   if (seconds%100==0){
+					   cartesian_a=plusorminus();
+					   cartesian_b=0;
+				   }
+				   if (seconds%100==50){
+					   cartesian_a=0;
+					   cartesian_b=plusorminus()*MathUtils.random(1,3);
+				   }
+			   }
+			   
+		   }else if (SCALE==8){
+			   
+			   if (seconds==0){
+				   cartesian_a=0;
+				   cartesian_b=0;
+			   }
+			   else if (seconds==50){
+				   cartesian_a=0;
+				   cartesian_b=plusorminus()*MathUtils.random(1,2);
+				   if (ANDROID){
+					   cartesian_b=plusorminus()*MathUtils.random(3,4);
+				   }
+			   }
+			   else if(seconds==100){
+				   cartesian_a=plusorminus()*MathUtils.random(1,2);
+				   cartesian_b=0;
+			   }
+			   else if(seconds==150){
+				   cartesian_a=0;
+				   cartesian_b=plusorminus()*MathUtils.random(3,6);
+				   if (ANDROID){
+					   cartesian_b=plusorminus()*6;
+				   }
+			   }
+			   else{
+				   if (seconds%100==0){
+					   cartesian_a=plusorminus()*MathUtils.random(1,2);
+					   cartesian_b=0;
+				   }
+				   if (seconds%100==50){
+					   cartesian_a=0;
+					   cartesian_b=plusorminus()*MathUtils.random(1,6);
+				   }
+			   }
+		   }
+	   }
+	   if (MODE.equals("function")){
+		   if (seconds%200==0){
+			   Function_Code="flip_x";
+		   }
+		   if (seconds%200==50){
+			   Function_Code="flip_y";
+		   }
+		   if (seconds%200==100){
+			   Function_Code="plusorminus_x";
+		   }
+		   if (seconds%200==150){
+			   Function_Code="abs_y";
 		   }
 	   }
 	   if (MODE.equals("multiply")){
@@ -773,56 +829,130 @@ public class GameScreen_2 implements Screen {
 			   cartesian_b=MathUtils.random(2,3);
 		   }
 		   if (seconds%200==100){
-			   cartesian_a=-MathUtils.random(1,3);
+			   cartesian_a=-MathUtils.random(2,3);
 			   cartesian_b=1;
 		   }
 		   if (seconds%200==150){
 			   cartesian_a=1;
-			   cartesian_b=-MathUtils.random(1,3);
-		   }
-		   if (seconds==150){
-			   cartesian_a=1;
-			   cartesian_b=-MathUtils.random(2,3);
+			   Function_Code="divide";
+			   cartesian_b=MathUtils.random(2,3);
 		   }
 	   }
-	   if (MODE.equals("mirror")){
+	   if (MODE.equals("power")){
+		   if (SCALE==1 || SCALE==2){
+			   if (seconds%100==0){
+				   Function_Code="raise";
+				   cartesian_n=seconds/100+2;
+			   }
+			   if (seconds%100==50){
+				   Function_Code="root";
+				   cartesian_n=(seconds-50)/100+2;
+			   }
+		   }
+		   else{
+			   Function_Code="raise";
+			   cartesian_n=seconds/50+2;
+		   }
+	   }
+   }
+   
+   
+   
+   private void create_polar_dot_function(){   
+	   
+	   if (MODE.equals("add")){
+		   if (SCALE<4){
+			   if (seconds%100==50){
+				   polar_a=MathUtils.random(1,2);
+				   polar_b=0;
+			   }
+			   else if (seconds%100==0){
+				   polar_a=-MathUtils.random(1,2);
+				   polar_b=0;
+			   }
+		   }
+		   else if (SCALE==4){
+			   if (seconds%200==50){
+				   polar_a=MathUtils.random(1,2);
+				   polar_b=0;
+			   }
+			   if (seconds%200==100){
+				   polar_a=0;
+				   polar_b=1;
+			   }
+			   if (seconds%200==150){
+				   polar_a=-MathUtils.random(1,2);
+				   polar_b=0;
+			   }
+			   if (seconds%200==0){
+				   polar_a=0;
+				   polar_b=-1;
+			   }
+		   }
+		   else if (SCALE==8){
+			   if (seconds%200==50){
+				   polar_a=MathUtils.random(1,2);
+				   polar_b=0;
+			   }
+			   if (seconds%200==100){
+				   polar_a=0;
+				   polar_b=MathUtils.random(1,2);
+			   }
+			   if (seconds%200==150){
+				   polar_a=-MathUtils.random(1,2);
+				   polar_b=0;
+			   }
+			   if (seconds%200==0){
+				   polar_a=0;
+				   polar_b=-MathUtils.random(1,2);
+			   }
+		   }
+
+		   if (seconds==0){
+			   polar_a=0;
+			   polar_b=0;
+		   }
+	   }
+	   
+	   if (MODE.equals("function")){
 		   if (seconds%200==0){
-			   Function_Code="flip_x";
+			   Function_Code="flip_r";
 		   }
 		   if (seconds%200==50){
-			   Function_Code="flip_y";
+			   Function_Code="flip_theta";
 		   }
 		   if (seconds%200==100){
-			   Function_Code="flip_pos_diag";
+			   Function_Code="plusorminus_r";
 		   }
 		   if (seconds%200==150){
-			   Function_Code="flip_neg_diag";
+			   Function_Code="abs_theta";
 		   }
 	   }
-	   if (MODE.equals("flip")){
-		   if (seconds%100==0){
-			   Function_Code="flip_x";
+	   
+	   if (MODE.equals("power")){
+		   if (SCALE==1){
+			   if (seconds%100==0){
+				   Function_Code="raise";
+				   polar_a=seconds/100-1;
+			   }
+			   if (seconds%100==50){
+				   Function_Code="root";
+				   polar_a=(seconds-50)/100-1;
+			   }
 		   }
-		   if (seconds%100==50){
-			   Function_Code="flip_y";
+		   else if (SCALE==2){
+			   if (seconds%100==0){
+				   Function_Code="raise";
+				   polar_a=seconds/100-1;
+			   }
+			   if (seconds%100==50){
+				   Function_Code="root";
+				   polar_a=2;
+			   }
 		   }
-	   }
-	   if (MODE.equals("switch")){
-		   if (seconds%200==0){
-			   cartesian_a=1;
-			   cartesian_b=1;
-		   }
-		   if (seconds%200==50){
-			   cartesian_a=1;
-			   cartesian_b=-1;
-		   }
-		   if (seconds%200==100){
-			   cartesian_a=-1;
-			   cartesian_b=-1;
-		   }
-		   if (seconds%200==150){
-			   cartesian_a=-1;
-			   cartesian_b=1;
+		   else{
+			   Function_Code="raise";
+			   polar_a=seconds/50-1;
 		   }
 	   }
    }
@@ -867,68 +997,12 @@ public class GameScreen_2 implements Screen {
 	   
    }
    
-   private void create_polar_dot_function(){
-	   if (MODE.equals("r")){
-		   
-		   if (seconds%200==0){
-			   polar_a=MathUtils.random(2,3);
-			   polar_b=0;
-		   }
-		   if (seconds%200==50){
-			   polar_a=-MathUtils.random(1,3);
-			   polar_b=0;
-		   }
-		   if (seconds%200==100){
-			   polar_a=plusorminus()*MathUtils.random(2,3);
-			   polar_b=0;
-		   }
-		   if (seconds%200==150){
-			   polar_a=1;
-			   polar_b=1;
-		   }
-	   }
-	   if (MODE.equals("theta")){
-		   if (seconds==0){
-			   polar_a=1;
-			   polar_b=0;
-		   }
-		   else{
-			   if (seconds%100==0){
-				   polar_a=2;
-				   polar_b=0;
-			   }
-			   if (seconds%100==50){
-				   polar_a=1;
-				   polar_b=plusorminus();
-			   }
-		   }
-		   if (seconds%300==250){
-			   polar_a=plusorminus()*MathUtils.random(1,3);
-			   polar_b=0;
-		   }
-	   }
-	   if (MODE.equals("power")){
-		   if (seconds%200==0){
-			   Function_Code="square";
-		   }
-		   if (seconds%200==50){
-			   Function_Code="cube";
-		   }
-		   if (seconds%200==100){
-			   Function_Code="square root";
-		   }
-		   if (seconds%200==150){
-			   Function_Code="reciprocal";
-		   }
-	   }
-	   if (MODE.equals("switch")){
-		   DO_ABSOLUTELY_NOTHING();
-	   }
-   }
-   
    private void create_powers_dot_function(){
-	   if (MODE.equals("positive") || MODE.equals("roots")){
+	   if (MODE.equals("positive")){ 
 		   powers_n=seconds/50+1;
+	   }
+	   if(MODE.equals("roots")){
+		   powers_n=seconds/50+2;
 	   }
 	   if (MODE.equals("negative")){
 		   if (seconds%100==0){
@@ -981,31 +1055,43 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
 	   if (MODE.equals("power")){
-		   if (seconds%200==0){
-			   Function_Code="square";
+		   if (SCALE==1){
+			   if (seconds%100==0){
+				   Function_Code="raise";
+				   polar_a=seconds/100-1;
+			   }
+			   if (seconds%100==50){
+				   Function_Code="root";
+				   polar_a=(seconds-50)/100-1;
+			   }
 		   }
-		   if (seconds%200==50){
-			   Function_Code="cube";
+		   else if (SCALE==2){
+			   if (seconds%100==0){
+				   Function_Code="raise";
+				   polar_a=seconds/100-1;
+			   }
+			   if (seconds%100==50){
+				   Function_Code="root";
+				   polar_a=2;
+			   }
 		   }
-		   if (seconds%200==100){
-			   Function_Code="square root";
-		   }
-		   if (seconds%200==150){
-			   Function_Code="reciprocal";
+		   else{
+			   Function_Code="raise";
+			   polar_a=seconds/50-1;
 		   }
 	   }
-	   if (MODE.equals("function")){
+	   if (MODE.equals("functions")){
 		   if (seconds%200==0){
-			   Function_Code="z_alone";
+			   Function_Code="minus_z";
 		   }
 		   if (seconds%200==50){
-			   Function_Code="minus_z";
+			   Function_Code="real";
 		   }
 		   if (seconds%200==100){
 			   Function_Code="conjugate";
 		   }
 		   if (seconds%200==150){
-			   Function_Code="real";
+			   Function_Code="plusorminus_abs";
 		   }
 	   }
    }
@@ -1294,33 +1380,12 @@ public class GameScreen_2 implements Screen {
    }
    
    private void apply_cartesian_dot_function(double grx, double gry){
-	   if (MODE.equals("flip")){
-		   if (Function_Code=="flip_nothing"){
-			   dots_posns_x[0]=mouse_posn_x;
-			   dots_posns_y[0]=mouse_posn_y;
-		   }
-		   if (Function_Code=="flip_x"){
-			   dots_posns_x[0]=-mouse_posn_x;
-			   dots_posns_y[0]=mouse_posn_y;
-		   }
-		   if (Function_Code=="flip_y"){
-			   dots_posns_x[0]=mouse_posn_x;
-			   dots_posns_y[0]=-mouse_posn_y;
-		   }
-		   if (Function_Code=="flip_both"){
-			   dots_posns_x[0]=-mouse_posn_x;
-			   dots_posns_y[0]=-mouse_posn_y;
-		   }
-	   }
+	   
 	   if (MODE.equals("add")){
 		   dots_posns_x[0]=mouse_posn_x+cartesian_a;
 		   dots_posns_y[0]=mouse_posn_y+cartesian_b;
 	   }
-	   if (MODE.equals("multiply")){
-		   dots_posns_x[0]=mouse_posn_x*cartesian_a;
-		   dots_posns_y[0]=mouse_posn_y*cartesian_b;
-	   }
-	   if (MODE.equals("mirror")){
+	   if (MODE.equals("function")){
 		   if (Function_Code=="flip_x"){
 			   dots_posns_x[0]=-mouse_posn_x;
 			   dots_posns_y[0]=mouse_posn_y;
@@ -1329,18 +1394,50 @@ public class GameScreen_2 implements Screen {
 			   dots_posns_x[0]=mouse_posn_x;
 			   dots_posns_y[0]=-mouse_posn_y;
 		   }
-		   if (Function_Code=="flip_pos_diag"){
-			   dots_posns_x[0]=mouse_posn_y;
-			   dots_posns_y[0]=mouse_posn_x;
+		   if (Function_Code=="plusorminus_x"){
+			   dots_posns_x[0]=mouse_posn_x;
+			   dots_posns_y[0]=mouse_posn_y;
+			   NUMBER_OF_DOTS=2;
+			   dots_posns_x[1]=-mouse_posn_x;
+			   dots_posns_y[1]=mouse_posn_y;
 		   }
-		   if (Function_Code=="flip_neg_diag"){
-			   dots_posns_x[0]=-mouse_posn_y;
-			   dots_posns_y[0]=-mouse_posn_x;
+		   if (Function_Code=="abs_y"){
+			   dots_posns_x[0]=mouse_posn_x;
+			   dots_posns_y[0]=Math.abs(mouse_posn_y);
 		   }
 	   }
-	   if (MODE.equals("switch")){
-		   dots_posns_x[0]=mouse_posn_y*cartesian_a;
-		   dots_posns_y[0]=mouse_posn_x*cartesian_b;
+	   
+	   if (MODE.equals("multiply")){
+		   if (Function_Code=="divide"){
+			   dots_posns_x[0]=mouse_posn_x/cartesian_a;
+			   dots_posns_y[0]=mouse_posn_y/cartesian_b;
+		   }
+		   else{
+			   dots_posns_x[0]=mouse_posn_x*cartesian_a;
+			   dots_posns_y[0]=mouse_posn_y*cartesian_b;
+		   }
+	   }
+	   if (MODE.equals("power")){
+		   if (Function_Code=="raise"){
+			   dots_posns_x[0]=mouse_posn_x;
+			   dots_posns_y[0]=Math.pow(mouse_posn_y, cartesian_n);
+		   }
+		   if (Function_Code=="root"){
+			   dots_posns_x[0]=mouse_posn_x;			   
+			   if (cartesian_n%2==0){
+				   dots_posns_y[0]=Math.pow(mouse_posn_y, 1/((float)cartesian_n));
+				   dots_posns_x[1]=mouse_posn_x;
+				   dots_posns_y[1]=-dots_posns_y[0];
+				   NUMBER_OF_DOTS=2;
+			   }else{
+				   if (gry>=0){
+					   dots_posns_y[0]=Math.pow(mouse_posn_y, 1/((float)powers_n));
+				   }
+				   else{
+					   dots_posns_y[0]=-Math.pow(-mouse_posn_y, 1/((float)powers_n));
+				   }
+			   }
+		   }
 	   }
    }
    
@@ -1350,40 +1447,49 @@ public class GameScreen_2 implements Screen {
        if (gry<0){
    		  mouse_posn_theta=-mouse_posn_theta;
     	  }
-	   if (MODE.equals("r")){
-		   dots_posns_r[0]= mouse_posn_r*polar_a + polar_b;
-		   dots_posns_theta[0]=mouse_posn_theta;
+//	   if (MODE.equals("r")){
+//		   dots_posns_r[0]= mouse_posn_r*polar_a + polar_b;
+//		   dots_posns_theta[0]=mouse_posn_theta;
+//	   }
+//	   if (MODE.equals("theta")){
+//		   dots_posns_r[0]=mouse_posn_r;
+//		   if (Function_Code=="divide"){
+//			   dots_posns_theta[0]=mouse_posn_theta/polar_a+polar_b*Math.PI/4f;
+//			   dots_posns_theta[1]=-dots_posns_theta[0];
+//			   NUMBER_OF_DOTS=2;
+//		   }
+//		   else{
+//			   dots_posns_theta[0]=mouse_posn_theta*polar_a+polar_b*Math.PI/4f;
+//		   }
+//		   
+//	   }
+       
+	   if (MODE.equals("add")){
+		   dots_posns_theta[0]=mouse_posn_theta + polar_a;
+		   dots_posns_r[0]= mouse_posn_r+polar_b;
 	   }
-	   if (MODE.equals("theta")){
-		   dots_posns_r[0]=mouse_posn_r;
-		   if (Function_Code=="divide"){
-			   dots_posns_theta[0]=mouse_posn_theta/polar_a+polar_b*Math.PI/4f;
-			   dots_posns_theta[1]=-dots_posns_theta[0];
-			   NUMBER_OF_DOTS=2;
-		   }
-		   else{
-			   dots_posns_theta[0]=mouse_posn_theta*polar_a+polar_b*Math.PI/4f;
-		   }
-		   
+	   
+	   if (MODE.equals("multiply")){
+		   dots_posns_theta[0]=mouse_posn_theta*polar_a;
+		   dots_posns_r[0]= mouse_posn_r*polar_b;
 	   }
+	   
 	   if (MODE.equals("power")){
 		   
 		   dots_posns_theta[0]=mouse_posn_theta;
 		   
-		   if (Function_Code=="square"){
-			   dots_posns_r[0]=mouse_posn_r*mouse_posn_r;
+		   if (Function_Code=="raise"){
+			   dots_posns_r[0]=Math.pow(mouse_posn_r, polar_a);
 		   }
-		   if (Function_Code=="cube"){
-			   dots_posns_r[0]=mouse_posn_r*mouse_posn_r*mouse_posn_r;
+		   if (Function_Code=="root"){
+			   dots_posns_r[0]=Math.pow(mouse_posn_r, 1/((float)polar_a));
+			   if (polar_n%2==0){
+				   dots_posns_r[1]=-dots_posns_r[0];
+				   NUMBER_OF_DOTS=2;
+			   }
 		   }
 		   if (Function_Code=="reciprocal"){
 			   dots_posns_r[0]=1/mouse_posn_r;
-		   }
-		   if (Function_Code=="square root"){
-			   dots_posns_r[0]=Math.sqrt(mouse_posn_r);
-			   dots_posns_r[1]=Math.sqrt(mouse_posn_r);
-			   dots_posns_theta[1]=Math.PI+dots_posns_theta[0];
-			   NUMBER_OF_DOTS=2;
 		   }
 		   
 	   }
@@ -1393,6 +1499,8 @@ public class GameScreen_2 implements Screen {
 	   }
 	   dots_posns_x[0]=(dots_posns_r[0]*Math.cos(dots_posns_theta[0]));
 	   dots_posns_y[0]=(dots_posns_r[0]*Math.sin(dots_posns_theta[0]));
+	   dots_posns_x[1]=(dots_posns_r[1]*Math.cos(dots_posns_theta[1]));
+	   dots_posns_y[1]=(dots_posns_r[1]*Math.sin(dots_posns_theta[1]));
    }
    
    private void apply_powers_dot_function(double grx, double gry){
@@ -2023,9 +2131,9 @@ private void spawnSecondMineSquare(){
       
       //----
       
-      if (Function_Code.equals("square root") || Function_Code.equals("circle") || (MODE.equals("roots")&& (powers_n%2==0))){
-    	  NUMBER_OF_DOTS=2;
-      }
+//      if (Function_Code.equals("square root") || Function_Code.equals("circle") || (MODE.equals("roots")&& (powers_n%2==0))){
+//    	  NUMBER_OF_DOTS=2;
+//      }
       
 	  //--Update ship image used--
       ship_t = ship_t_plural[charges];
@@ -2231,14 +2339,14 @@ private void spawnSecondMineSquare(){
     		  }
     	  }
     	  if (MODE.equals("multiply")){
+    		  if (Function_Code=="divide"){
+    			  dotfunction_font.draw(batch, "x="+cartesian_a+"/"+double_formatted(mouse_posn_x), 30, 455);
+        		  dotfunction_font.draw(batch, "y="+cartesian_b+"/"+double_formatted(mouse_posn_y), 30, 435);
+    		  }
     		  dotfunction_font.draw(batch, "x="+cartesian_a+"*"+double_formatted(mouse_posn_x), 30, 455);
     		  dotfunction_font.draw(batch, "y="+cartesian_b+"*"+double_formatted(mouse_posn_y), 30, 435);
     	  }
-    	  if (MODE.equals("flip")){
-    		  if (Function_Code=="flip_nothing"){
-    			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, 455);
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y), 30, 435);
-    		  }
+    	  if (MODE.equals("function")){
     		  if (Function_Code=="flip_x"){
     			  dotfunction_font.draw(batch, "x=-("+double_formatted(mouse_posn_x)+")", 30, 455);
         		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y), 30, 435);
@@ -2247,53 +2355,68 @@ private void spawnSecondMineSquare(){
     			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, 455);
         		  dotfunction_font.draw(batch, "y=-("+double_formatted(mouse_posn_y)+")", 30, 435);
     		  }
-    		  if (Function_Code=="flip_both"){
-    			  dotfunction_font.draw(batch, "x=-("+double_formatted(mouse_posn_x)+")", 30, 455);
-    			  dotfunction_font.draw(batch, "y=-("+double_formatted(mouse_posn_y)+")", 30, 435);
+    		  if (Function_Code=="plusorminus_x"){
+    			  //dotfunction_font.draw(batch, "x=±("+double_formatted(mouse_posn_x)+")", 30, 455);
+    			  dotfunction_font.draw(batch, "x=+/-("+double_formatted(mouse_posn_x)+")", 30, 455);
+    			  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y), 30, 435);
     		  }
-    	  }
-    	  if (MODE.equals("mirror")){
-    		  if (Function_Code=="flip_x"){
-    			  dotfunction_font.draw(batch, "x=-("+double_formatted(mouse_posn_x)+")", 30, 455);
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y), 30, 435);
-    		  }
-    		  if (Function_Code=="flip_y"){
+    		  if (Function_Code=="abs_y"){
     			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, 455);
-        		  dotfunction_font.draw(batch, "y=-("+double_formatted(mouse_posn_y)+")", 30, 435);
-    		  }
-    		  if (Function_Code=="flip_pos_diag"){
-    			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_y), 30, 455);
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_x), 30, 435);
-    		  }
-    		  if (Function_Code=="flip_neg_diag"){
-    			  dotfunction_font.draw(batch, "x=-("+double_formatted(mouse_posn_y)+")", 30, 455);
-        		  dotfunction_font.draw(batch, "y=-("+double_formatted(mouse_posn_x)+")", 30, 435);
+    			  dotfunction_font.draw(batch, "y=|"+double_formatted(mouse_posn_y)+"|", 30, 435);
     		  }
     	  }
-    	  if (MODE.equals("switch")){
-    		  dotfunction_font.draw(batch, "x="+double_formatted(dots_posns_x[0]), 30, 455);
-    		  dotfunction_font.draw(batch, "y="+double_formatted(dots_posns_y[0]), 30, 435);
-    	  }
-    	  if (MODE.equals("line")){
-    		  font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, 455);
-    		  if (Function_Code=="y_is_c"){
-        		  dotfunction_font.draw(batch, "y="+cartesian_c, 30, 435);
+    	  if (MODE.equals("power")){
+    		  if (Function_Code=="raise"){
+    			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, 455);
+    			  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+"^"+cartesian_n, 30, 435);
     		  }
-    		  if (Function_Code=="y_is_mx"){
-        		  dotfunction_font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(mouse_posn_x), 30, 435);
-    		  }
-    		  if (Function_Code=="y_is_mx_plus_c"){
-    			  if (cartesian_c>0){
-    				  dotfunction_font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(mouse_posn_x)+"+"+cartesian_c, 30, 435);
-    			  }
-    			  else{
-    				  dotfunction_font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(mouse_posn_x)+cartesian_c, 30, 435);
-    			  }
-    		  }
-    		  if (Function_Code=="circle"){
-        		  dotfunction_font.draw(batch, "y=(3^2-("+double_formatted(mouse_posn_x)+")^2)^0.5", 30, 435);
+    		  if (Function_Code=="root"){
+    			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, 455);
+    			  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+"^(1/"+cartesian_n+")", 30, 435);
     		  }
     	  }
+//    	  if (MODE.equals("mirror")){
+//    		  if (Function_Code=="flip_x"){
+//    			  dotfunction_font.draw(batch, "x=-("+double_formatted(mouse_posn_x)+")", 30, 455);
+//        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y), 30, 435);
+//    		  }
+//    		  if (Function_Code=="flip_y"){
+//    			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, 455);
+//        		  dotfunction_font.draw(batch, "y=-("+double_formatted(mouse_posn_y)+")", 30, 435);
+//    		  }
+//    		  if (Function_Code=="flip_pos_diag"){
+//    			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_y), 30, 455);
+//        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_x), 30, 435);
+//    		  }
+//    		  if (Function_Code=="flip_neg_diag"){
+//    			  dotfunction_font.draw(batch, "x=-("+double_formatted(mouse_posn_y)+")", 30, 455);
+//        		  dotfunction_font.draw(batch, "y=-("+double_formatted(mouse_posn_x)+")", 30, 435);
+//    		  }
+//    	  }
+//    	  if (MODE.equals("switch")){
+//    		  dotfunction_font.draw(batch, "x="+double_formatted(dots_posns_x[0]), 30, 455);
+//    		  dotfunction_font.draw(batch, "y="+double_formatted(dots_posns_y[0]), 30, 435);
+//    	  }
+//    	  if (MODE.equals("line")){
+//    		  font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, 455);
+//    		  if (Function_Code=="y_is_c"){
+//        		  dotfunction_font.draw(batch, "y="+cartesian_c, 30, 435);
+//    		  }
+//    		  if (Function_Code=="y_is_mx"){
+//        		  dotfunction_font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(mouse_posn_x), 30, 435);
+//    		  }
+//    		  if (Function_Code=="y_is_mx_plus_c"){
+//    			  if (cartesian_c>0){
+//    				  dotfunction_font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(mouse_posn_x)+"+"+cartesian_c, 30, 435);
+//    			  }
+//    			  else{
+//    				  dotfunction_font.draw(batch, "y=("+cartesian_a+"/"+cartesian_b+")*"+double_formatted(mouse_posn_x)+cartesian_c, 30, 435);
+//    			  }
+//    		  }
+//    		  if (Function_Code=="circle"){
+//        		  dotfunction_font.draw(batch, "y=(3^2-("+double_formatted(mouse_posn_x)+")^2)^0.5", 30, 435);
+//    		  }
+//    	  }
       }
       if (TOPIC.equals("MATRIX")){
     	  font.draw(batch, double_formatted(mouse_posn_x), 96, 457);
@@ -2505,14 +2628,14 @@ private void spawnSecondMineSquare(){
     			  dispose();
     		  }
     		  else if (total_time>=200 || (MODE.equals("intro") && total_time>1)){
-    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, next_topic(), next_mode(), ENDLESS, true, ANDROID));
+    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, SCALE, next_topic(), next_mode(), ENDLESS, true, ANDROID));
     			  prefs.putString("TOPIC", next_topic());
     	    	  prefs.putString("MODE", next_mode());
     	    	  prefs.flush();
     			  dispose();
     		  }
     		  else {
-    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, TOPIC, MODE, ENDLESS, true, ANDROID));
+    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, SCALE, TOPIC, MODE, ENDLESS, true, ANDROID));
     			  dispose();
     		  }
     		  
@@ -2696,7 +2819,7 @@ private void spawnSecondMineSquare(){
     	  }
     	  
       
-      NUMBER_OF_DOTS=1;
+      
       
       if (about_to_leave){
     	  game.setScreen(new LevelSelectScreen(game, TOPIC, GAMESPEED_ORI, ENDLESS, ANDROID));
