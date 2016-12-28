@@ -225,6 +225,8 @@ public class GameScreen_2 implements Screen {
    
    private String MODE;
    private String TOPIC;
+   private String WT_ONE;
+   private String WT_TWO;
    private int GAMESPEED;
    private int GAMESPEED_ORI;
    private int SCALE;
@@ -295,6 +297,8 @@ public class GameScreen_2 implements Screen {
 	
    public GameScreen_2(final PointDef gam, int gamespeed, int scale, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
+	   WT_ONE="lined";
+	   WT_TWO="massed";
 	   
 	   ANDROID=android;
 	   
@@ -378,10 +382,10 @@ public class GameScreen_2 implements Screen {
       
       if (TOPIC.equals("POLAR")){
     	  if (SCALE==2){
-    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v3.png"));
+    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v5.png"));
     	  }
     	  else if (SCALE==4){
-    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v5.png"));
+    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v3.png"));
     	  }
       }
       else if (SCALE==2){
@@ -644,7 +648,7 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       
-      wavetype="dull";
+      wavetype=WT_TWO;
       
       horz_coefficient=0.9f;
       if (ANDROID){
@@ -718,7 +722,45 @@ public class GameScreen_2 implements Screen {
 	   return (double)Math.floor(temp___y/UNIT_LENGTH_IN_PIXELS);
    }
    
+   private double real_part_complex_multiply(double first_a, double first_b, double second_a, double second_b){
+	   return first_a*second_a-first_b*second_b;
+   }
    
+   private double imag_part_complex_multiply(double first_a, double first_b, double second_a, double second_b){
+	   return first_a*second_b+first_b*second_a;
+   }
+   
+   private double real_part_complex_raise(double real, double imag, double n){
+	   int n_temp=1;
+	   double old_real=real;
+	   double old_imag=imag;
+	   double new_real=0;
+	   double new_imag=0;
+	   while (n_temp<n){
+		   new_real=real_part_complex_multiply(old_real,old_imag,old_real,old_imag);
+		   new_imag=imag_part_complex_multiply(old_real,old_imag,old_real,old_imag);
+		   old_real=new_real;
+		   old_imag=new_imag;
+		   n_temp+=1;
+	   }
+	   return old_real;
+   }
+   
+   private double imag_part_complex_raise(double real, double imag, double n){
+	   int n_temp=1;
+	   double old_real=real;
+	   double old_imag=imag;
+	   double new_real=0;
+	   double new_imag=0;
+	   while (n_temp<n){
+		   new_real=real_part_complex_multiply(old_real,old_imag,old_real,old_imag);
+		   new_imag=imag_part_complex_multiply(old_real,old_imag,old_real,old_imag);
+		   old_real=new_real;
+		   old_imag=new_imag;
+		   n_temp+=1;
+	   }
+	   return old_imag;
+   }
    
    //--Create Dot Functions--
    
@@ -756,6 +798,16 @@ public class GameScreen_2 implements Screen {
 			   cartesian_a=0;
 			   cartesian_b=0;
 		   }else{
+			   if (SCALE<4){
+				   if (seconds%100==50){
+					   cartesian_a=0;
+					   cartesian_b=MathUtils.random(1,2);
+				   }
+				   else if (seconds%100==0){
+					   cartesian_a=0;
+					   cartesian_b=-MathUtils.random(1,2);
+				   }
+			   }
 			   if (SCALE==4){
 				   if (seconds==50){
 					   cartesian_a=0;
@@ -880,48 +932,48 @@ public class GameScreen_2 implements Screen {
 		   }else{
 			   if (SCALE<4){
 				   if (seconds%100==50){
-					   polar_a=MathUtils.random(1,2);
-					   polar_b=0;
+					   polar_b=MathUtils.random(1,2);
+					   polar_a=0;
 				   }
 				   else if (seconds%100==0){
-					   polar_a=-MathUtils.random(1,2);
-					   polar_b=0;
+					   polar_b=-MathUtils.random(1,2);
+					   polar_a=0;
 				   }
 			   }
 			   else if (SCALE==4){
 				   if (seconds%200==50){
-					   polar_a=MathUtils.random(1,2);
-					   polar_b=0;
+					   polar_b=MathUtils.random(1,2);
+					   polar_a=0;
 				   }
 				   if (seconds%200==100){
-					   polar_a=0;
-					   polar_b=1;
+					   polar_b=0;
+					   polar_a=1;
 				   }
 				   if (seconds%200==150){
-					   polar_a=-MathUtils.random(1,2);
-					   polar_b=0;
+					   polar_b=-MathUtils.random(1,2);
+					   polar_a=0;
 				   }
 				   if (seconds%200==0){
-					   polar_a=0;
-					   polar_b=-1;
+					   polar_b=0;
+					   polar_a=-1;
 				   }
 			   }
 			   else if (SCALE==8){
 				   if (seconds%200==50){
-					   polar_a=MathUtils.random(1,2);
-					   polar_b=0;
+					   polar_b=MathUtils.random(1,2);
+					   polar_a=0;
 				   }
 				   if (seconds%200==100){
-					   polar_a=0;
-					   polar_b=MathUtils.random(1,2);
+					   polar_b=0;
+					   polar_a=MathUtils.random(1,2);
 				   }
 				   if (seconds%200==150){
-					   polar_a=-MathUtils.random(1,2);
-					   polar_b=0;
+					   polar_b=-MathUtils.random(1,2);
+					   polar_a=0;
 				   }
 				   if (seconds%200==0){
-					   polar_a=0;
-					   polar_b=-MathUtils.random(1,2);
+					   polar_b=0;
+					   polar_a=-MathUtils.random(1,2);
 				   }
 			   }
 		   }
@@ -942,30 +994,50 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
 	   
+	   if (MODE.equals("multiply")){
+		   if (seconds%200==0){
+			   polar_a=MathUtils.random(2,3);
+			   polar_b=1;
+		   }
+		   if (seconds%200==50){
+			   polar_a=1;
+			   polar_b=MathUtils.random(2,3);
+		   }
+		   if (seconds%200==100){
+			   polar_a=-MathUtils.random(2,3);
+			   polar_b=1;
+		   }
+		   if (seconds%200==150){
+			   polar_a=1;
+			   Function_Code="divide";
+			   polar_b=MathUtils.random(2,3);
+		   }
+	   }
+	   
 	   if (MODE.equals("power")){
 		   if (SCALE==1){
 			   if (seconds%100==0){
 				   Function_Code="raise";
-				   polar_a=seconds/100-1;
+				   polar_n=seconds/100+2;
 			   }
 			   if (seconds%100==50){
 				   Function_Code="root";
-				   polar_a=(seconds-50)/100-1;
+				   polar_n=(seconds-50)/100+2;
 			   }
 		   }
 		   else if (SCALE==2){
 			   if (seconds%100==0){
 				   Function_Code="raise";
-				   polar_a=seconds/100-1;
+				   polar_n=seconds/100+2;
 			   }
 			   if (seconds%100==50){
 				   Function_Code="root";
-				   polar_a=2;
+				   polar_n=2;
 			   }
 		   }
 		   else{
 			   Function_Code="raise";
-			   polar_a=seconds/50-1;
+			   polar_n=seconds/50-1;
 		   }
 	   }
    }
@@ -979,7 +1051,7 @@ public class GameScreen_2 implements Screen {
 		   if (seconds%200==50 || seconds%200==100){
 			   Function_Code="y_is_mx";
 			   curves_b=MathUtils.random(2,4);
-			   curves_a=plusorminus()*MathUtils.random(1,cartesian_b-1);
+			   curves_a=plusorminus()*MathUtils.random(1,curves_b-1);
 		   }
 		   if (seconds%200==150){
 			   Function_Code="y_is_mx_plus_c";
@@ -1071,29 +1143,29 @@ public class GameScreen_2 implements Screen {
 		   if (SCALE==1){
 			   if (seconds%100==0){
 				   Function_Code="raise";
-				   polar_a=seconds/100-1;
+				   argand_n=seconds/100+2;
 			   }
 			   if (seconds%100==50){
 				   Function_Code="root";
-				   polar_a=(seconds-50)/100-1;
+				   argand_n=(seconds-50)/100+2;
 			   }
 		   }
 		   else if (SCALE==2){
 			   if (seconds%100==0){
 				   Function_Code="raise";
-				   polar_a=seconds/100-1;
+				   argand_n=seconds/100+2;
 			   }
 			   if (seconds%100==50){
 				   Function_Code="root";
-				   polar_a=2;
+				   argand_n=2;
 			   }
 		   }
 		   else{
 			   Function_Code="raise";
-			   polar_a=seconds/50-1;
+			   argand_n=seconds/50+2;
 		   }
 	   }
-	   if (MODE.equals("functions")){
+	   if (MODE.equals("function")){
 		   if (seconds%200==0){
 			   Function_Code="minus_z";
 		   }
@@ -1462,13 +1534,49 @@ public class GameScreen_2 implements Screen {
     	  }
        
 	   if (MODE.equals("add")){
-		   dots_posns_theta[0]=mouse_posn_theta + polar_a;
-		   dots_posns_r[0]= mouse_posn_r+polar_b;
+		   dots_posns_r[0]= mouse_posn_r+polar_a;
+		   dots_posns_theta[0]=mouse_posn_theta + polar_b*Math.PI/4;
 	   }
-	   
+	   if (MODE.equals("function")){
+		   if (Function_Code=="flip_r"){
+			   dots_posns_r[0]=-mouse_posn_r;
+			   dots_posns_theta[0]=mouse_posn_theta;
+		   }
+		   if (Function_Code=="flip_theta"){
+			   dots_posns_r[0]=mouse_posn_r;
+			   dots_posns_theta[0]=-mouse_posn_theta;
+		   }
+		   if (Function_Code=="plusorminus_r"){
+			   dots_posns_r[0]=mouse_posn_r;
+			   dots_posns_theta[0]=mouse_posn_theta;
+			   NUMBER_OF_DOTS=2;
+			   dots_posns_r[1]=-mouse_posn_r;
+			   dots_posns_theta[1]=mouse_posn_theta;
+		   }
+		   if (Function_Code=="abs_theta"){
+			   dots_posns_r[0]=mouse_posn_r;
+			   dots_posns_theta[0]=Math.abs(mouse_posn_theta);
+		   }
+	   }
 	   if (MODE.equals("multiply")){
-		   dots_posns_theta[0]=mouse_posn_theta*polar_a;
-		   dots_posns_r[0]= mouse_posn_r*polar_b;
+		   if (Function_Code=="divide"){
+			   dots_posns_r[0]=mouse_posn_r/polar_a;
+			   dots_posns_theta[0]=mouse_posn_theta/polar_b;
+			   
+			   if (polar_b>1){
+				   NUMBER_OF_DOTS=polar_b;
+				   int prdfv=1;
+				   while (prdfv<polar_b){
+					   dots_posns_r[prdfv]=dots_posns_r[0];
+					   dots_posns_theta[prdfv]=dots_posns_theta[0]+Math.PI*2f/polar_b*prdfv;
+					   prdfv+=1;
+				   }
+			   }
+		   }
+		   else{
+			   dots_posns_r[0]= mouse_posn_r*polar_a;
+			   dots_posns_theta[0]=mouse_posn_theta*polar_b;
+		   }
 	   }
 	   
 	   if (MODE.equals("power")){
@@ -1476,24 +1584,25 @@ public class GameScreen_2 implements Screen {
 		   dots_posns_theta[0]=mouse_posn_theta;
 		   
 		   if (Function_Code=="raise"){
-			   dots_posns_r[0]=Math.pow(mouse_posn_r, polar_a);
+			   dots_posns_r[0]=Math.pow(mouse_posn_r, polar_n);
 		   }
 		   if (Function_Code=="root"){
-			   dots_posns_r[0]=Math.pow(mouse_posn_r, 1/((float)polar_a));
+			   dots_posns_r[0]=Math.pow(mouse_posn_r, 1/((float)polar_n));
 			   if (polar_n%2==0){
+				   dots_posns_theta[1]=mouse_posn_theta;
 				   dots_posns_r[1]=-dots_posns_r[0];
 				   NUMBER_OF_DOTS=2;
 			   }
 		   }		   
 	   }
-	   if (MODE.equals("switch")){
-		   dots_posns_r[0]=mouse_posn_theta;
-		   dots_posns_theta[0]=mouse_posn_r;
-	   }
 	   dots_posns_x[0]=(dots_posns_r[0]*Math.cos(dots_posns_theta[0]));
 	   dots_posns_y[0]=(dots_posns_r[0]*Math.sin(dots_posns_theta[0]));
 	   dots_posns_x[1]=(dots_posns_r[1]*Math.cos(dots_posns_theta[1]));
 	   dots_posns_y[1]=(dots_posns_r[1]*Math.sin(dots_posns_theta[1]));
+	   dots_posns_x[2]=(dots_posns_r[2]*Math.cos(dots_posns_theta[2]));
+	   dots_posns_y[2]=(dots_posns_r[2]*Math.sin(dots_posns_theta[2]));
+	   dots_posns_x[3]=(dots_posns_r[3]*Math.cos(dots_posns_theta[3]));
+	   dots_posns_y[3]=(dots_posns_r[3]*Math.sin(dots_posns_theta[3]));
    }
    
    private void apply_powers_dot_function(double grx, double gry){
@@ -1576,59 +1685,66 @@ public class GameScreen_2 implements Screen {
    }
    private void apply_argand_dot_function(double grx, double gry){
 	   if (MODE.equals("add")){
-		   dots_posns_x[0]=grx+argand_a;
-		   dots_posns_y[0]=gry+argand_b;
+		   dots_posns_x[0]=mouse_posn_x+argand_a;
+		   dots_posns_y[0]=mouse_posn_y+argand_b;
 	   }
 	   if (MODE.equals("multiply")){
-		   dots_posns_x[0]=grx*argand_a-gry*argand_b;
-		   dots_posns_y[0]=gry*argand_a+grx*argand_b;
+		   dots_posns_x[0]=mouse_posn_x*argand_a-mouse_posn_y*argand_b;
+		   dots_posns_y[0]=mouse_posn_y*argand_a+mouse_posn_x*argand_b;
 	   }
 	   if (MODE.equals("power")){
-		   if (Function_Code=="square"){
-			   dots_posns_x[0]=grx*grx-gry*gry;
-			   dots_posns_y[0]=grx*gry+gry*grx;
+		   if (Function_Code=="raise"){
+			   dots_posns_x[0]=real_part_complex_raise(mouse_posn_x,mouse_posn_y,argand_n);
+			   dots_posns_y[0]=imag_part_complex_raise(mouse_posn_x,mouse_posn_y,argand_n);
 		   }
-		   if (Function_Code=="cube"){
-			   dots_posns_x[0]=(grx*grx-gry*gry)*grx-(grx*gry+gry*grx)*gry;
-			   dots_posns_y[0]=grx*(grx*gry+gry*grx)+gry*(grx*grx-gry*gry);
-		   }
-		   if (Function_Code=="reciprocal"){
-			   dots_posns_x[0]=grx/(grx*grx+gry*gry);
-			   dots_posns_y[0]=-gry/(grx*grx+gry*gry);
-		   }
-		   if (Function_Code=="square root"){
+		   
+		   
+		   
+		   
+		   if (Function_Code=="root"){
 			   mouse_posn_r=Math.sqrt(grx*grx + gry*gry);
 			   mouse_posn_theta=Math.acos(grx/mouse_posn_r);
-		       if (gry<0){
+		       if (mouse_posn_y<0){
 		   		  mouse_posn_theta=-mouse_posn_theta;
 		       }
-		       dots_posns_theta[0]=mouse_posn_theta/2;
-		       dots_posns_theta[1]=Math.PI+dots_posns_theta[0];
+		       dots_posns_theta[0]=mouse_posn_theta/argand_n;
 		       dots_posns_r[0]=Math.sqrt(mouse_posn_r);
-		       dots_posns_r[1]=dots_posns_r[0];
 		       dots_posns_x[0]=(dots_posns_r[0]*Math.cos(dots_posns_theta[0]));
 			   dots_posns_y[0]=(dots_posns_r[0]*Math.sin(dots_posns_theta[0]));
-			   dots_posns_x[1]=(dots_posns_r[1]*Math.cos(dots_posns_theta[1]));
-			   dots_posns_y[1]=(dots_posns_r[1]*Math.sin(dots_posns_theta[1]));
-			   NUMBER_OF_DOTS=2;
+		       if (argand_n>1){
+				   NUMBER_OF_DOTS=argand_n;
+				   int ardfv=1;
+				   while (ardfv<argand_n){
+					   dots_posns_r[ardfv]=dots_posns_r[0];
+					   dots_posns_theta[ardfv]=dots_posns_theta[0]+Math.PI*2f/argand_n*ardfv;
+					   
+					   dots_posns_x[ardfv]=(dots_posns_r[ardfv]*Math.cos(dots_posns_theta[ardfv]));
+					   dots_posns_y[ardfv]=(dots_posns_r[ardfv]*Math.sin(dots_posns_theta[ardfv]));
+					   
+					   ardfv+=1;
+				   }
+			   }
 		   }
 	   }
 	   if (MODE.equals("function")){
-		   if (Function_Code=="z_alone"){
-			   dots_posns_x[0]=mouse_posn_x;
-			   dots_posns_y[0]=mouse_posn_y;
-		   }
 		   if (Function_Code=="minus_z"){
 			   dots_posns_x[0]=-mouse_posn_x;
-			   dots_posns_y[0]=-mouse_posn_y;
-		   }
-		   if (Function_Code=="conjugate"){
-			   dots_posns_x[0]=mouse_posn_x;
 			   dots_posns_y[0]=-mouse_posn_y;
 		   }
 		   if (Function_Code=="real"){
 			   dots_posns_x[0]=mouse_posn_x;
 			   dots_posns_y[0]=mouse_posn_y*0;
+		   }
+		   if (Function_Code=="conjugate"){
+			   dots_posns_x[0]=mouse_posn_x;
+			   dots_posns_y[0]=-mouse_posn_y;
+		   }
+		   if (Function_Code=="plusorminus_abs"){
+			   dots_posns_x[0]=Math.sqrt(mouse_posn_x*mouse_posn_x + mouse_posn_y*mouse_posn_y);
+			   dots_posns_y[0]=0;
+			   dots_posns_x[1]=-dots_posns_x[0];
+			   dots_posns_y[1]=0;
+			   NUMBER_OF_DOTS=2;
 		   }
 	   }
    }
@@ -1810,7 +1926,7 @@ private void spawnMineLine(int linelen){
 }
 
 private void spawnFirstMineSquare(){
-	int m_sp=35;
+	int m_sp=40;
 	spawnMine_queueable(-2, 0, m_sp);
 	spawnMine_queueable(0, 0, m_sp);
 	spawnMine_queueable(2, 0, m_sp);
@@ -1823,7 +1939,7 @@ private void spawnFirstMineSquare(){
 }
 
 private void spawnSecondMineSquare(){
-	int m_sp=30;
+	int m_sp=33;
 	spawnMine_queueable(-3, 0, m_sp);
 	spawnMine_queueable(-1, 0, m_sp);
 	spawnMine_queueable(1, 0, m_sp);
@@ -1875,29 +1991,21 @@ private void spawnSecondMineSquare(){
    }
    
    private void shuffle_wavetype() {
-	   int w = MathUtils.random(1,2);
-	   if (wavetype.equals("dull")){
+	   int w = MathUtils.random(1,4);
+	   if (wavetype.equals(WT_ONE)){
 		   if (w==1){
-			   wavetype="dull_horz";
+			   wavetype=WT_ONE;
 		   }
-		   if (w==2){
-			   wavetype="wall";
+		   else{
+			   wavetype=WT_TWO;
 		   }
 	   }
-	   else if (wavetype.equals("dull_horz")){
+	   else if (wavetype.equals(WT_TWO)){
 		   if (w==1){
-			   wavetype="dull";
+			   wavetype=WT_TWO;
 		   }
-		   if (w==2){
-			   wavetype="wall";
-		   }
-	   }
-	   else if (wavetype.equals("wall")){
-		   if (w==1){
-			   wavetype="dull";
-		   }
-		   if (w==2){
-			   wavetype="dull_horz";
+		   else{
+			   wavetype=WT_ONE;
 		   }
 	   }
    }
@@ -2333,8 +2441,8 @@ private void spawnSecondMineSquare(){
     	  }
     	  if (MODE.equals("multiply")){
     		  if (Function_Code=="divide"){
-    			  dotfunction_font.draw(batch, "x="+cartesian_a+"/"+double_formatted(mouse_posn_x), 30, 455);
-        		  dotfunction_font.draw(batch, "y="+cartesian_b+"/"+double_formatted(mouse_posn_y), 30, 435);
+    			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+"/"+cartesian_a, 30, 455);
+        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+"/"+cartesian_b, 30, 435);
     		  }
     		  dotfunction_font.draw(batch, "x="+cartesian_a+"*"+double_formatted(mouse_posn_x), 30, 455);
     		  dotfunction_font.draw(batch, "y="+cartesian_b+"*"+double_formatted(mouse_posn_y), 30, 435);
@@ -2428,46 +2536,62 @@ private void spawnSecondMineSquare(){
     	  }
       }
       if (TOPIC.equals("POLAR")){
-    	  if (MODE.equals("r")){
+    	  if (MODE.equals("add")){
+    		  if (polar_a>0){
+    			  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+"+"+polar_a, 30, 455);
+    		  }
+    		  else if (polar_a==0){
+    			  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r), 30, 455);
+    		  }
+    		  else if (polar_a<0){
+    			  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+polar_a, 30, 455);
+    		  }
     		  if (polar_b>0){
-    			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(mouse_posn_r)+"+"+polar_b, 30, 455);
+    			  dotfunction_font.draw(batch, "theta="+double_formatted(mouse_posn_theta/Math.PI)+"pi+"+polar_b+"pi/4", 30, 435);
     		  }
     		  else if (polar_b==0){
-    			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(mouse_posn_r), 30, 455);
+    			  dotfunction_font.draw(batch, "theta="+double_formatted(mouse_posn_theta/Math.PI)+"pi", 30, 435);
     		  }
     		  else if (polar_b<0){
-    			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(mouse_posn_r)+polar_b, 30, 455);
+    			  dotfunction_font.draw(batch, "theta="+double_formatted(mouse_posn_theta/Math.PI)+"pi"+polar_b+"pi/4", 30, 435);
     		  }
-	          font.draw(batch, "Theta="+double_formatted_2pl(mouse_posn_theta/Math.PI)+"pi", 30, 435);
     	  }
-    	  if (MODE.equals("theta")){
-	    	  font.draw(batch, "r="+double_formatted(mouse_posn_r), 30, 455);
+    	  if (MODE.equals("multiply")){
 	    	  if (Function_Code=="divide"){
-	    		  dotfunction_font.draw(batch, "Theta="+double_formatted_2pl(mouse_posn_theta/Math.PI)+"pi/"+polar_a+" +(" + polar_b +")pi/4", 30, 435);
-	    	  }
-	    	  else{
-	    		  dotfunction_font.draw(batch, "Theta="+polar_a+"*"+double_formatted_2pl(mouse_posn_theta/Math.PI)+"pi+(" + polar_b +")pi/4", 30, 435);
-	    	  }
-	          
+    			  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+"/"+polar_a, 30, 455);
+        		  dotfunction_font.draw(batch, "theta="+double_formatted(mouse_posn_theta/Math.PI)+"pi/"+polar_b, 30, 435);
+    		  }else{
+    			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(mouse_posn_r), 30, 455);
+    			  dotfunction_font.draw(batch, "theta="+polar_b+"*"+double_formatted(mouse_posn_theta/Math.PI)+"pi", 30, 435);
+    		  }
     	  }
     	  if (MODE.equals("power")){
-	    	  if (Function_Code=="square"){
-	    		  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+"^2", 30, 455);
+	    	  if (Function_Code=="raise"){
+	    		  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+"^"+polar_n, 30, 455);
 	    	  }
-	    	  if (Function_Code=="cube"){
-	    		  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+"^3", 30, 455);
+	    	  if (Function_Code=="root"){
+	    		  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+"^(1/"+polar_n+")", 30, 455);
 	    	  }
-	    	  if (Function_Code=="reciprocal"){
-	    		  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+"^-1", 30, 455);
-	    	  }
-	    	  if (Function_Code=="square root"){
-	    		  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+"^0.5", 30, 455);
-	    	  }
-	    	  font.draw(batch, "Theta="+double_formatted_2pl(mouse_posn_theta/Math.PI)+"pi", 30, 435);
+	    	  font.draw(batch, "theta="+double_formatted_2pl(mouse_posn_theta/Math.PI)+"pi", 30, 435);
     	  }
-    	  if (MODE.equals("switch")){
-    		  font.draw(batch, "r="+double_formatted(mouse_posn_theta), 30, 455);
-    		  font.draw(batch, "Theta="+double_formatted(mouse_posn_r), 30, 435);
+    	  if (MODE.equals("function")){
+    		  if (Function_Code=="flip_r"){
+    			  dotfunction_font.draw(batch, "r=-("+double_formatted(mouse_posn_r)+")", 30, 455);
+        		  dotfunction_font.draw(batch, "theta="+double_formatted(mouse_posn_theta), 30, 435);
+    		  }
+    		  if (Function_Code=="flip_theta"){
+    			  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r), 30, 455);
+        		  dotfunction_font.draw(batch, "theta=-("+double_formatted(mouse_posn_theta)+")", 30, 435);
+    		  }
+    		  if (Function_Code=="plusorminus_r"){
+    			  //dotfunction_font.draw(batch, "r=±("+double_formatted(mouse_posn_r)+")", 30, 455);
+    			  dotfunction_font.draw(batch, "r=+/-("+double_formatted(mouse_posn_r)+")", 30, 455);
+    			  dotfunction_font.draw(batch, "theta="+double_formatted(mouse_posn_theta), 30, 435);
+    		  }
+    		  if (Function_Code=="abs_theta"){
+    			  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r), 30, 455);
+    			  dotfunction_font.draw(batch, "theta=|"+double_formatted(mouse_posn_theta)+"|", 30, 435);
+    		  }
     	  }
       }
       if (TOPIC.equals("POWERS")){
@@ -2540,22 +2664,16 @@ private void spawnSecondMineSquare(){
 	          
     	  }
     	  if (MODE.equals("power")){
-	    	  if (Function_Code=="square"){
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)^2", 30, 455);
+	    	  if (Function_Code=="raise"){
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)^"+argand_n, 30, 455);
 	    	  }
-	    	  if (Function_Code=="cube"){
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)^3", 30, 455);
-	    	  }
-	    	  if (Function_Code=="reciprocal"){
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)^-1", 30, 455);
-	    	  }
-	    	  if (Function_Code=="square root"){
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)^0.5", 30, 455);
+	    	  if (Function_Code=="root"){
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)^(1/"+argand_n+")", 30, 455);
 	    	  }
     	  }
     	  if (MODE.equals("function")){
-    		  if (Function_Code=="z_alone"){
-    			  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)", 30, 455);
+    		  if (Function_Code=="plusorminus_abs"){
+    			  dotfunction_font.draw(batch, "z=+/-|("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)|", 30, 455);
     		  }
     		  if (Function_Code=="minus_z"){
     			  dotfunction_font.draw(batch, "z=-("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)", 30, 455);

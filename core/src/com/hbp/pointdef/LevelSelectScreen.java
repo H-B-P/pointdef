@@ -85,7 +85,7 @@ public class LevelSelectScreen implements Screen {
 		
 		wastouched=false;
 		
-		SCAYLE=2;
+		SCAYLE=4;
 		
 		TOPIC=topic;
 		
@@ -113,7 +113,7 @@ public class LevelSelectScreen implements Screen {
 			score_one=prefs.getInteger("score_CARTESIAN_add");
 			score_two=prefs.getInteger("score_CARTESIAN_function");
 			score_three=prefs.getInteger("score_CARTESIAN_multiply");
-			score_four=prefs.getInteger("score_CARTESIAN_powers");
+			score_four=prefs.getInteger("score_CARTESIAN_power");
 			
 			one_t = new Texture(Gdx.files.internal("abutton_add.png"));
 			two_t = new Texture(Gdx.files.internal("abutton_function.png"));
@@ -128,12 +128,12 @@ public class LevelSelectScreen implements Screen {
 			score_one=prefs.getInteger("score_POLAR_add");
 			score_two=prefs.getInteger("score_POLAR_function");
 			score_three=prefs.getInteger("score_POLAR_multiply");
-			score_four=prefs.getInteger("score_POLAR_powers");
+			score_four=prefs.getInteger("score_POLAR_power");
 			
 			one_t = new Texture(Gdx.files.internal("abutton_add.png"));
-			two_t = new Texture(Gdx.files.internal("abutton_powers.png"));
+			two_t = new Texture(Gdx.files.internal("abutton_function.png"));
 			three_t = new Texture(Gdx.files.internal("abutton_multiply.png"));
-			four_t = new Texture(Gdx.files.internal("abutton_switch.png"));
+			four_t = new Texture(Gdx.files.internal("abutton_powers.png"));
 			
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_green.png"));
 
@@ -466,7 +466,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (four_r.contains(tp_x,tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, SCAYLE, "CARTESIAN", "power", ENDLESS, false, ANDROID));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, 2, "CARTESIAN", "power", ENDLESS, false, ANDROID));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,tp_y)){
@@ -486,7 +486,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (two_r.contains(tp_x,tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, SCAYLE, "POLAR", "power", ENDLESS, false, ANDROID));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, SCAYLE, "POLAR", "function", ENDLESS, false, ANDROID));
 			            dispose();
 					}
 					if (three_r.contains(tp_x,tp_y)){
@@ -494,7 +494,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (four_r.contains(tp_x,tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, SCAYLE, "POLAR", "switch", ENDLESS, false, ANDROID));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, 2, "POLAR", "power", ENDLESS, false, ANDROID));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,tp_y)){
@@ -634,7 +634,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (four_r.contains(tp_x,tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, SCAYLE, "ARGAND", "power", ENDLESS, false, ANDROID));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, 1, "ARGAND", "power", ENDLESS, false, ANDROID));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,tp_y)){
