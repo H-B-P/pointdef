@@ -730,6 +730,14 @@ public class GameScreen_2 implements Screen {
 	   return first_a*second_b+first_b*second_a;
    }
    
+   private double real_part_complex_divide(double top_a, double top_b, double bottom_a, double bottom_b){
+	   return (top_a*bottom_a+top_b*bottom_b)/(bottom_a*bottom_a+bottom_b*bottom_b);
+   }
+   
+   private double imag_part_complex_divide(double top_a, double top_b, double bottom_a, double bottom_b){
+	   return (top_b*bottom_a-top_a*bottom_b)/(bottom_a*bottom_a+bottom_b*bottom_b);
+   }
+   
    private double real_part_complex_raise(double real, double imag, double n){
 	   int n_temp=1;
 	   double old_real=real;
@@ -769,6 +777,7 @@ public class GameScreen_2 implements Screen {
    
    private void create_dot_function(){
 	   NUMBER_OF_DOTS=1;
+	   Function_Code="";
 	   if (TOPIC.equals("CARTESIAN")){
 		   create_cartesian_dot_function();
 	   }
@@ -1134,8 +1143,18 @@ public class GameScreen_2 implements Screen {
 				   argand_b=MathUtils.random(-4,4);
 			   }
 			   if (MODE.equals("multiply")){
-				   argand_a=MathUtils.random(0,2);
-				   argand_b=plusorminus()*MathUtils.random(1,2);
+				   if (seconds%200==150){
+					   Function_Code="divide";
+					   argand_a=plusorminus();
+					   argand_b=plusorminus();
+				   }else if (seconds%200==100){
+					   argand_a=-MathUtils.random(1,2);
+					   argand_b=plusorminus()*MathUtils.random(1,2);
+				   }
+				   else{
+					   argand_a=MathUtils.random(0,2);
+					   argand_b=plusorminus()*MathUtils.random(1,2);
+				   }
 			   }
 		   }
 	   }
@@ -1689,8 +1708,14 @@ public class GameScreen_2 implements Screen {
 		   dots_posns_y[0]=mouse_posn_y+argand_b;
 	   }
 	   if (MODE.equals("multiply")){
-		   dots_posns_x[0]=mouse_posn_x*argand_a-mouse_posn_y*argand_b;
-		   dots_posns_y[0]=mouse_posn_y*argand_a+mouse_posn_x*argand_b;
+		   if (Function_Code=="divide"){
+			   dots_posns_x[0]=real_part_complex_divide(mouse_posn_x,mouse_posn_y,argand_a,argand_b);
+			   dots_posns_y[0]=imag_part_complex_divide(mouse_posn_x,mouse_posn_y,argand_a,argand_b);
+		   }
+		   else{
+			   dots_posns_x[0]=mouse_posn_x*argand_a-mouse_posn_y*argand_b;
+			   dots_posns_y[0]=mouse_posn_y*argand_a+mouse_posn_x*argand_b;
+		   }
 	   }
 	   if (MODE.equals("power")){
 		   if (Function_Code=="raise"){
@@ -2646,7 +2671,15 @@ private void spawnSecondMineSquare(){
     	  if (MODE.equals("multiply")){
 	    	  
 	    	  if (Function_Code=="divide"){
-	    		  dotfunction_font.draw(batch, "z=1/("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i)", 30, 455);
+	    		  if (argand_b>0){
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) / "+"("+ argand_a + "+" + argand_b + "i)", 30, 455);
+	    		  }
+	    		  else if (argand_b<0){
+	    			  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) / "+"("+ argand_a + "" + argand_b + "i)", 30, 455); 
+	    		  }
+	    		  else if (argand_b==0){
+	    			  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) / "+"("+ argand_a + ")", 30, 455);
+	    		  }
 	    	  }
 	    	  else{
 	    		  if (argand_b>0){
