@@ -297,8 +297,8 @@ public class GameScreen_2 implements Screen {
 	
    public GameScreen_2(final PointDef gam, int gamespeed, int scale, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
-	   WT_ONE="lined";
-	   WT_TWO="massed";
+	   WT_ONE="accel_x";
+	   WT_TWO="accel_y";
 	   
 	   ANDROID=android;
 	   
@@ -1534,11 +1534,11 @@ public class GameScreen_2 implements Screen {
 				   dots_posns_y[1]=-dots_posns_y[0];
 				   NUMBER_OF_DOTS=2;
 			   }else{
-				   if (gry>=0){
-					   dots_posns_y[0]=Math.pow(mouse_posn_y, 1/((float)powers_n));
+				   if (mouse_posn_y>=0){
+					   dots_posns_y[0]=Math.pow(mouse_posn_y, 1/((float)cartesian_n));
 				   }
 				   else{
-					   dots_posns_y[0]=-Math.pow(-mouse_posn_y, 1/((float)powers_n));
+					   dots_posns_y[0]=-Math.pow(-mouse_posn_y, 1/((float)cartesian_n));
 				   }
 			   }
 		   }
@@ -1806,6 +1806,9 @@ public class GameScreen_2 implements Screen {
 	      mine.vert_speed = 100;
 	      mine.horz_speed = 0;
 	      
+	      mine.vert_accel=0;
+	      mine.horz_accel=0;
+	      
 	      
 	      mines.add(mine);
 	   }
@@ -1823,6 +1826,8 @@ public class GameScreen_2 implements Screen {
 	      mine.vert_speed = m_speed;
 	      mine.horz_speed = 0;
 	      
+	      mine.vert_accel=0;
+	      mine.horz_accel=0;
 	      
 	      mines.add(mine);
 	   }
@@ -1839,6 +1844,8 @@ public class GameScreen_2 implements Screen {
 	      mine.vert_speed = 100*frac;
 	      mine.horz_speed = (float) disp / 8f * 100*frac;
 	      
+	      mine.vert_accel=0;
+	      mine.horz_accel=0;
 	      
 	      mines.add(mine);
 	   }
@@ -1986,6 +1993,130 @@ private void spawnSecondMineSquare(){
 	spawnMine_queueable(3, 6, m_sp);
 }
 
+private void spawnMineSquare_one(){
+	int disjunc=MathUtils.random(-3,3);
+	int m_sp=80;
+	spawnMine_queueable(disjunc, 0, m_sp);
+}
+
+private void spawnMineSquare_four(){
+	int m_sp=90;
+	int disjunc=MathUtils.random(-2,2);
+	spawnMine_queueable(disjunc-1, 0, m_sp);
+	spawnMine_queueable(disjunc+1, 0, m_sp);
+	spawnMine_queueable(disjunc-1, 2, m_sp);
+	spawnMine_queueable(disjunc+1, 2, m_sp);
+}
+
+private void spawnMineSquare_nine(){
+	int m_sp=70;
+	int disjunc=MathUtils.random(-1,1);
+	spawnMine_queueable(disjunc-2, 0, m_sp);
+	spawnMine_queueable(disjunc, 0, m_sp);
+	spawnMine_queueable(disjunc+2, 0, m_sp);
+	spawnMine_queueable(disjunc-2, 2, m_sp);
+	spawnMine_queueable(disjunc, 2, m_sp);
+	spawnMine_queueable(disjunc+2, 2, m_sp);
+	spawnMine_queueable(disjunc-2, 4, m_sp);
+	spawnMine_queueable(disjunc, 4, m_sp);
+	spawnMine_queueable(disjunc+2, 4, m_sp);
+}
+
+private void spawnMineAccelY(int xposn, int acc){
+	Mine mine = new Mine();
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 90-acc*2;
+    mine.horz_speed = 0;
+    
+    mine.vert_accel=acc;
+    mine.horz_accel=0;
+    
+    
+    mines.add(mine);
+}
+
+private void spawnRandomMineAccelY(){
+	   int k=MathUtils.random(-3,3);
+	   int accel=plusorminus()*30;
+	   spawnMineAccelY(k,accel);
+	   
+}
+
+private void spawnRandomMineAccelY_l(){
+	   int k=MathUtils.random(-3,-1);
+	   int accel=plusorminus()*30;
+	   spawnMineAccelY(k,accel);	   
+}
+
+private void spawnRandomMineAccelY_r(){
+	   int k=MathUtils.random(1,3);
+	   int accel=plusorminus()*30;
+	   spawnMineAccelY(k,accel);	   
+}
+
+private void spawnMineAccelX_startstat(int xposn, int acc){
+	Mine mine = new Mine();
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 90;
+    mine.horz_speed = 0;
+    
+    mine.vert_accel=0;
+    mine.horz_accel=acc;
+    
+    
+    mines.add(mine);
+}
+
+private void spawnMineAccelX_endstat(int xposn, int acc){
+	Mine mine = new Mine();
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 90;
+    mine.horz_speed = acc*4;
+    
+    mine.vert_accel=0;
+    mine.horz_accel=-acc;
+    
+    
+    mines.add(mine);
+}
+
+private void spawnRandomMineAccelX(){
+	   int acceldisp=plusorminus()*2*MathUtils.random(1,2);
+	   int k=0;
+	   if (acceldisp>0){
+		   k=MathUtils.random(-3,(3-acceldisp));
+	   }
+	   if (acceldisp<0){
+		   k=MathUtils.random((-acceldisp-3),3);
+	   }
+	   if(plusorminus()>0){
+		   spawnMineAccelX_startstat(k,acceldisp*5);
+	   }
+	   else{
+		   spawnMineAccelX_endstat(k,acceldisp*5);
+	   }
+	   
+	   
+}
+
    //(This creates the dot which actually detonates mines. Not to be confused with mirroring.)
    private void spawn_other_dot(float x,float y) {
  	     
@@ -2016,7 +2147,7 @@ private void spawnSecondMineSquare(){
    }
    
    private void shuffle_wavetype() {
-	   int w = MathUtils.random(1,4);
+	   int w = MathUtils.random(1,99999);
 	   if (wavetype.equals(WT_ONE)){
 		   if (w==1){
 			   wavetype=WT_ONE;
@@ -2047,24 +2178,33 @@ private void spawnSecondMineSquare(){
 			  dot_t=standard_dot_t;
 	   }
 	   
-	   if (wavetype.equals("dull")){
-		   wave_dull(sss);
+	   if (wavetype.equals("basic")){
+		   wave_basic(sss);
 	   }
-	   else if(wavetype.equals("dull_horz")){
-		   wave_dull_horz(sss);
+	   else if(wavetype.equals("diagonal")){
+		   wave_diagonal(sss);
 	   }
-	   else if(wavetype.equals("wall")){
-		   wave_wall(sss);
+	   else if(wavetype.equals("grouped")){
+		   wave_grouped(sss);
 	   }
-	   else if(wavetype.equals("lined")){
-		   wave_lined(sss);
+	   else if(wavetype.equals("lines")){
+		   wave_lines(sss);
 	   }
 	   else if(wavetype.equals("massed")){
 		   wave_massed(sss);
 	   }
+	   else if(wavetype.equals("squares")){
+		   wave_squares(sss);
+	   }
+	   else if(wavetype.equals("accel_x")){
+		   wave_accel_x(sss);
+	   }
+	   else if(wavetype.equals("accel_y")){
+		   wave_accel_y(sss);
+	   }
    }
    
-   private void wave_dull(int ss){
+   private void wave_basic(int ss){
 		  
 	       int ts=ss+5;
 		   if (seconds>=ts && seconds<ts+20){
@@ -2081,7 +2221,7 @@ private void spawnSecondMineSquare(){
 		   
    }
    
-   private void wave_dull_horz(int ss){
+   private void wave_diagonal(int ss){
 		  
        int ts=ss+5;
 	   if (seconds>=ts && seconds<ts+20){
@@ -2096,7 +2236,7 @@ private void spawnSecondMineSquare(){
 	   }
 	   
 }
-   private void wave_wall(int ss){
+   private void wave_grouped(int ss){
        int ts=ss+5;
 	   if (seconds>=ts && seconds<ts+20){
  		  if((seconds-ts)%4 == 0) spawnMinePair_wall();
@@ -2107,7 +2247,7 @@ private void spawnSecondMineSquare(){
 	   }
    }
    
-   private void wave_lined(int ss){
+   private void wave_lines(int ss){
 	   int ts=ss+5;
 	   if (seconds>=ts && seconds<ts+20){
  		  if((seconds-ts)%5 == 0) spawnMineLine(3);
@@ -2127,6 +2267,52 @@ private void spawnSecondMineSquare(){
  	   }
 	   if (seconds==ts+20){
 		   spawnSecondMineSquare();
+	   }
+   }
+   
+   private void wave_squares(int ss){
+	   int ts=ss+5;
+	   if (seconds==ts){
+ 		  spawnMineSquare_four();
+ 		 dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds==ts+8){
+		   spawnMineSquare_four();
+	   }
+	   if (seconds==ts+20){
+		   spawnMineSquare_nine();
+	   }
+	   if (seconds==ts+32){
+		   spawnMineSquare_four();
+	   }
+   }
+   
+   private void wave_accel_y(int ss){
+	   int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMineAccelY();
+ 		  dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%4 == 0){spawnRandomMineAccelY();}
+		   if((seconds-ts)%4 == 2){
+	 			spawnRandomMineAccelY_r();
+				spawnRandomMineAccelY_l();
+	 	   } 
+	   }
+   }
+   
+   private void wave_accel_x(int ss){
+	   int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMineAccelX();
+ 		  dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%2 == 0){spawnRandomMineAccelX();}
+		   if((seconds-ts)%4 == 3){
+			   spawnRandomMineAccelX();
+	 	   } 
 	   }
    }
    //---------
@@ -2469,8 +2655,11 @@ private void spawnSecondMineSquare(){
     			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+"/"+cartesian_a, 30, 455);
         		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+"/"+cartesian_b, 30, 435);
     		  }
+    		  else{
     		  dotfunction_font.draw(batch, "x="+cartesian_a+"*"+double_formatted(mouse_posn_x), 30, 455);
     		  dotfunction_font.draw(batch, "y="+cartesian_b+"*"+double_formatted(mouse_posn_y), 30, 435);
+    	  
+    		  }
     	  }
     	  if (MODE.equals("function")){
     		  if (Function_Code=="flip_x"){
@@ -2894,6 +3083,9 @@ private void spawnSecondMineSquare(){
       
 		  while(iter.hasNext()) {
 		     Mine mine = iter.next();
+		     mine.vert_speed+=mine.vert_accel*effective_delta;
+		     mine.horz_speed+=mine.horz_accel*effective_delta;
+		     
 		     mine.rect.y -= mine.vert_speed * effective_delta;
 		     mine.rect.x += mine.horz_speed * effective_delta;
 		     if(mine.rect.y + 64 < 0) iter.remove();

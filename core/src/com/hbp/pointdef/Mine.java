@@ -6,4 +6,6 @@ public class Mine {
 	   Rectangle rect;
 	   float vert_speed;
 	   float horz_speed;
+	   float vert_accel;
+	   float horz_accel;
 }
