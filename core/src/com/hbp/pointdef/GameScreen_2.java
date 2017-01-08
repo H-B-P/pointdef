@@ -908,19 +908,36 @@ public class GameScreen_2 implements Screen {
 		   }
 		   if (seconds%200==150){
 			   cartesian_a=1;
-			   Function_Code="divide";
-			   cartesian_b=MathUtils.random(2,3);
+			   cartesian_b=-MathUtils.random(2,3);
+		   }
+	   }
+	   if (MODE.equals("divide")){
+		   if (seconds%200==0){
+			   cartesian_a=1;
+			   cartesian_b=2;
+		   }
+		   if (seconds%200==50){
+			   cartesian_a=1;
+			   cartesian_b=-2;
+		   }
+		   if (seconds%200==100){
+			   cartesian_a=1;
+			   cartesian_b=3;
+		   }
+		   if (seconds%200==150){
+			   cartesian_a=1;
+			   cartesian_b=-3;
 		   }
 	   }
 	   if (MODE.equals("power")){
 		   if (SCALE==1 || SCALE==2){
 			   if (seconds%100==0){
 				   Function_Code="raise";
-				   cartesian_n=seconds/100+2;
+				   cartesian_n=(seconds%400)/100+2;
 			   }
 			   if (seconds%100==50){
 				   Function_Code="root";
-				   cartesian_n=(seconds-50)/100+2;
+				   cartesian_n=((seconds%400)-50)/100+2;
 			   }
 		   }
 		   else{
@@ -1018,8 +1035,26 @@ public class GameScreen_2 implements Screen {
 		   }
 		   if (seconds%200==150){
 			   polar_a=1;
-			   Function_Code="divide";
-			   polar_b=MathUtils.random(2,3);
+			   polar_b=-MathUtils.random(2,3);
+		   }
+	   }
+	   
+	   if (MODE.equals("divide")){
+		   if (seconds%200==0){
+			   polar_a=1;
+			   polar_b=2;
+		   }
+		   if (seconds%200==50){
+			   polar_a=1;
+			   polar_b=-2;
+		   }
+		   if (seconds%200==100){
+			   polar_a=1;
+			   polar_b=3;
+		   }
+		   if (seconds%200==150){
+			   polar_a=1;
+			   polar_b=-3;
 		   }
 	   }
 	   
@@ -1027,11 +1062,11 @@ public class GameScreen_2 implements Screen {
 		   if (SCALE==1){
 			   if (seconds%100==0){
 				   Function_Code="raise";
-				   polar_n=seconds/100+2;
+				   polar_n=(seconds%400)/100+2;
 			   }
 			   if (seconds%100==50){
 				   Function_Code="root";
-				   polar_n=(seconds-50)/100+2;
+				   polar_n=((seconds%400)-50)/100+2;
 			   }
 		   }
 		   else if (SCALE==2){
@@ -1512,15 +1547,15 @@ public class GameScreen_2 implements Screen {
 	   }
 	   
 	   if (MODE.equals("multiply")){
-		   if (Function_Code=="divide"){
-			   dots_posns_x[0]=mouse_posn_x/cartesian_a;
-			   dots_posns_y[0]=mouse_posn_y/cartesian_b;
-		   }
-		   else{
-			   dots_posns_x[0]=mouse_posn_x*cartesian_a;
-			   dots_posns_y[0]=mouse_posn_y*cartesian_b;
-		   }
+		   dots_posns_x[0]=mouse_posn_x*cartesian_a;
+		   dots_posns_y[0]=mouse_posn_y*cartesian_b;
 	   }
+	   
+	   if (MODE.equals("divide")){
+		   dots_posns_x[0]=mouse_posn_x/cartesian_a;
+		   dots_posns_y[0]=mouse_posn_y/cartesian_b;
+	   }
+	   
 	   if (MODE.equals("power")){
 		   if (Function_Code=="raise"){
 			   dots_posns_x[0]=mouse_posn_x;
@@ -1578,23 +1613,22 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
 	   if (MODE.equals("multiply")){
-		   if (Function_Code=="divide"){
-			   dots_posns_r[0]=mouse_posn_r/polar_a;
-			   dots_posns_theta[0]=mouse_posn_theta/polar_b;
-			   
-			   if (polar_b>1){
-				   NUMBER_OF_DOTS=polar_b;
-				   int prdfv=1;
-				   while (prdfv<polar_b){
-					   dots_posns_r[prdfv]=dots_posns_r[0];
-					   dots_posns_theta[prdfv]=dots_posns_theta[0]+Math.PI*2f/polar_b*prdfv;
-					   prdfv+=1;
-				   }
+		   dots_posns_r[0]= mouse_posn_r*polar_a;
+		   dots_posns_theta[0]=mouse_posn_theta*polar_b;
+	   }
+	   
+	   if (MODE.equals("divide")){
+		   dots_posns_r[0]=mouse_posn_r/polar_a;
+		   dots_posns_theta[0]=mouse_posn_theta/polar_b;
+		   
+		   if (Math.abs(polar_b)>1){
+			   NUMBER_OF_DOTS=Math.abs(polar_b);
+			   int prdfv=1;
+			   while (prdfv<NUMBER_OF_DOTS){
+				   dots_posns_r[prdfv]=dots_posns_r[0];
+				   dots_posns_theta[prdfv]=dots_posns_theta[0]+Math.PI*2f/polar_b*prdfv;
+				   prdfv+=1;
 			   }
-		   }
-		   else{
-			   dots_posns_r[0]= mouse_posn_r*polar_a;
-			   dots_posns_theta[0]=mouse_posn_theta*polar_b;
 		   }
 	   }
 	   
@@ -1708,15 +1742,14 @@ public class GameScreen_2 implements Screen {
 		   dots_posns_y[0]=mouse_posn_y+argand_b;
 	   }
 	   if (MODE.equals("multiply")){
-		   if (Function_Code=="divide"){
-			   dots_posns_x[0]=real_part_complex_divide(mouse_posn_x,mouse_posn_y,argand_a,argand_b);
-			   dots_posns_y[0]=imag_part_complex_divide(mouse_posn_x,mouse_posn_y,argand_a,argand_b);
-		   }
-		   else{
-			   dots_posns_x[0]=mouse_posn_x*argand_a-mouse_posn_y*argand_b;
-			   dots_posns_y[0]=mouse_posn_y*argand_a+mouse_posn_x*argand_b;
-		   }
+		   dots_posns_x[0]=mouse_posn_x*argand_a-mouse_posn_y*argand_b;
+		   dots_posns_y[0]=mouse_posn_y*argand_a+mouse_posn_x*argand_b;
 	   }
+	   if (MODE.equals("divide")){
+		   dots_posns_x[0]=real_part_complex_divide(mouse_posn_x,mouse_posn_y,argand_a,argand_b);
+		   dots_posns_y[0]=imag_part_complex_divide(mouse_posn_x,mouse_posn_y,argand_a,argand_b);
+	   }
+	   
 	   if (MODE.equals("power")){
 		   if (Function_Code=="raise"){
 			   dots_posns_x[0]=real_part_complex_raise(mouse_posn_x,mouse_posn_y,argand_n);
@@ -2651,15 +2684,12 @@ private void spawnRandomMineAccelX(){
     		  }
     	  }
     	  if (MODE.equals("multiply")){
-    		  if (Function_Code=="divide"){
-    			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+"/"+cartesian_a, 30, 455);
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+"/"+cartesian_b, 30, 435);
-    		  }
-    		  else{
     		  dotfunction_font.draw(batch, "x="+cartesian_a+"*"+double_formatted(mouse_posn_x), 30, 455);
     		  dotfunction_font.draw(batch, "y="+cartesian_b+"*"+double_formatted(mouse_posn_y), 30, 435);
-    	  
-    		  }
+    	  }
+    	  if (MODE.equals("divide")){
+			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, 455);
+    		  dotfunction_font.draw(batch, cartesian_b+"*y="+double_formatted(mouse_posn_y), 30, 435);
     	  }
     	  if (MODE.equals("function")){
     		  if (Function_Code=="flip_x"){
@@ -2771,13 +2801,12 @@ private void spawnRandomMineAccelX(){
     		  }
     	  }
     	  if (MODE.equals("multiply")){
-	    	  if (Function_Code=="divide"){
-    			  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r)+"/"+polar_a, 30, 455);
-        		  dotfunction_font.draw(batch, "theta="+double_formatted(mouse_posn_theta/Math.PI)+"pi/"+polar_b, 30, 435);
-    		  }else{
-    			  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(mouse_posn_r), 30, 455);
-    			  dotfunction_font.draw(batch, "theta="+polar_b+"*"+double_formatted(mouse_posn_theta/Math.PI)+"pi", 30, 435);
-    		  }
+    		  dotfunction_font.draw(batch, "r="+polar_a+"*"+double_formatted(mouse_posn_r), 30, 455);
+    		  dotfunction_font.draw(batch, "theta="+polar_b+"*"+double_formatted(mouse_posn_theta/Math.PI)+"pi", 30, 435);
+    	  }
+    	  if (MODE.equals("divide")){
+    		  dotfunction_font.draw(batch, "r="+double_formatted(mouse_posn_r), 30, 455);
+    		  dotfunction_font.draw(batch, polar_b+"*theta="+double_formatted(mouse_posn_theta/Math.PI)+"pi", 30, 435);
     	  }
     	  if (MODE.equals("power")){
 	    	  if (Function_Code=="raise"){
@@ -2858,19 +2887,6 @@ private void spawnRandomMineAccelX(){
     		  }
     	  }
     	  if (MODE.equals("multiply")){
-	    	  
-	    	  if (Function_Code=="divide"){
-	    		  if (argand_b>0){
-	    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) / "+"("+ argand_a + "+" + argand_b + "i)", 30, 455);
-	    		  }
-	    		  else if (argand_b<0){
-	    			  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) / "+"("+ argand_a + "" + argand_b + "i)", 30, 455); 
-	    		  }
-	    		  else if (argand_b==0){
-	    			  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) / "+"("+ argand_a + ")", 30, 455);
-	    		  }
-	    	  }
-	    	  else{
 	    		  if (argand_b>0){
 	    			  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) * ("+ argand_a + "+" + argand_b + "i)", 30, 455);
 	    		  }
@@ -2881,9 +2897,18 @@ private void spawnRandomMineAccelX(){
 	    		  else if (argand_b==0){
 		    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) * ("+ argand_a + ")", 30, 455);
 
+	    		  }	          
+    	  }
+    	  if (MODE.equals("divide")){
+    		  if (argand_b>0){
+	    		  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) / "+"("+ argand_a + "+" + argand_b + "i)", 30, 455);
 	    		  }
-	    	  }
-	          
+	    		  else if (argand_b<0){
+	    			  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) / "+"("+ argand_a + "" + argand_b + "i)", 30, 455); 
+	    		  }
+	    		  else if (argand_b==0){
+	    			  dotfunction_font.draw(batch, "z=("+double_formatted(mouse_posn_x)+double_formatted_prepl(mouse_posn_y)+"i) / "+"("+ argand_a + ")", 30, 455);
+	    		  }
     	  }
     	  if (MODE.equals("power")){
 	    	  if (Function_Code=="raise"){

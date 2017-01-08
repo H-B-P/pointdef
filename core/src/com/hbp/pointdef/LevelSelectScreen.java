@@ -466,7 +466,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (four_r.contains(tp_x,tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, 2, "CARTESIAN", "power", ENDLESS, false, ANDROID));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, SCAYLE, "CARTESIAN", "divide", ENDLESS, false, ANDROID));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,tp_y)){
@@ -494,7 +494,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (four_r.contains(tp_x,tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, 2, "POLAR", "power", ENDLESS, false, ANDROID));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, SCAYLE, "POLAR", "divide", ENDLESS, false, ANDROID));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,tp_y)){
@@ -634,7 +634,7 @@ public class LevelSelectScreen implements Screen {
 			            dispose();
 					}
 					if (four_r.contains(tp_x,tp_y)){
-			            game.setScreen(new GameScreen_2(game, MINESPEED, 1, "ARGAND", "power", ENDLESS, false, ANDROID));
+			            game.setScreen(new GameScreen_2(game, MINESPEED, SCAYLE, "ARGAND", "power", ENDLESS, false, ANDROID));
 			            dispose();
 					}
 					if (prv_r.contains(tp_x,tp_y)){
