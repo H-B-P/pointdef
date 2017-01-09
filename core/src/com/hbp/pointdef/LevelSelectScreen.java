@@ -552,18 +552,22 @@ public class LevelSelectScreen implements Screen {
 			
 			if (TOPIC=="MATRIX"){
 				if (one_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MATRIX", "rotation", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MATRIX", "scale", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (two_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MATRIX", "diagonal", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MATRIX", "rotation", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (three_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MATRIX", "singular", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MATRIX", "diagonal", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (four_r.contains(tp_x,tp_y)){
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MATRIX", "singular", ENDLESS, false, ANDROID));
+		            dispose();
+				}
+				if (five_r.contains(tp_x,tp_y)){
 		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MATRIX", "arbitrary", ENDLESS, false, ANDROID));
 		            dispose();
 				}
@@ -592,6 +596,10 @@ public class LevelSelectScreen implements Screen {
 		            dispose();
 				}
 				if (four_r.contains(tp_x,tp_y)){
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "ARGAND", "divide", ENDLESS, false, ANDROID));
+		            dispose();
+				}
+				if (five_r.contains(tp_x,tp_y)){
 		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "ARGAND", "power", ENDLESS, false, ANDROID));
 		            dispose();
 				}

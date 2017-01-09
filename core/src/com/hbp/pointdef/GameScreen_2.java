@@ -1178,11 +1178,7 @@ public class GameScreen_2 implements Screen {
 				   argand_b=MathUtils.random(-4,4);
 			   }
 			   if (MODE.equals("multiply")){
-				   if (seconds%200==150){
-					   Function_Code="divide";
-					   argand_a=plusorminus();
-					   argand_b=plusorminus();
-				   }else if (seconds%200==100){
+				   if (seconds%200==100){
 					   argand_a=-MathUtils.random(1,2);
 					   argand_b=plusorminus()*MathUtils.random(1,2);
 				   }
@@ -1192,6 +1188,21 @@ public class GameScreen_2 implements Screen {
 				   }
 			   }
 		   }
+	   }
+	   if (MODE.equals("divide")){
+		   old_argand_a=argand_a;
+		   old_argand_b=argand_b;
+		   if (seconds==0){
+			   argand_a=1;
+			   argand_b=plusorminus();
+		   }
+		   else{
+			   while (old_argand_a==argand_a && old_argand_b==argand_b){
+				   argand_a=plusorminus();
+				   argand_b=plusorminus();
+			   }
+		   }
+		   
 	   }
 	   if (MODE.equals("power")){
 		   if (SCALE==1){
@@ -1238,47 +1249,22 @@ public class GameScreen_2 implements Screen {
    private void create_matrix_dot_function(){
 	   OldMatrix.set(TheMatrix.val);
 	   while (OldMatrix.getValues()[0]==TheMatrix.getValues()[0] && OldMatrix.getValues()[4]==TheMatrix.getValues()[4] && OldMatrix.getValues()[8]==TheMatrix.getValues()[8]){
-		   if (MODE.equals("Diag_I")){
-			   if (seconds%200==0){
+		   if (MODE.equals("scale")){
+			   if (seconds==0){
 				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
 				   TheMatrix.set(SI_Input);
 			   }
-			   if (seconds%200==50){
-				   float[] SI_Input = new float[]{1, 0, 0, 0, -1, 0, 0, 0, 1};
-				   TheMatrix.set(SI_Input);
-			   }
-			   if (seconds%200==100){
-				   float[] SI_Input = new float[]{-1, 0, 0, 0, 1, 0, 0, 0, 1};
-				   TheMatrix.set(SI_Input);
-			   }
-			   if (seconds%200==150){
-				   float[] SI_Input = new float[]{-1, 0, 0, 0, -1, 0, 0, 0, 1};
+			   else{
+				   int k = plusorminus()*MathUtils.random(2,3);
+				   float[] SI_Input = new float[]{k, 0, 0, 0, k, 0, 0, 0, 1};
 				   TheMatrix.set(SI_Input);
 			   }
 		   }
 		   if (MODE.equals("diagonal")){
-			   if (CAMPAIGN){
-				   if (seconds==0){
-					   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
-					   TheMatrix.set(SI_Input);
-				   }
-				   else{
-					   if ((seconds-50)%200<99){
-						   NewDiagMatrix_easy();
-					   }
-					   else{
-						   NewDiagMatrix_hard();
-					   }
-				   }
-			   }
-			   else{
-				   if (((seconds)%200)<99){
-					   NewDiagMatrix_easy();
-				   }
-				   else{
-					   NewDiagMatrix_hard();
-				   }
-			   }
+			   int a = plusorminus()*MathUtils.random(1,3);
+			   int d = plusorminus()*MathUtils.random(1,3);
+			   float[] SI_Input = new float[]{a, 0, 0, 0, d, 0, 0, 0, 1};
+			   TheMatrix.set(SI_Input);
 		   }
 		   if (MODE.equals("rotation")){
 			   if (CAMPAIGN){
@@ -1290,17 +1276,11 @@ public class GameScreen_2 implements Screen {
 				   }
 			   }
 			   else{
-				   if (seconds==0){
-					   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
-					   TheMatrix.set(SI_Input);
+				   if ((seconds-50)%200<99){
+					   NewRotMatrix_quarters_easy();
 				   }
 				   else{
-					   if ((seconds-50)%200<99){
-						   NewRotMatrix_quarters_easy();
-					   }
-					   else{
-						   NewRotMatrix_quarters_hard();
-					   }
+					   NewRotMatrix_quarters_hard();
 				   }
 			   }
 		   }
