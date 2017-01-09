@@ -2028,7 +2028,7 @@ private void spawnSecondMineSquare(){
 
 private void spawnMineSquare_one(){
 	int disjunc=MathUtils.random(-3,3);
-	int m_sp=80;
+	int m_sp=110;
 	spawnMine_queueable(disjunc, 0, m_sp);
 }
 
@@ -2130,6 +2130,24 @@ private void spawnMineAccelX_endstat(int xposn, int acc){
     
     mines.add(mine);
 }
+private void spawnMineAccelX_parab(int xposn, int acc){
+	Mine mine = new Mine();
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 100;
+    mine.horz_speed = acc*4*2;
+    
+    mine.vert_accel=0;
+    mine.horz_accel=-acc*2*2;
+    
+    
+    mines.add(mine);
+}
 
 private void spawnRandomMineAccelX(){
 	   int acceldisp=plusorminus()*2*MathUtils.random(1,2);
@@ -2140,14 +2158,7 @@ private void spawnRandomMineAccelX(){
 	   if (acceldisp<0){
 		   k=MathUtils.random((-acceldisp-3),3);
 	   }
-	   if(plusorminus()>0){
-		   spawnMineAccelX_startstat(k,acceldisp*5);
-	   }
-	   else{
-		   spawnMineAccelX_endstat(k,acceldisp*5);
-	   }
-	   
-	   
+	   spawnMineAccelX_parab(k,acceldisp*5);   
 }
 
    //(This creates the dot which actually detonates mines. Not to be confused with mirroring.)
@@ -2305,19 +2316,15 @@ private void spawnRandomMineAccelX(){
    
    private void wave_squares(int ss){
 	   int ts=ss+5;
-	   if (seconds==ts){
- 		  spawnMineSquare_four();
- 		 dotfunction_font.setColor(Color.BLACK);
- 	   }
-	   if (seconds==ts+8){
-		   spawnMineSquare_four();
-	   }
-	   if (seconds==ts+20){
-		   spawnMineSquare_nine();
-	   }
-	   if (seconds==ts+32){
-		   spawnMineSquare_four();
-	   }
+	   if (seconds>=ts && seconds<ts+20){
+	 		 if((seconds-ts)%5 == 0) spawnMineSquare_one();
+	 		 if((seconds-ts)%5 == 5) spawnMineSquare_four();
+	 		 dotfunction_font.setColor(Color.BLACK);
+	 	   }
+		   if (seconds>=ts+20 && seconds<ts+39){
+			   if((seconds-ts)%3 == 0) spawnMineSquare_one();
+			   if((seconds-ts)%3 == 4) spawnMineSquare_four();
+		   }
    }
    
    private void wave_accel_y(int ss){
