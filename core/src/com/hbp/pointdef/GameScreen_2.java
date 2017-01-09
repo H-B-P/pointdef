@@ -295,7 +295,7 @@ public class GameScreen_2 implements Screen {
 	
 	//---Do all the initial tasks that happen on rendering---
 	
-   public GameScreen_2(final PointDef gam, int gamespeed, int scale, String topic, String mode, boolean endless, boolean campaign, boolean android) {
+   public GameScreen_2(final PointDef gam, int gamespeed, String gridtype, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
 	   WT_ONE="accel_x";
 	   WT_TWO="accel_y";
@@ -306,7 +306,7 @@ public class GameScreen_2 implements Screen {
 	   //--Perform tautological actions--
 	   this.game = gam;
       
-	   SCALE=scale;
+	   SCALE=4;
 	   ENDLESS=endless;
       MODE=mode;
       TOPIC=topic;
@@ -2993,14 +2993,14 @@ private void spawnRandomMineAccelX(){
     			  dispose();
     		  }
     		  else if (total_time>=200 || (MODE.equals("intro") && total_time>1)){
-    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, SCALE, next_topic(), next_mode(), ENDLESS, true, ANDROID));
+    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, "Default", next_topic(), next_mode(), ENDLESS, true, ANDROID));
     			  prefs.putString("TOPIC", next_topic());
     	    	  prefs.putString("MODE", next_mode());
     	    	  prefs.flush();
     			  dispose();
     		  }
     		  else {
-    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, SCALE, TOPIC, MODE, ENDLESS, true, ANDROID));
+    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, "Default", TOPIC, MODE, ENDLESS, true, ANDROID));
     			  dispose();
     		  }
     		  
