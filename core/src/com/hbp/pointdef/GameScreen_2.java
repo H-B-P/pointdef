@@ -297,8 +297,8 @@ public class GameScreen_2 implements Screen {
 	
    public GameScreen_2(final PointDef gam, int gamespeed, String gridtype, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
-	   WT_ONE="lines";
-	   WT_TWO="squares";
+	   WT_ONE="varyvelo_x";
+	   WT_TWO="varyvelo_y";
 	   
 	   ANDROID=android;
 	   
@@ -1982,20 +1982,29 @@ private void spawnMineVaryVeloX(int xposn, int vel){
 
 private void spawnRandomMineVaryVeloY(){
 	   int k=MathUtils.random(-3,3);
-	   int the_vel=plusorminus()*16;
+	   int the_vel=plusorminus()*30;
 	   spawnMineVaryVeloY(k,the_vel);	   
 }
 
 private void spawnRandomMineVaryVeloY_l(){
 	   int k=MathUtils.random(-3,-1);
-	   int the_vel=plusorminus()*16;
+	   int the_vel=plusorminus()*30;
 	   spawnMineVaryVeloY(k,the_vel);	   
 }
 
 private void spawnRandomMineVaryVeloY_r(){
 	   int k=MathUtils.random(1,3);
-	   int the_vel=plusorminus()*16;
+	   int the_vel=plusorminus()*30;
 	   spawnMineVaryVeloY(k,the_vel);	   
+}
+
+private void spawnMineTrioVaryVeloY(){
+	int the_vel=plusorminus()*30;
+	spawnMineVaryVeloY(0,the_vel);
+	the_vel=-the_vel;
+	spawnMineVaryVeloY(MathUtils.random(-3,-2),the_vel);
+	the_vel=-the_vel;
+	spawnMineVaryVeloY(MathUtils.random(2,3),the_vel);
 }
 
 private void spawnRandomMineVeloX(){
@@ -2019,7 +2028,7 @@ private void spawnMineVaryVeloY(int xposn, int vel){
     mine.rect.width = 40;
     mine.rect.height = 40;
     
-    mine.vert_speed = 100+vel;
+    mine.vert_speed = 90+vel;
     mine.horz_speed = 0;
     
     mine.vert_accel=0;
@@ -2197,20 +2206,25 @@ private void spawnRandomMineAccelX(){
    }
    
    private void shuffle_wavetype() {
-	   int w = MathUtils.random(1,99999);
-	   if (wavetype.equals(WT_ONE)){
-		   if (w==1){
-			   wavetype=WT_ONE;
+	   if (WT_ONE.equals("many") || WT_ONE.equals("all")){
+		   if (seconds%200==2){
+			   wavetype="varyvelo_x";
 		   }
-		   else{
-			   wavetype=WT_TWO;
+		   if (seconds%200==52){
+			   wavetype="varyvelo_y";
+		   }
+		   if (seconds%200==102){
+			   wavetype="lines";
+		   }
+		   if (seconds%200==152){
+			   wavetype="squares";
 		   }
 	   }
-	   else if (wavetype.equals(WT_TWO)){
-		   if (w==1){
+	   else{
+		   if (wavetype.equals(WT_ONE)){
 			   wavetype=WT_TWO;
 		   }
-		   else{
+		   else if (wavetype.equals(WT_TWO)){
 			   wavetype=WT_ONE;
 		   }
 	   }
@@ -2271,15 +2285,20 @@ private void spawnRandomMineAccelX(){
    private void wave_varyvelo_y(int ss){
 	   int ts=ss+5;
 	   if (seconds>=ts && seconds<ts+20){
- 		  if((seconds-ts)%2 == 0) spawnRandomMineVaryVeloY();
+ 		  if((seconds-ts)%4 == 0){
+ 			 spawnRandomMineVaryVeloY_r();
+ 			 spawnRandomMineVaryVeloY_l();
+ 		  }
  		  dotfunction_font.setColor(Color.BLACK);
  	   }
-	   if (seconds>=ts+20 && seconds<ts+40){
-		   if((seconds-ts)%4 == 0){spawnRandomMineVaryVeloY();}
-		   if((seconds-ts)%4 == 2){
+	   if (seconds>=ts+20 && seconds<ts+39){
+		   if((seconds-ts)%3 == 0){
 	 			spawnRandomMineVaryVeloY_r();
 				spawnRandomMineVaryVeloY_l();
 	 	   } 
+	   }
+	   if (seconds==(ts+39)){
+		   spawnMineTrioVaryVeloY();
 	   }
    }
    
