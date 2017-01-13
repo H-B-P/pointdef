@@ -102,7 +102,7 @@ public class GameScreen_2 implements Screen {
 	private Texture c_textbox;
 	
    //How do you keep dark the parts of the screen which shouldn't show anything, when on an oddly-proportioned mobile device?
-   //You put a massive black shape over everything which is out of bounds.
+   //Answer: You put a massive black shape over everything which is out of bounds.
    
    private Texture bb_poncho_t;
    
@@ -297,8 +297,8 @@ public class GameScreen_2 implements Screen {
 	
    public GameScreen_2(final PointDef gam, int gamespeed, String gridtype, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
-	   WT_ONE="accel_x";
-	   WT_TWO="accel_y";
+	   WT_ONE="lines";
+	   WT_TWO="squares";
 	   
 	   ANDROID=android;
 	   
@@ -541,10 +541,10 @@ public class GameScreen_2 implements Screen {
       dotfunction_font.setColor(Color.BLACK);
       
       if (ANDROID){
-    	  maxcharges=9;
+    	  maxcharges=6;
       }
       else{
-    	  maxcharges=9;
+    	  maxcharges=6;
       }
       create_dot_function();
       apply_dot_function(0,0);
@@ -1410,10 +1410,10 @@ public class GameScreen_2 implements Screen {
 	   Matrix3 t_Mat= new Matrix3(TMAT_Input);
 	   while (!((a!=0 || b!=0) && (a*d-c*b)==0 && check_kosherness(t_Mat))){
 		   
-		   a = MathUtils.random(-4,4);
-		   b = MathUtils.random(-4,4);
-		   c = MathUtils.random(-4,4);
-		   d = MathUtils.random(-4,4);
+		   a = MathUtils.random(-3,3);
+		   b = MathUtils.random(-3,3);
+		   c = MathUtils.random(-3,3);
+		   d = MathUtils.random(-3,3);
 		   TMAT_Input = new float[]{a, c, 0, b, d, 0, 0, 0, 1};
 		   t_Mat= new Matrix3(TMAT_Input);
 	   }
@@ -1431,10 +1431,10 @@ public class GameScreen_2 implements Screen {
 	   Matrix3 t_Mat= new Matrix3(TMAT_Input);
 	   while (!((a!=0 || b!=0) && (c!=0 || d!=0) && (a*d-c*b)==0 && check_kosherness(t_Mat))){
 		   
-		   a = MathUtils.random(-4,4);
-		   b = MathUtils.random(-4,4);
-		   c = MathUtils.random(-4,4);
-		   d = MathUtils.random(-4,4);
+		   a = MathUtils.random(-3,3);
+		   b = MathUtils.random(-3,3);
+		   c = MathUtils.random(-3,3);
+		   d = MathUtils.random(-3,3);
 		   TMAT_Input = new float[]{a, c, 0, b, d, 0, 0, 0, 1};
 		   t_Mat= new Matrix3(TMAT_Input);
 	   }
@@ -1801,7 +1801,7 @@ public class GameScreen_2 implements Screen {
    private void spawnShield(int no){
 	   	Rectangle shield = new Rectangle();
 	    shield.x=20;
-	    shield.y = 50+no*20;
+	    shield.y = 58+no*20;
 	    shield.width = 280;
 	    shield.height = 3;
 	    shields.add(shield);
@@ -1960,79 +1960,105 @@ private void spawnMineTrio_wall(){
 	}
 	
 }
-   
 
-private void spawnMineLine(int linelen){
+private void spawnMineVaryVeloX(int xposn, int vel){
+	Mine mine = new Mine();
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 100;
+    mine.horz_speed = vel;
+    
+    mine.vert_accel=0;
+    mine.horz_accel=0;
+    
+    
+    mines.add(mine);
+}
+
+private void spawnRandomMineVaryVeloY(){
+	   int k=MathUtils.random(-3,3);
+	   int the_vel=plusorminus()*16;
+	   spawnMineVaryVeloY(k,the_vel);	   
+}
+
+private void spawnRandomMineVaryVeloY_l(){
+	   int k=MathUtils.random(-3,-1);
+	   int the_vel=plusorminus()*16;
+	   spawnMineVaryVeloY(k,the_vel);	   
+}
+
+private void spawnRandomMineVaryVeloY_r(){
+	   int k=MathUtils.random(1,3);
+	   int the_vel=plusorminus()*16;
+	   spawnMineVaryVeloY(k,the_vel);	   
+}
+
+private void spawnRandomMineVeloX(){
+	   int velodisp=plusorminus()*2*MathUtils.random(1,3);
+	   int k=0;
+	   if (velodisp>0){
+		   k=MathUtils.random(-3,(3-velodisp));
+	   }
+	   if (velodisp<0){
+		   k=MathUtils.random((-velodisp-3),3);
+	   }
+	   spawnMineVaryVeloX(k,velodisp*10);   
+}
+
+private void spawnMineVaryVeloY(int xposn, int vel){
+	Mine mine = new Mine();
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 100+vel;
+    mine.horz_speed = 0;
+    
+    mine.vert_accel=0;
+    mine.horz_accel=0;
+    
+    
+    mines.add(mine);
+}
+
+private void spawnMineLine(){
+	spawnMine_queueable(-3, 0, 70);
+	spawnMine_queueable(-1, 0, 70);
+	spawnMine_queueable(1, 0, 70);
+	spawnMine_queueable(3, 0, 70);
+}
+
+
+
+private void spawnMineQueue(int queuelen){
 	int k=MathUtils.random(-3,3);
-	for(int i=0; i<linelen; i++){
-		spawnMine_queueable(k, i*2, 150);
+	for(int i=0; i<queuelen; i++){
+		spawnMine_queueable(k, i*2, 130);
 	}
 	
 }
 
-private void spawnFirstMineSquare(){
-	int m_sp=40;
-	spawnMine_queueable(-2, 0, m_sp);
-	spawnMine_queueable(0, 0, m_sp);
-	spawnMine_queueable(2, 0, m_sp);
-	spawnMine_queueable(-2, 2, m_sp);
-	spawnMine_queueable(0, 2, m_sp);
-	spawnMine_queueable(2, 2, m_sp);
-	spawnMine_queueable(-2, 4, m_sp);
-	spawnMine_queueable(0, 4, m_sp);
-	spawnMine_queueable(2, 4, m_sp);
-}
-
-private void spawnSecondMineSquare(){
-	int m_sp=33;
-	spawnMine_queueable(-3, 0, m_sp);
-	spawnMine_queueable(-1, 0, m_sp);
-	spawnMine_queueable(1, 0, m_sp);
-	spawnMine_queueable(3, 0, m_sp);
-	
-	spawnMine_queueable(-3, 2, m_sp);
-	spawnMine_queueable(-1, 2, m_sp);
-	spawnMine_queueable(1, 2, m_sp);
-	spawnMine_queueable(3, 2, m_sp);
-	
-	spawnMine_queueable(-3, 4, m_sp);
-	spawnMine_queueable(-1, 4, m_sp);
-	spawnMine_queueable(1, 4, m_sp);
-	spawnMine_queueable(3, 4, m_sp);
-	
-	spawnMine_queueable(-3, 6, m_sp);
-	spawnMine_queueable(-1, 6, m_sp);
-	spawnMine_queueable(1, 6, m_sp);
-	spawnMine_queueable(3, 6, m_sp);
-}
-
-private void spawnMineSquare_one(){
+private void spawnFastSoloMine(){
 	int disjunc=MathUtils.random(-3,3);
-	int m_sp=110;
+	int m_sp=130;
 	spawnMine_queueable(disjunc, 0, m_sp);
 }
 
 private void spawnMineSquare_four(){
-	int m_sp=90;
+	int m_sp=85;
 	int disjunc=MathUtils.random(-2,2);
 	spawnMine_queueable(disjunc-1, 0, m_sp);
 	spawnMine_queueable(disjunc+1, 0, m_sp);
 	spawnMine_queueable(disjunc-1, 2, m_sp);
 	spawnMine_queueable(disjunc+1, 2, m_sp);
-}
-
-private void spawnMineSquare_nine(){
-	int m_sp=70;
-	int disjunc=MathUtils.random(-1,1);
-	spawnMine_queueable(disjunc-2, 0, m_sp);
-	spawnMine_queueable(disjunc, 0, m_sp);
-	spawnMine_queueable(disjunc+2, 0, m_sp);
-	spawnMine_queueable(disjunc-2, 2, m_sp);
-	spawnMine_queueable(disjunc, 2, m_sp);
-	spawnMine_queueable(disjunc+2, 2, m_sp);
-	spawnMine_queueable(disjunc-2, 4, m_sp);
-	spawnMine_queueable(disjunc, 4, m_sp);
-	spawnMine_queueable(disjunc+2, 4, m_sp);
 }
 
 private void spawnMineAccelY(int xposn, int acc){
@@ -2205,17 +2231,14 @@ private void spawnRandomMineAccelX(){
 	   if (wavetype.equals("basic")){
 		   wave_basic(sss);
 	   }
-	   else if(wavetype.equals("diagonal")){
-		   wave_diagonal(sss);
+	   else if(wavetype.equals("varyvelo_x")){
+		   wave_varyvelo_x(sss);
 	   }
-	   else if(wavetype.equals("grouped")){
-		   wave_grouped(sss);
+	   else if(wavetype.equals("varyvelo_y")){
+		   wave_varyvelo_y(sss);
 	   }
 	   else if(wavetype.equals("lines")){
 		   wave_lines(sss);
-	   }
-	   else if(wavetype.equals("massed")){
-		   wave_massed(sss);
 	   }
 	   else if(wavetype.equals("squares")){
 		   wave_squares(sss);
@@ -2243,6 +2266,35 @@ private void spawnRandomMineAccelX(){
 		 	   } 
 		   }
 		   
+   }
+   
+   private void wave_varyvelo_y(int ss){
+	   int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMineVaryVeloY();
+ 		  dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%4 == 0){spawnRandomMineVaryVeloY();}
+		   if((seconds-ts)%4 == 2){
+	 			spawnRandomMineVaryVeloY_r();
+				spawnRandomMineVaryVeloY_l();
+	 	   } 
+	   }
+   }
+   
+   private void wave_varyvelo_x(int ss){
+	   int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMineVeloX();
+ 		  dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%2 == 0){spawnRandomMineVeloX();}
+		   if((seconds-ts)%4 == 3){
+			   spawnRandomMineVeloX();
+	 	   } 
+	   }
    }
    
    private void wave_diagonal(int ss){
@@ -2274,36 +2326,44 @@ private void spawnRandomMineAccelX(){
    private void wave_lines(int ss){
 	   int ts=ss+5;
 	   if (seconds>=ts && seconds<ts+20){
- 		  if((seconds-ts)%5 == 0) spawnMineLine(3);
+ 		  if((seconds-ts)%10 == 0){
+ 			  if (plusorminus()>0){
+ 				  spawnMineQueue(4);
+ 			  }
+ 			  else{
+ 				  spawnMineLine();
+ 			  }
+ 		  }
+ 		  if ((seconds-ts)%10 == 5){
+ 			  spawnFastSoloMine();
+ 		  }
  		 dotfunction_font.setColor(Color.BLACK);
  	   }
 	   if (seconds>=ts+20 && seconds<ts+40){
-		   if((seconds-ts)%8 == 0) spawnMineLine(2);
-		   if((seconds-ts)%8 == 4) spawnMineLine(4);
-	   }
-   }
-   
-   private void wave_massed(int ss){
-	   int ts=ss+5;
-	   if (seconds==ts){
- 		  spawnFirstMineSquare();
- 		 dotfunction_font.setColor(Color.BLACK);
- 	   }
-	   if (seconds==ts+20){
-		   spawnSecondMineSquare();
+	 		  if((seconds-ts)%7 == 0){
+	 			  if (plusorminus()>0){
+	 				  spawnMineQueue(4);
+	 			  }
+	 			  else{
+	 				  spawnMineLine();
+	 			  }
+	 		  }
+	 		  if ((seconds-ts)%7 == 5){
+	 			  spawnFastSoloMine();
+	 		  }
 	   }
    }
    
    private void wave_squares(int ss){
 	   int ts=ss+5;
 	   if (seconds>=ts && seconds<ts+20){
-	 		 if((seconds-ts)%5 == 0) spawnMineSquare_one();
-	 		 if((seconds-ts)%5 == 5) spawnMineSquare_four();
+	 		 if((seconds-ts)%10 == 5) spawnFastSoloMine();
+	 		 if((seconds-ts)%10 == 0) spawnMineSquare_four();
 	 		 dotfunction_font.setColor(Color.BLACK);
 	 	   }
 		   if (seconds>=ts+20 && seconds<ts+39){
-			   if((seconds-ts)%3 == 0) spawnMineSquare_one();
-			   if((seconds-ts)%3 == 4) spawnMineSquare_four();
+			   if((seconds-ts)%7 == 5) spawnFastSoloMine();
+			   if((seconds-ts)%7 == 0) spawnMineSquare_four();
 		   }
    }
    
@@ -2458,18 +2518,10 @@ private void spawnRandomMineAccelX(){
       
       if (total_time>(last_charge_event_time+1)){
     	  last_charge_event_time=total_time;
-    	  //charges=Math.min(charges+1, maxcharges);
       }
-      
-      //----
-      
-//      if (Function_Code.equals("square root") || Function_Code.equals("circle") || (MODE.equals("roots")&& (powers_n%2==0))){
-//    	  NUMBER_OF_DOTS=2;
-//      }
       
 	  //--Update ship image used--
       ship_t = ship_t_plural[charges];
-      
 	  Gdx.gl.glClearColor(0, 0, 0, 1);
       Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
       
@@ -3145,7 +3197,7 @@ private void spawnRandomMineAccelX(){
     	  if (!ship.contains(tp_x, tp_y)&&(tp_y<400)&&(!META_PAUSE)&&((Gdx.input.justTouched() && !ANDROID) || (ANDROID && wastouched && !Gdx.input.isTouched()))){
     		  
     		  
-    			  if( charges>0){
+    			  if(charges>=1){
     				  
     				  int zvbxr=0;
     			      
