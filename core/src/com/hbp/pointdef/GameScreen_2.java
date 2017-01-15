@@ -297,8 +297,8 @@ public class GameScreen_2 implements Screen {
 	
    public GameScreen_2(final PointDef gam, int gamespeed, String gridtype, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
-	   WT_ONE="varyvelo_x";
-	   WT_TWO="varyvelo_y";
+	   WT_ONE="sawtooth";
+	   WT_TWO="sawtooth";
 	   
 	   ANDROID=android;
 	   
@@ -704,23 +704,47 @@ public class GameScreen_2 implements Screen {
    
    private float find_screen_x_posn(double grid_x){
 	   double temp___x = grid_x*UNIT_LENGTH_IN_PIXELS;
-	   return (float)(temp___x+160.0);
+	   return (float)Math.floor(temp___x+160.0);
    }
    
    private float find_screen_y_posn(double grid_y){
 	   double temp___y = grid_y*UNIT_LENGTH_IN_PIXELS;
-	   return (float)(temp___y+240.0);
+	   return (float)Math.floor(temp___y+240.0);
    }
    
    private double find_grid_x_posn(float screen_x){
 	   float temp___x=screen_x-160;
-	   return (double)Math.floor(temp___x/UNIT_LENGTH_IN_PIXELS);
+	   return (double) (temp___x/UNIT_LENGTH_IN_PIXELS);
    }
    
    private double find_grid_y_posn(float screen_y){
 	   float temp___y=screen_y-240;
-	   return (double)Math.floor(temp___y/UNIT_LENGTH_IN_PIXELS);
+	   return (double) (temp___y/UNIT_LENGTH_IN_PIXELS);
    }
+   
+   
+   
+   private float find_conventional_screen_x_posn(double grid_x){
+	   double temp___x = grid_x*40.0;
+	   return (float) Math.floor(temp___x+160.0);
+   }
+   
+   private float find_conventional_screen_y_posn(double grid_y){
+	   double temp___y = grid_y*40.0;
+	   return (float) Math.floor(temp___y+240.0);
+   }
+   
+   private double find_conventional_grid_x_posn(float screen_x){
+	   float temp___x=screen_x-160;
+	   return (double)(temp___x/40.0);
+   }
+   
+   private double find_conventional_grid_y_posn(float screen_y){
+	   float temp___y=screen_y-240;
+	   return (double)(temp___y/40.0);
+   }
+   
+   
    
    private double real_part_complex_multiply(double first_a, double first_b, double second_a, double second_b){
 	   return first_a*second_a-first_b*second_b;
@@ -768,6 +792,23 @@ public class GameScreen_2 implements Screen {
 		   n_temp+=1;
 	   }
 	   return old_imag;
+   }
+   
+   //--Create Mine Functions--
+   
+   private void apply_x_func_zigzag(Mine mine){
+	   mine.rect.x=mine.rect.y;
+	   
+   }
+   
+   private float apply_x_func_sawtooth(Mine mine){
+	   double y_po=find_conventional_grid_y_posn(mine.rect.y)-0.5;
+	   double x_po=(y_po/2-Math.floor(y_po/2))*2+mine.func_centre;
+	   System.out.println("");
+	   System.out.println(y_po);
+	   System.out.println(x_po);
+	   System.out.println(find_conventional_screen_x_posn(x_po)+20f);
+	   return find_conventional_screen_x_posn(x_po)+20f;
    }
    
    //--Create Dot Functions--
@@ -2176,6 +2217,32 @@ private void spawnRandomMineAccelX(){
 	   spawnMineAccelX_parab(k,acceldisp*5);   
 }
 
+private void spawnMineSawtooth(int xposn){
+	Mine mine = new Mine();
+	mine.func_type="sawtooth";
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 100;
+    mine.horz_speed = 0;
+    
+    mine.vert_accel=0;
+    mine.horz_accel=0;
+    
+    
+    mines.add(mine);
+}
+
+private void spawnRandomMineSawtooth(){
+	int k=MathUtils.random(-2,2);
+	spawnMineSawtooth(k);
+}
+
+
    //(This creates the dot which actually detonates mines. Not to be confused with mirroring.)
    private void spawn_other_dot(float x,float y) {
  	     
@@ -2262,6 +2329,9 @@ private void spawnRandomMineAccelX(){
 	   }
 	   else if(wavetype.equals("accel_y")){
 		   wave_accel_y(sss);
+	   }
+	   else if(wavetype.equals("sawtooth")){
+		   wave_sawtooth(sss);
 	   }
    }
    
@@ -2411,6 +2481,20 @@ private void spawnRandomMineAccelX(){
 		   if((seconds-ts)%2 == 0){spawnRandomMineAccelX();}
 		   if((seconds-ts)%4 == 3){
 			   spawnRandomMineAccelX();
+	 	   } 
+	   }
+   }
+   
+   private void wave_sawtooth(int ss){
+	   int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMineSawtooth();
+ 		  dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%2 == 0){spawnRandomMineSawtooth();}
+		   if((seconds-ts)%4 == 3){
+			   spawnRandomMineSawtooth();
 	 	   } 
 	   }
    }
@@ -3171,6 +3255,13 @@ private void spawnRandomMineAccelX(){
 		     
 		     mine.rect.y -= mine.vert_speed * effective_delta;
 		     mine.rect.x += mine.horz_speed * effective_delta;
+		     
+		     if (!(mine.func_type.equals("normal"))){
+		    	 if (mine.func_type.equals("sawtooth")){
+		    		 mine.rect.x=apply_x_func_sawtooth(mine);
+		    	 }
+		     }
+		     
 		     if(mine.rect.y + 64 < 0) iter.remove();
 		 
 		 boolean deadyet=false;
@@ -3202,7 +3293,8 @@ private void spawnRandomMineAccelX(){
 		          }
 		     }
 		  }
-      }      
+      }
+      
       //--Let the player pause/unpause--
       if (Gdx.input.isKeyJustPressed(Keys.SPACE)&& !META_PAUSE){
     	  IS_TIME_HAPPENING=!IS_TIME_HAPPENING;

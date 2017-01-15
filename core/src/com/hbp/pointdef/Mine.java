@@ -8,6 +8,10 @@ public class Mine {
 	   float horz_speed;
 	   float vert_accel;
 	   float horz_accel;
-	   //private float find_the_x;
-	   //private float find_the_y;
+	   int func_centre;
+	   float func_disp;
+	   String func_type;
+	   public Mine(){
+		   func_type="normal";
+	   }
 }
