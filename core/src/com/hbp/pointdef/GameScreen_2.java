@@ -297,8 +297,8 @@ public class GameScreen_2 implements Screen {
 	
    public GameScreen_2(final PointDef gam, int gamespeed, String gridtype, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
-	   WT_ONE="sinewave";
-	   WT_TWO="zigzag";
+	   WT_ONE="basic";
+	   WT_TWO="squarewave";
 	   
 	   ANDROID=android;
 	   
@@ -307,13 +307,15 @@ public class GameScreen_2 implements Screen {
 	   //--Perform tautological actions--
 	   this.game = gam;
       
-	   SCALE=4;
+	   SCALE=2;
 	   ENDLESS=endless;
       MODE=mode;
       TOPIC=topic;
       GAMESPEED=gamespeed;
       GAMESPEED_ORI=gamespeed;
       CAMPAIGN=campaign;
+      
+      //--Convert gridtype to gridtype--
       
       //--Ensure it starts paused--
       
@@ -1153,6 +1155,14 @@ public class GameScreen_2 implements Screen {
    }
    
    private void create_curves_dot_function(){
+	   if (MODE.equals("y_is_c")){
+		   curves_c=plusorminus()*MathUtils.random(0,2);
+	   }
+	   if (MODE.equals("y_is_mx_plus_c")){
+		   curves_c=plusorminus();
+		   curves_a=plusorminus();
+		   curves_b=MathUtils.random(2,4);
+	   }
 	   if (MODE.equals("line")){
 		   if (seconds%200==0){
 			   Function_Code="y_is_c";
@@ -1186,10 +1196,27 @@ public class GameScreen_2 implements Screen {
 			   curves_a=plusorminus()*MathUtils.random(1, curves_r-3);
 		   }
 	   }
+	   if (MODE.equals("y_is_k_over_x")){
+		   
+	   }
+	   if (MODE.equals("y_is_everything")){
+		   
+	   }
    }
    
    private void create_trig_dot_function(){
-	   
+	   if (seconds%200==0){
+		   Function_Code="sin";
+	   }
+	   if (seconds%200==50){
+		   Function_Code="cos";
+	   }
+	   if (seconds%200==100){
+		   Function_Code="tan";
+	   }
+	   if (seconds%200==150){
+		   Function_Code="sin_plus_cos";
+	   }
    }
    
    private void create_powers_dot_function(){
@@ -1550,7 +1577,7 @@ public class GameScreen_2 implements Screen {
 		   apply_curve_dot_function(grx, gry);
 	   }
 	   else if (TOPIC.equals("TRIG")){
-		   apply_powers_dot_function(grx, gry);
+		   apply_trig_dot_function(grx, gry);
 	   }
 	   else if (TOPIC.equals("ARGAND")){
 		   apply_argand_dot_function(grx, gry);
@@ -1779,6 +1806,55 @@ public class GameScreen_2 implements Screen {
 		   else{
 			   //Basically just send it off the screen.
 			   dots_posns_y[0]=-13.0;
+		   }
+	   }
+   }
+   private void apply_trig_dot_function(double grx, double gry){
+	   if (!MODE.equals("trig_inverse")){
+		   dots_posns_x[0]=mouse_posn_x;
+		   if (MODE.equals("trig")){
+			   if (Function_Code.equals("sin")){
+				   dots_posns_y[0]=Math.sin(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("cos")){
+				   dots_posns_y[0]=Math.cos(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("tan")){
+				   dots_posns_y[0]=Math.tan(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("sin_plus_cos")){
+				   dots_posns_y[0]=Math.sin(mouse_posn_x)+Math.cos(mouse_posn_x);
+			   }
+		   }
+		   if (MODE.equals("trig_squared")){
+			   if (Function_Code.equals("sin")){
+				   dots_posns_y[0]=Math.sin(mouse_posn_x)*Math.sin(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("cos")){
+				   dots_posns_y[0]=Math.cos(mouse_posn_x)*Math.cos(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("tan")){
+				   dots_posns_y[0]=Math.tan(mouse_posn_x)*Math.tan(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("sin_plus_cos")){
+				   //This should always be 1, but writing it out makes it clearer.
+				   dots_posns_y[0]=Math.sin(mouse_posn_x)*Math.sin(mouse_posn_x)+Math.cos(mouse_posn_x)*Math.cos(mouse_posn_x);
+			   }
+		   }
+	   }
+	   if (MODE.equals("trig_inverse")){
+		   dots_posns_y[0]=mouse_posn_y;
+		   if (Function_Code.equals("sin")){
+			   dots_posns_x[0]=Math.asin(mouse_posn_y);
+		   }
+		   if (Function_Code.equals("cos")){
+			   dots_posns_x[0]=Math.acos(mouse_posn_y);
+		   }
+		   if (Function_Code.equals("tan")){
+			   dots_posns_x[0]=Math.atan(mouse_posn_y);
+		   }
+		   if (Function_Code.equals("sin_plus_cos")){
+			   dots_posns_x[0]=Math.asin(mouse_posn_y)+Math.acos(mouse_posn_y);
 		   }
 	   }
    }

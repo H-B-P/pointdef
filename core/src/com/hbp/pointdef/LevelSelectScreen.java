@@ -155,6 +155,7 @@ public class LevelSelectScreen implements Screen {
 			score_two=0;
 			score_three=0;
 			score_four=0;
+			score_five=0;
 			
 			one_t = new Texture(Gdx.files.internal("angle_button.png"));
 			two_t = new Texture(Gdx.files.internal("angle_button.png"));
@@ -170,6 +171,7 @@ public class LevelSelectScreen implements Screen {
 			score_two=0;
 			score_three=0;
 			score_four=0;
+			score_five=0;
 			
 			one_t = new Texture(Gdx.files.internal("angle_button.png"));
 			two_t = new Texture(Gdx.files.internal("angle_button.png"));
@@ -495,7 +497,7 @@ public class LevelSelectScreen implements Screen {
 		            dispose();
 				}
 				if (nxt_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "MATRIX", MINESPEED, ENDLESS, ANDROID));
+		            game.setScreen(new LevelSelectScreen(game, "CURVES", MINESPEED, ENDLESS, ANDROID));
 		            dispose();
 				}
 
@@ -504,23 +506,27 @@ public class LevelSelectScreen implements Screen {
 			
 			if (TOPIC=="CURVES"){
 				if (one_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CURVES", "line", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CURVES", "y_equals_c", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (two_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CURVES", "circle", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CURVES", "y_equals_mx_plus_c", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (three_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CURVES", "reciprocal", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CURVES", "circle", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (four_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CURVES", "polynomial", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CURVES", "y_equals_k_over_x", ENDLESS, false, ANDROID));
+		            dispose();
+				}
+				if (five_r.contains(tp_x,tp_y)){
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CURVES", "y_equals_everything", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (prv_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "POWERS", MINESPEED, ENDLESS, ANDROID));
+		            game.setScreen(new LevelSelectScreen(game, "POLAR", MINESPEED, ENDLESS, ANDROID));
 		            dispose();
 				}
 				if (nxt_r.contains(tp_x,tp_y)){
@@ -532,19 +538,23 @@ public class LevelSelectScreen implements Screen {
 			
 			if (TOPIC=="TRIG"){
 				if (one_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "TRIG", "sin", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "TRIG", "trig", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (two_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "TRIG", "parameters", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "TRIG", "trig_squared", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (three_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "TRIG", "squared", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "TRIG", "a_sin_x_plus_d", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (four_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "TRIG", "inverse", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "TRIG", "trig_inverse", ENDLESS, false, ANDROID));
+		            dispose();
+				}
+				if (five_r.contains(tp_x,tp_y)){
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "TRIG", "a_trig_x_plus_d", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (prv_r.contains(tp_x,tp_y)){
