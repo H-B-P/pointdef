@@ -96,7 +96,7 @@ public class LevelSelectScreen implements Screen {
 		
 		wastouched=false;
 		
-		GRIDTYPE="Default";
+		GRIDTYPE="default";
 		
 		TOPIC=topic;
 		
@@ -454,6 +454,10 @@ public class LevelSelectScreen implements Screen {
 		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CARTESIAN", "divide", ENDLESS, false, ANDROID));
 		            dispose();
 				}
+				if (five_r.contains(tp_x,tp_y)){
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "CARTESIAN", "power", ENDLESS, false, ANDROID));
+		            dispose();
+				}
 				if (prv_r.contains(tp_x,tp_y)){
 		            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED, ENDLESS, ANDROID));
 		            dispose();
@@ -480,6 +484,10 @@ public class LevelSelectScreen implements Screen {
 				}
 				if (four_r.contains(tp_x,tp_y)){
 		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "POLAR", "divide", ENDLESS, false, ANDROID));
+		            dispose();
+				}
+				if (five_r.contains(tp_x,tp_y)){
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "POLAR", "power", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (prv_r.contains(tp_x,tp_y)){

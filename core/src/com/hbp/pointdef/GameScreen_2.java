@@ -235,7 +235,7 @@ public class GameScreen_2 implements Screen {
    private boolean CAMPAIGN;
    private boolean META_PAUSE;
    
-   
+   private String GRIDTYPE;
    
    
    
@@ -302,6 +302,7 @@ public class GameScreen_2 implements Screen {
 	   
 	   ANDROID=android;
 	   
+	   GRIDTYPE=gridtype;
 	   
 	   //--Perform tautological actions--
 	   this.game = gam;
@@ -529,7 +530,23 @@ public class GameScreen_2 implements Screen {
 //    	  UNIT_LENGTH_IN_PIXELS=40;
 //      }
       
-      UNIT_LENGTH_IN_PIXELS=160/SCALE;
+      if (GRIDTYPE=="fine"){
+    	  UNIT_LENGTH_IN_PIXELS=40;
+      }
+      if (GRIDTYPE=="coarse"){
+    	  UNIT_LENGTH_IN_PIXELS=80;
+      }
+      if (GRIDTYPE=="very coarse"){
+    	  UNIT_LENGTH_IN_PIXELS=120;
+      }
+      if (GRIDTYPE=="default"){
+    	  if (MODE.equals("power")){
+    		  UNIT_LENGTH_IN_PIXELS=80;
+    	  }
+    	  else{
+    		  UNIT_LENGTH_IN_PIXELS=40;
+    	  }
+      }
       
       //--Set up presentation--
       spawnShield(1);
@@ -896,7 +913,7 @@ public class GameScreen_2 implements Screen {
 					   }
 				   }
 				   
-			   }else if (SCALE==8){
+			   }else{
 				   if (seconds==50){
 					   cartesian_a=0;
 					   cartesian_b=plusorminus()*MathUtils.random(1,2);
