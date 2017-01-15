@@ -297,8 +297,8 @@ public class GameScreen_2 implements Screen {
 	
    public GameScreen_2(final PointDef gam, int gamespeed, String gridtype, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
-	   WT_ONE="sawtooth";
-	   WT_TWO="sawtooth";
+	   WT_ONE="sinewave";
+	   WT_TWO="zigzag";
 	   
 	   ANDROID=android;
 	   
@@ -796,18 +796,26 @@ public class GameScreen_2 implements Screen {
    
    //--Create Mine Functions--
    
-   private void apply_x_func_zigzag(Mine mine){
-	   mine.rect.x=mine.rect.y;
-	   
-   }
-   
    private float apply_x_func_sawtooth(Mine mine){
 	   double y_po=find_conventional_grid_y_posn(mine.rect.y)-0.5;
-	   double x_po=(y_po/2-Math.floor(y_po/2))*2+mine.func_centre;
-	   System.out.println("");
-	   System.out.println(y_po);
-	   System.out.println(x_po);
-	   System.out.println(find_conventional_screen_x_posn(x_po)+20f);
+	   double x_po=(y_po/2-Math.floor(y_po/2))*2-2+mine.func_centre;
+	   return find_conventional_screen_x_posn(x_po)+20f;
+   }
+   private float apply_x_func_squarewave(Mine mine){
+	   double y_po=find_conventional_grid_y_posn(mine.rect.y)-0.5;
+	   double x_po=(Math.floor(y_po/2+200)%2)*2-2+mine.func_centre;
+	   return find_conventional_screen_x_posn(x_po)+20f;
+   }
+   private float apply_x_func_sinewave(Mine mine){
+	   double y_po=find_conventional_grid_y_posn(mine.rect.y)-0.5;
+	   double x_po=Math.sin(y_po*Math.PI/2)-1.0+mine.func_centre;
+	   return find_conventional_screen_x_posn(x_po)+20f;
+   }
+   private float apply_x_func_zigzag(Mine mine){
+	   double y_po=find_conventional_grid_y_posn(mine.rect.y)-0.5;
+	   double part_one=(Math.floor(y_po/2.0+200.0)%2.0)*2.0-1.0;
+	   double part_two=(y_po/2.0-Math.floor(y_po/2.0))*2.0-1.0;
+	   double x_po=part_one*part_two-1+mine.func_centre;
 	   return find_conventional_screen_x_posn(x_po)+20f;
    }
    
@@ -2220,6 +2228,7 @@ private void spawnRandomMineAccelX(){
 private void spawnMineSawtooth(int xposn){
 	Mine mine = new Mine();
 	mine.func_type="sawtooth";
+	mine.func_centre=xposn;
     mine.rect = new Rectangle();
     double xposn_II = (xposn*40.0+160.0)-20.0;
     mine.rect.x = (float) xposn_II;
@@ -2227,7 +2236,7 @@ private void spawnMineSawtooth(int xposn){
     mine.rect.width = 40;
     mine.rect.height = 40;
     
-    mine.vert_speed = 100;
+    mine.vert_speed = 80;
     mine.horz_speed = 0;
     
     mine.vert_accel=0;
@@ -2240,6 +2249,84 @@ private void spawnMineSawtooth(int xposn){
 private void spawnRandomMineSawtooth(){
 	int k=MathUtils.random(-2,2);
 	spawnMineSawtooth(k);
+}
+
+private void spawnMineSquarewave(int xposn){
+	Mine mine = new Mine();
+	mine.func_type="squarewave";
+	mine.func_centre=xposn;
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 80;
+    mine.horz_speed = 0;
+    
+    mine.vert_accel=0;
+    mine.horz_accel=0;
+    
+    
+    mines.add(mine);
+}
+
+private void spawnRandomMineSquarewave(){
+	int k=MathUtils.random(-2,2);
+	spawnMineSquarewave(k);
+}
+
+private void spawnMineSinewave(int xposn){
+	Mine mine = new Mine();
+	mine.func_type="sinewave";
+	mine.func_centre=xposn;
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 80;
+    mine.horz_speed = 0;
+    
+    mine.vert_accel=0;
+    mine.horz_accel=0;
+    
+    
+    mines.add(mine);
+}
+
+private void spawnRandomMineSinewave(){
+	int k=MathUtils.random(-2,2);
+	spawnMineSinewave(k);
+}
+
+private void spawnMineZigzag(int xposn){
+	Mine mine = new Mine();
+	mine.func_type="zigzag";
+	mine.func_centre=xposn;
+    mine.rect = new Rectangle();
+    double xposn_II = (xposn*40.0+160.0)-20.0;
+    mine.rect.x = (float) xposn_II;
+    mine.rect.y = 440;
+    mine.rect.width = 40;
+    mine.rect.height = 40;
+    
+    mine.vert_speed = 80;
+    mine.horz_speed = 0;
+    
+    mine.vert_accel=0;
+    mine.horz_accel=0;
+    
+    
+    mines.add(mine);
+}
+
+private void spawnRandomMineZigzag(){
+	int k=MathUtils.random(-2,2);
+	spawnMineZigzag(k);
 }
 
 
@@ -2332,6 +2419,15 @@ private void spawnRandomMineSawtooth(){
 	   }
 	   else if(wavetype.equals("sawtooth")){
 		   wave_sawtooth(sss);
+	   }
+	   else if(wavetype.equals("squarewave")){
+		   wave_squarewave(sss);
+	   }
+	   else if(wavetype.equals("sinewave")){
+		   wave_sinewave(sss);
+	   }
+	   else if(wavetype.equals("zigzag")){
+		   wave_zigzag(sss);
 	   }
    }
    
@@ -2495,6 +2591,48 @@ private void spawnRandomMineSawtooth(){
 		   if((seconds-ts)%2 == 0){spawnRandomMineSawtooth();}
 		   if((seconds-ts)%4 == 3){
 			   spawnRandomMineSawtooth();
+	 	   } 
+	   }
+   }
+   
+   private void wave_squarewave(int ss){
+	   int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMineSquarewave();
+ 		  dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%2 == 0){spawnRandomMineSquarewave();}
+		   if((seconds-ts)%4 == 3){
+			   spawnRandomMineSquarewave();
+	 	   } 
+	   }
+   }
+   
+   private void wave_sinewave(int ss){
+	   int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMineSinewave();
+ 		  dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%2 == 0){spawnRandomMineSinewave();}
+		   if((seconds-ts)%4 == 3){
+			   spawnRandomMineSinewave();
+	 	   } 
+	   }
+   }
+   
+   private void wave_zigzag(int ss){
+	   int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+20){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMineZigzag();
+ 		  dotfunction_font.setColor(Color.BLACK);
+ 	   }
+	   if (seconds>=ts+20 && seconds<ts+40){
+		   if((seconds-ts)%2 == 0){spawnRandomMineZigzag();}
+		   if((seconds-ts)%4 == 3){
+			   spawnRandomMineZigzag();
 	 	   } 
 	   }
    }
@@ -3259,6 +3397,15 @@ private void spawnRandomMineSawtooth(){
 		     if (!(mine.func_type.equals("normal"))){
 		    	 if (mine.func_type.equals("sawtooth")){
 		    		 mine.rect.x=apply_x_func_sawtooth(mine);
+		    	 }
+		    	 if (mine.func_type.equals("squarewave")){
+		    		 mine.rect.x=apply_x_func_squarewave(mine);
+		    	 }
+		    	 if (mine.func_type.equals("sinewave")){
+		    		 mine.rect.x=apply_x_func_sinewave(mine);
+		    	 }
+		    	 if (mine.func_type.equals("zigzag")){
+		    		 mine.rect.x=apply_x_func_zigzag(mine);
 		    	 }
 		     }
 		     
