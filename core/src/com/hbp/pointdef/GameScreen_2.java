@@ -164,10 +164,6 @@ public class GameScreen_2 implements Screen {
    private int cartesian_b;
    private int cartesian_n;
    
-   private int misc_a;
-   private int misc_b;
-   private int misc_n;
-   
    private int trig_a;
    private int trig_b;
    
@@ -295,7 +291,7 @@ public class GameScreen_2 implements Screen {
    public GameScreen_2(final PointDef gam, int gamespeed, String gridtype, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
 	   WT_ONE="varyvelo_y";
-	   WT_TWO="zigzag";
+	   WT_TWO="varyvelo_x";
 	   
 	   ANDROID=android;
 	   
@@ -546,6 +542,8 @@ public class GameScreen_2 implements Screen {
     		  UNIT_LENGTH_IN_PIXELS=40;
     	  }
       }
+      
+      //UNIT_LENGTH_IN_PIXELS=80;
       
       //--Set up presentation--
       spawnShield(1);
@@ -1152,7 +1150,70 @@ public class GameScreen_2 implements Screen {
    }
    
    private void create_misc_dot_function(){
-
+	   if (MODE.equals("discrete")){
+		   if (seconds%200==0){
+			   Function_Code="nah";
+		   }
+		   if (seconds%200==50){
+			   Function_Code="round";
+		   }
+		   if (seconds%200==100){
+			   Function_Code="floor";
+		   }
+		   if (seconds%200==150){
+			   Function_Code="ceiling";
+		   }
+	   }
+	   if (MODE.equals("add")){
+		   if (seconds%200==0){
+			   Function_Code="y_is_y_plus_x";
+		   }
+		   if (seconds%200==50){
+			   Function_Code="y_is_y_take_x";
+		   }
+		   if (seconds%200==100){
+			   Function_Code="x_is_x_plus_y";
+		   }
+		   if (seconds%200==150){
+			   Function_Code="x_is_x_take_y";
+		   }
+	   }
+	   if (MODE.equals("reciprocal")){
+		   if (seconds%200==0){
+			   Function_Code="one_over_y";
+		   }
+		   if (seconds%200==50){
+			   Function_Code="two_over_y";
+		   }
+		   if (seconds%200==100){
+			   Function_Code="three_over_y";
+		   }
+		   if (seconds%200==150){
+			   Function_Code="four_over_y";
+		   }
+	   }
+	   if (MODE.equals("multiply")){
+		   if (seconds%100==0){
+			   Function_Code="y_is_y_times_x";
+		   }
+		   if (seconds%100==50){
+			   Function_Code="x_is_x_times_y";
+		   }
+	   }
+	   if (MODE.equals("exponent")){
+		   if (seconds%200==0){
+			   Function_Code="exp_2";
+		   }
+		   if (seconds%200==50){
+			   Function_Code="log_2";
+		   }
+		   if (seconds%200==100){
+			   Function_Code="exp_3";
+		   }
+		   if (seconds%200==150){
+			   Function_Code="log_3";
+		   }
+	   }
    }
    
    private void create_trig_dot_function(){
@@ -1796,7 +1857,98 @@ public class GameScreen_2 implements Screen {
 	   }
    }
    private void apply_misc_dot_function(double grx, double gry){
-
+	   if (MODE.equals("discrete")){
+		   if (Function_Code=="nah"){
+			   dots_posns_x[0]=mouse_posn_x;
+			   dots_posns_y[0]=mouse_posn_y;
+		   }
+		   if (Function_Code=="round"){
+			   dots_posns_x[0]=Math.round(mouse_posn_x);
+			   dots_posns_y[0]=Math.round(mouse_posn_y);
+		   }
+		   if (Function_Code=="floor"){
+			   dots_posns_x[0]=Math.floor(mouse_posn_x);
+			   dots_posns_y[0]=Math.floor(mouse_posn_y);
+		   }
+		   if (Function_Code=="ceiling"){
+			   dots_posns_x[0]=Math.ceil(mouse_posn_x);
+			   dots_posns_y[0]=Math.ceil(mouse_posn_y);
+		   }
+	   }
+	   if (MODE.equals("add")){
+		   if (Function_Code=="y_is_y_plus_x"){
+			   dots_posns_x[0]=mouse_posn_x;
+			   dots_posns_y[0]=mouse_posn_y+mouse_posn_x;
+		   }
+		   if (Function_Code=="y_is_y_take_x"){
+			   dots_posns_x[0]=mouse_posn_x;
+			   dots_posns_y[0]=mouse_posn_y-mouse_posn_x;
+		   }
+		   if (Function_Code=="x_is_x_plus_y"){
+			   dots_posns_x[0]=mouse_posn_x+mouse_posn_y;
+			   dots_posns_y[0]=mouse_posn_y;
+		   }
+		   if (Function_Code=="x_is_x_take_y"){
+			   dots_posns_x[0]=mouse_posn_x-mouse_posn_y;
+			   dots_posns_y[0]=mouse_posn_y;
+		   }
+	   }
+	   if (MODE.equals("reciprocal")){
+//		   if (Function_Code=="x"){
+//			   dots_posns_x[0]=2/mouse_posn_x;
+//			   dots_posns_y[0]=mouse_posn_y;
+//		   }
+//		   if (Function_Code=="y"){
+//			   dots_posns_x[0]=mouse_posn_x;
+//			   dots_posns_y[0]=2/mouse_posn_y;
+//		   }
+//		   if (Function_Code=="minus_x"){
+//			   dots_posns_x[0]=-2/mouse_posn_x;
+//			   dots_posns_y[0]=mouse_posn_y;
+//		   }
+//		   if (Function_Code=="minus_y"){
+//			   dots_posns_x[0]=mouse_posn_x;
+//			   dots_posns_y[0]=-2/mouse_posn_y;
+//		   }
+		   dots_posns_x[0]=mouse_posn_x;
+		   if (Function_Code=="one_over_y"){
+			   dots_posns_y[0]=1/mouse_posn_y;
+		   }
+		   if (Function_Code=="two_over_y"){
+			   dots_posns_y[0]=2/mouse_posn_y;
+		   }
+		   if (Function_Code=="three_over_y"){
+			   dots_posns_y[0]=3/mouse_posn_y;
+		   }
+		   if (Function_Code=="four_over_y"){
+			   dots_posns_y[0]=4/mouse_posn_y;
+		   }
+	   }
+	   if (MODE.equals("multiply")){
+		   if (Function_Code=="y_is_y_times_x"){
+			   dots_posns_x[0]=mouse_posn_x;
+			   dots_posns_y[0]=mouse_posn_y*mouse_posn_x;
+		   }
+		   if (Function_Code=="x_is_x_times_y"){
+			   dots_posns_x[0]=mouse_posn_x*mouse_posn_y;
+			   dots_posns_y[0]=mouse_posn_y;
+		   }
+	   }
+	   if (MODE.equals("exponent")){
+		   dots_posns_x[0]=mouse_posn_x;
+		   if (Function_Code=="exp_2"){
+			   dots_posns_y[0]=Math.pow(2,mouse_posn_y);
+		   }
+		   if (Function_Code=="log_2"){
+			   dots_posns_y[0]=Math.log(mouse_posn_y)/Math.log(2);
+		   }
+		   if (Function_Code=="exp_3"){
+			   dots_posns_y[0]=Math.pow(3,mouse_posn_y);
+		   }
+		   if (Function_Code=="log_3"){
+			   dots_posns_y[0]=Math.log(mouse_posn_y)/Math.log(3);
+		   }
+	   }
    }
    private void apply_trig_dot_function(double grx, double gry){
 	   if (!MODE.equals("invert")){
@@ -1853,24 +2005,37 @@ public class GameScreen_2 implements Screen {
 		   dots_posns_y[1]=mouse_posn_y;
 		   dots_posns_y[2]=mouse_posn_y;
 		   dots_posns_y[3]=mouse_posn_y;
+		   dots_posns_y[4]=mouse_posn_y;
+		   dots_posns_y[5]=mouse_posn_y;
 		   if (Function_Code.equals("sin")){
 			   dots_posns_x[0]=mouse_posn_x+Math.asin(mouse_posn_y);
 			   dots_posns_x[1]=mouse_posn_x+Math.PI-Math.asin(mouse_posn_y);
 			   dots_posns_x[2]=mouse_posn_x-Math.PI-Math.asin(mouse_posn_y);
-			   NUMBER_OF_DOTS=3;
+			   
+			   dots_posns_x[3]=mouse_posn_x+Math.PI*2+Math.asin(mouse_posn_y);
+			   dots_posns_x[4]=mouse_posn_x-Math.PI*2+Math.asin(mouse_posn_y);
+			   NUMBER_OF_DOTS=5;
 		   }
 		   if (Function_Code.equals("cos")){
 			   dots_posns_x[0]=mouse_posn_x-2*Math.PI+Math.acos(mouse_posn_y);
 			   dots_posns_x[1]=mouse_posn_x-Math.acos(mouse_posn_y);
 			   dots_posns_x[2]=mouse_posn_x+Math.acos(mouse_posn_y);
 			   dots_posns_x[3]=mouse_posn_x+2*Math.PI-Math.acos(mouse_posn_y);
-			   NUMBER_OF_DOTS=4;
+			   
+			   dots_posns_x[4]=mouse_posn_x-Math.PI*2-Math.acos(mouse_posn_y);
+			   dots_posns_x[5]=mouse_posn_x+Math.PI*2+Math.asin(mouse_posn_y);
+			   
+			   NUMBER_OF_DOTS=6;
 		   }
 		   if (Function_Code.equals("tan")){
 			   dots_posns_x[0]=mouse_posn_x+Math.atan(mouse_posn_y)-Math.PI;
 			   dots_posns_x[1]=mouse_posn_x+Math.atan(mouse_posn_y);
 			   dots_posns_x[2]=mouse_posn_x+Math.atan(mouse_posn_y)+Math.PI;
-			   NUMBER_OF_DOTS=3;
+			   
+			   dots_posns_x[3]=mouse_posn_x+Math.atan(mouse_posn_y)+2*Math.PI;
+			   dots_posns_x[4]=mouse_posn_x+Math.atan(mouse_posn_y)-2*Math.PI;
+			   
+			   NUMBER_OF_DOTS=5;
 		   }
 	   }
    }
@@ -2140,24 +2305,24 @@ private void spawnMineVaryVeloX(int xposn, int vel){
 
 private void spawnRandomMineVaryVeloY(){
 	   int k=MathUtils.random(-3,3);
-	   int the_vel=plusorminus()*20;
+	   int the_vel=plusorminus()*22;
 	   spawnMineVaryVeloY(k,the_vel);	   
 }
 
 private void spawnRandomMineVaryVeloY_l(){
 	   int k=MathUtils.random(-3,-1);
-	   int the_vel=plusorminus()*20;
+	   int the_vel=plusorminus()*22;
 	   spawnMineVaryVeloY(k,the_vel);	   
 }
 
 private void spawnRandomMineVaryVeloY_r(){
 	   int k=MathUtils.random(1,3);
-	   int the_vel=plusorminus()*20;
+	   int the_vel=plusorminus()*22;
 	   spawnMineVaryVeloY(k,the_vel);	   
 }
 
 private void spawnMineTrioVaryVeloY(){
-	int the_vel=plusorminus()*20;
+	int the_vel=plusorminus()*22;
 	spawnMineVaryVeloY(0,the_vel);
 	the_vel=-the_vel;
 	spawnMineVaryVeloY(MathUtils.random(-3,-2),the_vel);

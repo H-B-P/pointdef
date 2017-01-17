@@ -506,23 +506,23 @@ public class LevelSelectScreen implements Screen {
 			
 			if (TOPIC=="MISC"){
 				if (one_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "y_equals_c", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "discrete", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (two_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "y_equals_mx_plus_c", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "add", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (three_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "circle", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "reciprocal", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (four_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "y_equals_k_over_x", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "multiply", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (five_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "y_equals_everything", ENDLESS, false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, MINESPEED, GRIDTYPE, "MISC", "exponent", ENDLESS, false, ANDROID));
 		            dispose();
 				}
 				if (prv_r.contains(tp_x,tp_y)){
