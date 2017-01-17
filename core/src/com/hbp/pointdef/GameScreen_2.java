@@ -164,15 +164,12 @@ public class GameScreen_2 implements Screen {
    private int cartesian_b;
    private int cartesian_n;
    
-   private int curves_a;
-   private int curves_b;
-   private int curves_c;
-   private int curves_r;
+   private int misc_a;
+   private int misc_b;
+   private int misc_n;
    
    private int trig_a;
    private int trig_b;
-   private int trig_c;
-   private int trig_d;
    
    private int powers_n;
    
@@ -297,8 +294,8 @@ public class GameScreen_2 implements Screen {
 	
    public GameScreen_2(final PointDef gam, int gamespeed, String gridtype, String topic, String mode, boolean endless, boolean campaign, boolean android) {
 	  
-	   WT_ONE="basic";
-	   WT_TWO="squarewave";
+	   WT_ONE="varyvelo_y";
+	   WT_TWO="zigzag";
 	   
 	   ANDROID=android;
 	   
@@ -307,7 +304,7 @@ public class GameScreen_2 implements Screen {
 	   //--Perform tautological actions--
 	   this.game = gam;
       
-	   SCALE=2;
+	   SCALE=4;
 	   ENDLESS=endless;
       MODE=mode;
       TOPIC=topic;
@@ -855,10 +852,10 @@ public class GameScreen_2 implements Screen {
 	   if (TOPIC.equals("POWERS")){
 		   create_powers_dot_function();
 	   }
-	   if (TOPIC.equals("CURVES")){
-		   create_curves_dot_function();
+	   if (TOPIC.equals("MISC")){
+		   create_misc_dot_function();
 	   }
-	   if (TOPIC.equals("TRIG")){
+	   if (TOPIC.equals("SINES")){
 		   create_trig_dot_function();
 	   }
 	   if (TOPIC.equals("ARGAND")){
@@ -1154,69 +1151,84 @@ public class GameScreen_2 implements Screen {
 	   }
    }
    
-   private void create_curves_dot_function(){
-	   if (MODE.equals("y_is_c")){
-		   curves_c=plusorminus()*MathUtils.random(0,2);
-	   }
-	   if (MODE.equals("y_is_mx_plus_c")){
-		   curves_c=plusorminus();
-		   curves_a=plusorminus();
-		   curves_b=MathUtils.random(2,4);
-	   }
-	   if (MODE.equals("line")){
-		   if (seconds%200==0){
-			   Function_Code="y_is_c";
-			   curves_c=plusorminus()*MathUtils.random(1,2);
-		   }
-		   if (seconds%200==50 || seconds%200==100){
-			   Function_Code="y_is_mx";
-			   curves_b=MathUtils.random(2,4);
-			   curves_a=plusorminus()*MathUtils.random(1,curves_b-1);
-		   }
-		   if (seconds%200==150){
-			   Function_Code="y_is_mx_plus_c";
-			   curves_c=plusorminus();
-			   curves_a=plusorminus();
-			   curves_b=MathUtils.random(2,4);
-		   }
-	   }
-	   if (MODE.equals("circle")){
-		   if (seconds==0){
-			   curves_a=0;
-			   curves_b=0;
-			   curves_r=3;
-		   }
-		   if (seconds%200==50){
-			   curves_b=plusorminus()*MathUtils.random(1,3);
-		   }
-		   if (seconds%200==100){
-			   curves_r=3+MathUtils.random(1,Math.abs(curves_b));
-		   }
-		   if (seconds%200==150){
-			   curves_a=plusorminus()*MathUtils.random(1, curves_r-3);
-		   }
-	   }
-	   if (MODE.equals("y_is_k_over_x")){
-		   
-	   }
-	   if (MODE.equals("y_is_everything")){
-		   
-	   }
+   private void create_misc_dot_function(){
+
    }
    
    private void create_trig_dot_function(){
-	   if (seconds%200==0){
-		   Function_Code="sin";
+	   if (MODE.equals("add")||MODE.equals("square")){
+		   if (seconds%200==0){
+			   Function_Code="sin";
+		   }
+		   if (seconds%200==50){
+			   Function_Code="cos";
+		   }
+		   if (seconds%200==100){
+			   Function_Code="sin_plus_cos";
+		   }
+		   if (seconds%200==150){
+			   Function_Code="sin_take_cos";
+		   }
 	   }
-	   if (seconds%200==50){
-		   Function_Code="cos";
+	   if (MODE.equals("tangent")){
+		   if (seconds%200==0){
+			   Function_Code="tan";
+		   }
+		   if (seconds%200==50){
+			   Function_Code="minus_tan";
+		   }
+		   if (seconds%200==100){
+			   Function_Code="tan_squared";
+		   }
+		   if (seconds%200==150){
+			   Function_Code="minus_tan_squared";
+		   }
 	   }
-	   if (seconds%200==100){
-		   Function_Code="tan";
+	   if (MODE.equals("invert")){
+		   if (seconds%100==0){
+			   Function_Code="sin";
+		   }
+		   if (seconds%100==50){
+			   Function_Code="cos";
+		   }
 	   }
-	   if (seconds%200==150){
-		   Function_Code="sin_plus_cos";
+	   if (MODE.equals("multiply")){
+		   if (seconds%200==0){
+			   Function_Code="sin";
+		   }
+		   if (seconds%200==50){
+			   Function_Code="cos";
+		   }
+		   if (seconds%200==100){
+			   Function_Code="minus_sin";
+		   }
+		   if (seconds%200==150){
+			   Function_Code="minus_cos";
+		   }
 	   }
+	   if (MODE.equals("stretch")){
+		   if (seconds%200==0){
+			   trig_a=2;
+			   //trig_a=MathUtils.random(2,3);
+			   trig_b=1;
+		   }
+		   if (seconds%200==50){
+			   trig_a=1;
+			   //trig_b=MathUtils.random(2,3);
+			   trig_b=2;
+		   }
+		   if (seconds%200==100){
+			   trig_a=-2;
+			   //trig_a=-MathUtils.random(2,3);
+			   trig_b=1;
+		   }
+		   if (seconds%200==150){
+			   trig_a=1;
+			   //trig_b=-MathUtils.random(2,3);
+			   trig_b=-2;
+		   }
+	   }
+	   
    }
    
    private void create_powers_dot_function(){
@@ -1573,10 +1585,10 @@ public class GameScreen_2 implements Screen {
 	   else if (TOPIC.equals("POWERS")){
 		   apply_powers_dot_function(grx, gry);
 	   }
-	   else if (TOPIC.equals("CURVES")){
-		   apply_curve_dot_function(grx, gry);
+	   else if (TOPIC.equals("MISC")){
+		   apply_misc_dot_function(grx, gry);
 	   }
-	   else if (TOPIC.equals("TRIG")){
+	   else if (TOPIC.equals("SINES")){
 		   apply_trig_dot_function(grx, gry);
 	   }
 	   else if (TOPIC.equals("ARGAND")){
@@ -1783,78 +1795,82 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
    }
-   private void apply_curve_dot_function(double grx, double gry){
-	   dots_posns_x[0]=mouse_posn_x;
-	   dots_posns_x[1]=mouse_posn_x;
-	   if (MODE.equals("line")){
-		   if (Function_Code=="y_is_c"){
-			   dots_posns_y[0]=(double)curves_c;
-		   }
-		   if (Function_Code=="y_is_mx"){
-			   dots_posns_y[0]=curves_a*mouse_posn_x/curves_b;
-		   }
-		   if (Function_Code=="y_is_mx_plus_c"){
-			   dots_posns_y[0]=curves_a*mouse_posn_x/curves_b +curves_c;
-		   }
-	   }
-	   if (MODE.equals("circle")){
-		   NUMBER_OF_DOTS=2;
-		   if (Math.abs(mouse_posn_x)<=curves_r){
-			   dots_posns_y[0]=Math.sqrt(curves_r*curves_r-(mouse_posn_x-curves_a)*(mouse_posn_x-curves_a))+curves_b;
-			   dots_posns_y[1]=-dots_posns_y[0];
-		   }
-		   else{
-			   //Basically just send it off the screen.
-			   dots_posns_y[0]=-13.0;
-		   }
-	   }
+   private void apply_misc_dot_function(double grx, double gry){
+
    }
    private void apply_trig_dot_function(double grx, double gry){
-	   if (!MODE.equals("trig_inverse")){
+	   if (!MODE.equals("invert")){
 		   dots_posns_x[0]=mouse_posn_x;
-		   if (MODE.equals("trig")){
+		   if (MODE.equals("add")){
 			   if (Function_Code.equals("sin")){
-				   dots_posns_y[0]=Math.sin(mouse_posn_x);
+				   dots_posns_y[0]=mouse_posn_y+Math.sin(mouse_posn_x);
 			   }
 			   if (Function_Code.equals("cos")){
-				   dots_posns_y[0]=Math.cos(mouse_posn_x);
-			   }
-			   if (Function_Code.equals("tan")){
-				   dots_posns_y[0]=Math.tan(mouse_posn_x);
+				   dots_posns_y[0]=mouse_posn_y+Math.cos(mouse_posn_x);
 			   }
 			   if (Function_Code.equals("sin_plus_cos")){
-				   dots_posns_y[0]=Math.sin(mouse_posn_x)+Math.cos(mouse_posn_x);
+				   dots_posns_y[0]=mouse_posn_y+Math.sin(mouse_posn_x)+Math.cos(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("sin_take_cos")){
+				   dots_posns_y[0]=mouse_posn_y+Math.sin(mouse_posn_x)-Math.cos(mouse_posn_x);
 			   }
 		   }
-		   if (MODE.equals("trig_squared")){
+		   if (MODE.equals("square")){
 			   if (Function_Code.equals("sin")){
-				   dots_posns_y[0]=Math.sin(mouse_posn_x)*Math.sin(mouse_posn_x);
+				   dots_posns_y[0]=mouse_posn_y+Math.sin(mouse_posn_x)*Math.sin(mouse_posn_x);
 			   }
 			   if (Function_Code.equals("cos")){
-				   dots_posns_y[0]=Math.cos(mouse_posn_x)*Math.cos(mouse_posn_x);
-			   }
-			   if (Function_Code.equals("tan")){
-				   dots_posns_y[0]=Math.tan(mouse_posn_x)*Math.tan(mouse_posn_x);
+				   dots_posns_y[0]=mouse_posn_y+Math.cos(mouse_posn_x)*Math.cos(mouse_posn_x);
 			   }
 			   if (Function_Code.equals("sin_plus_cos")){
 				   //This should always be 1, but writing it out makes it clearer.
-				   dots_posns_y[0]=Math.sin(mouse_posn_x)*Math.sin(mouse_posn_x)+Math.cos(mouse_posn_x)*Math.cos(mouse_posn_x);
+				   dots_posns_y[0]=mouse_posn_y+Math.sin(mouse_posn_x)*Math.sin(mouse_posn_x)+Math.cos(mouse_posn_x)*Math.cos(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("sin_take_cos")){
+				   dots_posns_y[0]=mouse_posn_y+Math.sin(mouse_posn_x)*Math.sin(mouse_posn_x)-Math.cos(mouse_posn_x)*Math.cos(mouse_posn_x);
 			   }
 		   }
+		   if (MODE.equals("multiply")){
+			   if (Function_Code.equals("sin")){
+				   dots_posns_y[0]=mouse_posn_y*Math.sin(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("cos")){
+				   dots_posns_y[0]=mouse_posn_y*Math.cos(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("minus_sin")){
+				   dots_posns_y[0]=-mouse_posn_y*Math.sin(mouse_posn_x);
+			   }
+			   if (Function_Code.equals("minus_cos")){
+				   dots_posns_y[0]=-mouse_posn_y*Math.cos(mouse_posn_x);
+			   }
+		   }
+		   if (MODE.equals("stretch")){
+			   dots_posns_y[0]=mouse_posn_y+trig_a*Math.sin(mouse_posn_x*trig_b);
+		   }
 	   }
-	   if (MODE.equals("trig_inverse")){
+	   if (MODE.equals("invert")){
 		   dots_posns_y[0]=mouse_posn_y;
+		   dots_posns_y[1]=mouse_posn_y;
+		   dots_posns_y[2]=mouse_posn_y;
+		   dots_posns_y[3]=mouse_posn_y;
 		   if (Function_Code.equals("sin")){
-			   dots_posns_x[0]=Math.asin(mouse_posn_y);
+			   dots_posns_x[0]=mouse_posn_x+Math.asin(mouse_posn_y);
+			   dots_posns_x[1]=mouse_posn_x+Math.PI-Math.asin(mouse_posn_y);
+			   dots_posns_x[2]=mouse_posn_x-Math.PI-Math.asin(mouse_posn_y);
+			   NUMBER_OF_DOTS=3;
 		   }
 		   if (Function_Code.equals("cos")){
-			   dots_posns_x[0]=Math.acos(mouse_posn_y);
+			   dots_posns_x[0]=mouse_posn_x-2*Math.PI+Math.acos(mouse_posn_y);
+			   dots_posns_x[1]=mouse_posn_x-Math.acos(mouse_posn_y);
+			   dots_posns_x[2]=mouse_posn_x+Math.acos(mouse_posn_y);
+			   dots_posns_x[3]=mouse_posn_x+2*Math.PI-Math.acos(mouse_posn_y);
+			   NUMBER_OF_DOTS=4;
 		   }
 		   if (Function_Code.equals("tan")){
-			   dots_posns_x[0]=Math.atan(mouse_posn_y);
-		   }
-		   if (Function_Code.equals("sin_plus_cos")){
-			   dots_posns_x[0]=Math.asin(mouse_posn_y)+Math.acos(mouse_posn_y);
+			   dots_posns_x[0]=mouse_posn_x+Math.atan(mouse_posn_y)-Math.PI;
+			   dots_posns_x[1]=mouse_posn_x+Math.atan(mouse_posn_y);
+			   dots_posns_x[2]=mouse_posn_x+Math.atan(mouse_posn_y)+Math.PI;
+			   NUMBER_OF_DOTS=3;
 		   }
 	   }
    }
@@ -2124,24 +2140,24 @@ private void spawnMineVaryVeloX(int xposn, int vel){
 
 private void spawnRandomMineVaryVeloY(){
 	   int k=MathUtils.random(-3,3);
-	   int the_vel=plusorminus()*30;
+	   int the_vel=plusorminus()*20;
 	   spawnMineVaryVeloY(k,the_vel);	   
 }
 
 private void spawnRandomMineVaryVeloY_l(){
 	   int k=MathUtils.random(-3,-1);
-	   int the_vel=plusorminus()*30;
+	   int the_vel=plusorminus()*20;
 	   spawnMineVaryVeloY(k,the_vel);	   
 }
 
 private void spawnRandomMineVaryVeloY_r(){
 	   int k=MathUtils.random(1,3);
-	   int the_vel=plusorminus()*30;
+	   int the_vel=plusorminus()*20;
 	   spawnMineVaryVeloY(k,the_vel);	   
 }
 
 private void spawnMineTrioVaryVeloY(){
-	int the_vel=plusorminus()*30;
+	int the_vel=plusorminus()*20;
 	spawnMineVaryVeloY(0,the_vel);
 	the_vel=-the_vel;
 	spawnMineVaryVeloY(MathUtils.random(-3,-2),the_vel);
@@ -2489,6 +2505,13 @@ private void spawnRandomMineZigzag(){
 			  dot_t=standard_dot_t;
 	   }
 	   
+	   if (wavetype.equals("basic_LF")){
+		   wave_basic_LF(sss);
+	   }
+	   if (wavetype.equals("varyvelo_LF")){
+		   wave_varyvelo_LF(sss);
+	   }
+	   
 	   if (wavetype.equals("basic")){
 		   wave_basic(sss);
 	   }
@@ -2539,6 +2562,23 @@ private void spawnRandomMineZigzag(){
 		 	   } 
 		   }
 		   
+   }
+   
+   private void wave_basic_LF(int ss){
+		  
+       int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+40){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMine();
+ 		 dotfunction_font.setColor(Color.BLACK);
+ 	   }	   
+   	}
+   
+   private void wave_varyvelo_LF(int ss){
+	   int ts=ss+5;
+	   if (seconds>=ts && seconds<ts+40){
+ 		  if((seconds-ts)%2 == 0) spawnRandomMineVeloX();
+ 		  dotfunction_font.setColor(Color.BLACK);
+ 	   }
    }
    
    private void wave_varyvelo_y(int ss){
@@ -2729,6 +2769,9 @@ private void spawnRandomMineZigzag(){
 	 	   } 
 	   }
    }
+   
+   
+   
    //---------
    
    
