@@ -108,7 +108,6 @@ public class LevelSelectScreen implements Screen {
 		
 		prefs = Gdx.app.getPreferences("galen_preferences");
 		
-		
 		if (TOPIC=="NONE"){
 			score_two=prefs.getInteger("score_NONE_basic");
 			
