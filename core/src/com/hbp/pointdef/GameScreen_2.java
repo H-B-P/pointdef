@@ -230,7 +230,7 @@ public class GameScreen_2 implements Screen {
    
    private String GRIDTYPE;
    
-   
+   private String VISIBILITY;
    
 //---miscellaneous other things---
    
@@ -286,26 +286,37 @@ public class GameScreen_2 implements Screen {
 	   //Whether or not we are on a mobile device.
 	   private boolean ANDROID;
 	
-	//---Do all the initial tasks that happen on rendering---
+	//---Do all the tasks that happen when the game is first loaded---
 	
-   public GameScreen_2(final PointDef gam, int gamespeed, String gridtype, String topic, String mode, boolean endless, boolean campaign, boolean android) {
+   public GameScreen_2(final PointDef gam, String topic, String mode, boolean campaign, boolean android) {
 	  
+	   prefs = Gdx.app.getPreferences("galen_preferences");
+	   
+	   //--Load in things--
+	   
 	   WT_ONE="varyvelo_y";
 	   WT_TWO="varyvelo_x";
+	   GRIDTYPE="default";
+	   VISIBILITY="standard";
 	   
+	   if (!campaign){
+		   WT_ONE=prefs.getString("wt_one");
+		   WT_TWO=prefs.getString("wt_two");
+		   GRIDTYPE=prefs.getString("gridtype");
+	   }
 	   ANDROID=android;
 	   
-	   GRIDTYPE=gridtype;
+	   
+	   
 	   
 	   //--Perform tautological actions--
 	   this.game = gam;
       
 	   SCALE=4;
-	   ENDLESS=endless;
+	   //ENDLESS=endless;
       MODE=mode;
       TOPIC=topic;
-      GAMESPEED=gamespeed;
-      GAMESPEED_ORI=gamespeed;
+      GAMESPEED=prefs.getInteger("gamespeed");
       CAMPAIGN=campaign;
       
       //--Convert gridtype to gridtype--
@@ -323,7 +334,7 @@ public class GameScreen_2 implements Screen {
       
       //--Set up highscores--
             
-      prefs = Gdx.app.getPreferences("galen_preferences");
+      
       prefs_score=prefs.getInteger("score_"+TOPIC+"_"+MODE);
       //---
       lives=10;
@@ -3724,7 +3735,7 @@ private void spawnRandomMineZigzag(){
       
       if(Gdx.input.justTouched()){
     	  if (menu_button_r.contains(tp_x, tp_y)){
-    		  game.setScreen(new MainMenuScreen(game, GAMESPEED_ORI, ANDROID, true));
+    		  game.setScreen(new MainMenuScreen(game, ANDROID, true));
     		  dispose();
     	  }
     	  
@@ -3738,18 +3749,18 @@ private void spawnRandomMineZigzag(){
     			  select_sound.play();
     		  }
     		  else if (total_time>=200 && MODE.equals("multiply") && TOPIC.equals("ARGAND")){
-    			  game.setScreen(new MainMenuScreen(game, GAMESPEED_ORI, ANDROID, true));
+    			  game.setScreen(new MainMenuScreen(game, ANDROID, true));
     			  dispose();
     		  }
     		  else if (total_time>=200 || (MODE.equals("intro") && total_time>1)){
-    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, "Default", next_topic(), next_mode(), ENDLESS, true, ANDROID));
+    			  game.setScreen(new GameScreen_2(game, next_topic(), next_mode(), true, ANDROID));
     			  prefs.putString("TOPIC", next_topic());
     	    	  prefs.putString("MODE", next_mode());
     	    	  prefs.flush();
     			  dispose();
     		  }
     		  else {
-    			  game.setScreen(new GameScreen_2(game, GAMESPEED_ORI, "Default", TOPIC, MODE, ENDLESS, true, ANDROID));
+    			  game.setScreen(new GameScreen_2(game, TOPIC, MODE, true, ANDROID));
     			  dispose();
     		  }
     		  
@@ -3835,7 +3846,7 @@ private void spawnRandomMineZigzag(){
     		  }
     		  else{
 	    		  
-	    		  game.setScreen(new LevelSelectScreen(game, TOPIC, GAMESPEED_ORI, ENDLESS, ANDROID));
+	    		  game.setScreen(new LevelSelectScreen(game, TOPIC, ANDROID));
 	    		  dispose();
     		  }
     	  }
@@ -3956,7 +3967,7 @@ private void spawnRandomMineZigzag(){
       
       
       if (about_to_leave){
-    	  game.setScreen(new LevelSelectScreen(game, TOPIC, GAMESPEED_ORI, ENDLESS, ANDROID));
+    	  game.setScreen(new LevelSelectScreen(game, TOPIC, ANDROID));
     	  dispose();
       }
       

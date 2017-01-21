@@ -20,10 +20,8 @@ public class MainMenuScreen implements Screen {
     final PointDef game;
 	OrthographicCamera camera;
 	
-	private Rectangle nxt_r;
 	private Texture nxt_t;	
 	
-	private Rectangle prv_r;
 	private Texture prv_t;	
 	
 	
@@ -42,14 +40,9 @@ public class MainMenuScreen implements Screen {
 	
 	private Texture contact_t;
 	
-	private int score_one;
-	private int score_two;
-	private int score_three;
-	private int score_four;
-	
 	private BitmapFont font;
 	
-	private int MINESPEED;
+	private int GAMESPEED;
 	
 	private Rectangle selector_r;
 	private Rectangle selector_prv_r;
@@ -61,9 +54,6 @@ public class MainMenuScreen implements Screen {
 	
 	boolean are_instructions_visible;
 	
-	private String preferred_mode;
-	private String preferred_topic;
-	
 	private Sound hellosound;
 	private Sound arrowsound;
 	
@@ -73,13 +63,13 @@ public class MainMenuScreen implements Screen {
 	
 	private ScreenViewport viewport;
 	
-	public MainMenuScreen(final PointDef gam, int minespeed, boolean android, boolean play_the_sound) {
+	public MainMenuScreen(final PointDef gam, boolean android, boolean play_the_sound) {
 		
 		wastouched=false;
 		
 		ANDROID=android;
 		
-		MINESPEED=minespeed;
+		
 		
 		prefs = Gdx.app.getPreferences("galen_preferences");
 		
@@ -92,8 +82,29 @@ public class MainMenuScreen implements Screen {
 			prefs.flush();
 		}
 		
-		preferred_mode=prefs.getString("MODE");
-		preferred_topic=prefs.getString("TOPIC");
+		if (!prefs.contains("gamespeed")){
+			prefs.putInteger("gamespeed", 100);
+			prefs.flush();
+		}
+		
+		if (!prefs.contains("gridtype")){
+			prefs.putString("gridtype", "default");
+			prefs.flush();
+		}
+		
+		if (!prefs.contains("wt_one")){
+			prefs.putString("wt_one", "varyvelo_x");
+			prefs.flush();
+		}
+		if (!prefs.contains("wt_two")){
+			prefs.putString("wt_two", "varyvelo_y");
+			prefs.flush();
+		}
+		
+		GAMESPEED=prefs.getInteger("gamespeed");
+		
+		//preferred_mode=prefs.getString("MODE");
+		//preferred_topic=prefs.getString("TOPIC");
 		
 		
 		selector_r = new Rectangle();
@@ -225,7 +236,7 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(selector_t, selector_r.x, selector_r.y);
 		game.batch.draw(prv_t, selector_prv_r.x, selector_prv_r.y);
 		game.batch.draw(nxt_t, selector_nxt_r.x, selector_nxt_r.y);
-		font.draw(game.batch, ""+MINESPEED, selector_r.x+60, selector_r.y+25);
+		font.draw(game.batch, ""+GAMESPEED, selector_r.x+60, selector_r.y+25);
 		
 		game.batch.draw(contact_t, selector_r.x+160, selector_r.y+20);
 		
@@ -237,28 +248,32 @@ public class MainMenuScreen implements Screen {
 		if ((!ANDROID&&Gdx.input.justTouched())||(ANDROID&&wastouched&&!Gdx.input.isTouched())) {
 			
 			if (!are_instructions_visible){
-				if (selector_prv_r.contains(tp_x, tp_y) && MINESPEED>50){
-					MINESPEED-=5;
+				if (selector_prv_r.contains(tp_x, tp_y) && GAMESPEED>50){
+					GAMESPEED-=5;
+					prefs.putInteger("gamespeed", GAMESPEED);
+					prefs.flush();
 					arrowsound.play();
 				}
-				if (selector_nxt_r.contains(tp_x, tp_y) && MINESPEED<200){
-					MINESPEED+=5;
+				if (selector_nxt_r.contains(tp_x, tp_y) && GAMESPEED<200){
+					GAMESPEED+=5;
+					prefs.putInteger("gamespeed", GAMESPEED);
+					prefs.flush();
 					arrowsound.play();
 				}
 				
 				if (CAMPAIGN_r.contains(tp_x,tp_y)){
-					game.setScreen(new GameScreen_2(game, MINESPEED, "Default", prefs.getString("TOPIC"), prefs.getString("MODE"), false, true, ANDROID));
+					game.setScreen(new GameScreen_2(game, prefs.getString("TOPIC"), prefs.getString("MODE"), true, ANDROID));
 					//game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", false, true));
 					//NOTE THE PROBLEM IS THAT I'M NOT USING ".equals()" IN GS2
 				}
 				
 				if (LEVELS_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "NONE", MINESPEED,  false, ANDROID));
+		            game.setScreen(new LevelSelectScreen(game, "NONE", ANDROID));
 		            dispose();
 				}
 				if (!ANDROID){
 					if (LIBRARY_r.contains(tp_x,tp_y)){
-			            game.setScreen(new LibraryScreen(game, MINESPEED));
+			            game.setScreen(new LibraryScreen(game, GAMESPEED));
 			            dispose();
 					}
 				}

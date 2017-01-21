@@ -22,7 +22,7 @@ public class PointDef extends Game {
 		batch = new SpriteBatch();
 		// Use LibGDX's default Arial font.
 		font = new BitmapFont();
-		this.setScreen(new MainMenuScreen(this, 100, is_android_on, false));
+		this.setScreen(new MainMenuScreen(this, is_android_on, false));
 	}
 
 	public void render() {
