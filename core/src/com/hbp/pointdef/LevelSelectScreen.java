@@ -412,7 +412,7 @@ public class LevelSelectScreen implements Screen {
 	            dispose();
 			}
 			if (options_r.contains(tp_x, tp_y)){
-				
+				game.setScreen(new OptionsScreen(game, TOPIC, ANDROID));
 			}
 			if (TOPIC=="NONE"){
 				if (one_r.contains(tp_x,tp_y)){

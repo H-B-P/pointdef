@@ -303,6 +303,12 @@ public class GameScreen_2 implements Screen {
 		   WT_ONE=prefs.getString("wt_one");
 		   WT_TWO=prefs.getString("wt_two");
 		   GRIDTYPE=prefs.getString("gridtype");
+		   System.out.println("aaaaaaaaaaaa");
+		   System.out.println(WT_ONE);
+		   System.out.println(WT_TWO);
+		   System.out.println(GRIDTYPE);
+		   System.out.println("aaaaaaaaaaaa");
+		   
 	   }
 	   ANDROID=android;
 	   
@@ -536,16 +542,16 @@ public class GameScreen_2 implements Screen {
 //    	  UNIT_LENGTH_IN_PIXELS=40;
 //      }
       
-      if (GRIDTYPE=="fine"){
+      if (GRIDTYPE.equals("fine")){
     	  UNIT_LENGTH_IN_PIXELS=40;
       }
-      if (GRIDTYPE=="coarse"){
+      if (GRIDTYPE.equals("coarse")){
     	  UNIT_LENGTH_IN_PIXELS=80;
       }
-      if (GRIDTYPE=="very coarse"){
+      if (GRIDTYPE.equals("very coarse")){
     	  UNIT_LENGTH_IN_PIXELS=120;
       }
-      if (GRIDTYPE=="default"){
+      if (GRIDTYPE.equals("default")){
     	  if (MODE.equals("power")){
     		  UNIT_LENGTH_IN_PIXELS=80;
     	  }
@@ -553,8 +559,12 @@ public class GameScreen_2 implements Screen {
     		  UNIT_LENGTH_IN_PIXELS=40;
     	  }
       }
+      else{
+    	  UNIT_LENGTH_IN_PIXELS=80;
+    	  System.out.println("Something is wrong: Gridtype is missing?");
+      }
       
-      //UNIT_LENGTH_IN_PIXELS=80;
+      
       
       //--Set up presentation--
       spawnShield(1);
