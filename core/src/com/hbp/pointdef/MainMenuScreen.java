@@ -86,7 +86,10 @@ public class MainMenuScreen implements Screen {
 			prefs.putInteger("gamespeed", 100);
 			prefs.flush();
 		}
-		
+		if (!prefs.contains("waveno")){
+			prefs.putInteger("waveno", 4);
+			prefs.flush();
+		}
 		if (!prefs.contains("gridtype")){
 			prefs.putString("gridtype", "default");
 			prefs.flush();
@@ -98,6 +101,10 @@ public class MainMenuScreen implements Screen {
 		}
 		if (!prefs.contains("wt_two")){
 			prefs.putString("wt_two", "varyvelo_y");
+			prefs.flush();
+		}
+		if (!prefs.contains("genre")){
+			prefs.putString("genre", "standard");
 			prefs.flush();
 		}
 		
@@ -174,7 +181,6 @@ public class MainMenuScreen implements Screen {
 		
 		
 		font = new BitmapFont();
-		
 		
 		
 		camera = new OrthographicCamera();
@@ -273,7 +279,7 @@ public class MainMenuScreen implements Screen {
 				}
 				if (!ANDROID){
 					if (LIBRARY_r.contains(tp_x,tp_y)){
-			            game.setScreen(new LibraryScreen(game, GAMESPEED));
+			            game.setScreen(new LibraryScreen(game));
 			            dispose();
 					}
 				}

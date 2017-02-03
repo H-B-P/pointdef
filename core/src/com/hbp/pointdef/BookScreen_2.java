@@ -534,7 +534,7 @@ public class BookScreen_2 implements Screen {
 				first_timestep=true;
 			}
 			else if (menu_button_r.contains(tp_x,480-tp_y) && pageno<(total_pages)){
-				game.setScreen(new LibraryScreen(game, MINESPEED));
+				game.setScreen(new LibraryScreen(game));
 				dispose();
 			}
 			

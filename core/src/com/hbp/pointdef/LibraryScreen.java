@@ -37,9 +37,7 @@ public class LibraryScreen implements Screen {
 	
 	private Sound hellosound;
 	
-	public LibraryScreen(final PointDef gam, int minespeed) {
-		
-		MINESPEED=minespeed;
+	public LibraryScreen(final PointDef gam) {
 		
 		B1_r = new Rectangle();
 		B1_r.x=90;
