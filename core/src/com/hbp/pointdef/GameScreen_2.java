@@ -222,7 +222,6 @@ public class GameScreen_2 implements Screen {
    private String WT_TWO;
    private int GAMESPEED;
    private int GAMESPEED_ORI;
-   private int SCALE;
    private boolean ENDLESS;
    
    private boolean CAMPAIGN;
@@ -230,7 +229,7 @@ public class GameScreen_2 implements Screen {
    
    private String GRIDTYPE;
    
-   private String VISIBILITY;
+   private String GENRE;
    
 //---miscellaneous other things---
    
@@ -297,7 +296,7 @@ public class GameScreen_2 implements Screen {
 	   WT_ONE="varyvelo_y";
 	   WT_TWO="varyvelo_x";
 	   GRIDTYPE="default";
-	   VISIBILITY="standard";
+	   GENRE="standard";
 	   
 	   if (!campaign){
 		   WT_ONE=prefs.getString("wt_one");
@@ -317,8 +316,6 @@ public class GameScreen_2 implements Screen {
 	   
 	   //--Perform tautological actions--
 	   this.game = gam;
-      
-	   SCALE=4;
 	   //ENDLESS=endless;
       MODE=mode;
       TOPIC=topic;
@@ -391,22 +388,7 @@ public class GameScreen_2 implements Screen {
    	  
       ship_t_plural = new Texture[10];
       
-      //Load in the background du jour.
       
-      if (TOPIC.equals("POLAR")){
-    	  if (SCALE==2){
-    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v5.png"));
-    	  }
-    	  else if (SCALE==4){
-    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v3.png"));
-    	  }
-      }
-      else if (SCALE==2){
-    	  grid_t = new Texture(Gdx.files.internal("grid_t_halves_2.png"));
-      }
-      else{
-    	  grid_t = new Texture(Gdx.files.internal("grid_t.png"));
-      }
       
       
       
@@ -564,7 +546,22 @@ public class GameScreen_2 implements Screen {
     	  System.out.println("Something is wrong: Gridtype is missing?");
       }
       
+      //Load in the background du jour.
       
+      if (TOPIC.equals("POLAR")){
+    	  if (UNIT_LENGTH_IN_PIXELS==80){
+    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v5.png"));
+    	  }
+    	  else if (UNIT_LENGTH_IN_PIXELS==40){
+    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v3.png"));
+    	  }
+      }
+      else if (UNIT_LENGTH_IN_PIXELS==80){
+    	  grid_t = new Texture(Gdx.files.internal("grid_t_halves_2.png"));
+      }
+      else{
+    	  grid_t = new Texture(Gdx.files.internal("grid_t.png"));
+      }
       
       //--Set up presentation--
       spawnShield(1);
@@ -891,7 +888,7 @@ public class GameScreen_2 implements Screen {
 			   cartesian_a=0;
 			   cartesian_b=0;
 		   }else{
-			   if (SCALE<4){
+			   if (UNIT_LENGTH_IN_PIXELS<40){
 				   if (seconds%100==50){
 					   cartesian_a=0;
 					   cartesian_b=MathUtils.random(1,2);
@@ -901,7 +898,7 @@ public class GameScreen_2 implements Screen {
 					   cartesian_b=-MathUtils.random(1,2);
 				   }
 			   }
-			   if (SCALE==4){
+			   if (UNIT_LENGTH_IN_PIXELS==40){
 				   if (seconds==50){
 					   cartesian_a=0;
 					   cartesian_b=plusorminus();
@@ -1014,7 +1011,7 @@ public class GameScreen_2 implements Screen {
 		   }
 	   }
 	   if (MODE.equals("power")){
-		   if (SCALE==1 || SCALE==2){
+		   if (UNIT_LENGTH_IN_PIXELS==120 || UNIT_LENGTH_IN_PIXELS==80){
 			   if (seconds%100==0){
 				   Function_Code="raise";
 				   cartesian_n=(seconds%400)/100+2;
@@ -1040,7 +1037,7 @@ public class GameScreen_2 implements Screen {
 			   polar_a=0;
 			   polar_b=0;
 		   }else{
-			   if (SCALE<4){
+			   if (UNIT_LENGTH_IN_PIXELS>40){
 				   if (seconds%100==50){
 					   polar_b=MathUtils.random(1,2);
 					   polar_a=0;
@@ -1050,7 +1047,7 @@ public class GameScreen_2 implements Screen {
 					   polar_a=0;
 				   }
 			   }
-			   else if (SCALE==4){
+			   else if (UNIT_LENGTH_IN_PIXELS==40){
 				   if (seconds%200==50){
 					   polar_b=MathUtils.random(1,2);
 					   polar_a=0;
@@ -1068,7 +1065,7 @@ public class GameScreen_2 implements Screen {
 					   polar_a=-1;
 				   }
 			   }
-			   else if (SCALE==8){
+			   else if (UNIT_LENGTH_IN_PIXELS==20){
 				   if (seconds%200==50){
 					   polar_b=MathUtils.random(1,2);
 					   polar_a=0;
@@ -1143,7 +1140,7 @@ public class GameScreen_2 implements Screen {
 	   }
 	   
 	   if (MODE.equals("power")){
-		   if (SCALE==1){
+		   if (UNIT_LENGTH_IN_PIXELS==120){
 			   if (seconds%100==0){
 				   Function_Code="raise";
 				   polar_n=(seconds%400)/100+2;
@@ -1153,7 +1150,7 @@ public class GameScreen_2 implements Screen {
 				   polar_n=((seconds%400)-50)/100+2;
 			   }
 		   }
-		   else if (SCALE==2){
+		   else if (UNIT_LENGTH_IN_PIXELS==80){
 			   if (seconds%100==0){
 				   Function_Code="raise";
 				   polar_n=seconds/100+2;
@@ -1401,7 +1398,7 @@ public class GameScreen_2 implements Screen {
 		   
 	   }
 	   if (MODE.equals("power")){
-		   if (SCALE==1){
+		   if (UNIT_LENGTH_IN_PIXELS==120){
 			   if (seconds%100==0){
 				   Function_Code="raise";
 				   argand_n=seconds/100+2;
@@ -1411,7 +1408,7 @@ public class GameScreen_2 implements Screen {
 				   argand_n=(seconds-50)/100+2;
 			   }
 		   }
-		   else if (SCALE==2){
+		   else if (UNIT_LENGTH_IN_PIXELS==80){
 			   if (seconds%100==0){
 				   Function_Code="raise";
 				   argand_n=seconds/100+2;
