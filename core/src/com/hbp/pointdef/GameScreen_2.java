@@ -87,6 +87,7 @@ public class GameScreen_2 implements Screen {
 	private Texture dot_b;
 	private Texture dot_c;
 	private Texture dot_p;
+	private Texture dot_pi;
 	private Texture dot_y;
 	private Texture dot_w;
 	private Texture dot_g;
@@ -351,6 +352,7 @@ public class GameScreen_2 implements Screen {
 		dot_c= new Texture(Gdx.files.internal("dots/dot_cyan.png"));
 		dot_y= new Texture(Gdx.files.internal("dots/dot_yellow.png"));
 		dot_p= new Texture(Gdx.files.internal("dots/dot_purple.png"));
+		dot_pi= new Texture(Gdx.files.internal("dots/dot_pink.png"));
 		dot_w= new Texture(Gdx.files.internal("dots/dot_white.png"));
 		dot_g= new Texture(Gdx.files.internal("dots/dot_green.png"));
 		if (ANDROID){
@@ -362,6 +364,7 @@ public class GameScreen_2 implements Screen {
 			dot_g= new Texture(Gdx.files.internal("dots/dot_green_and.png"));
 			
 			dot_p= new Texture(Gdx.files.internal("dots/dot_purple_and.png"));
+			dot_pi= new Texture(Gdx.files.internal("dots/dot_pink_and.png"));
 		}
 		
 
@@ -369,6 +372,8 @@ public class GameScreen_2 implements Screen {
       if(TOPIC.equals("CARTESIAN")){standard_dot_t = dot_y;}
       else if (TOPIC.equals("POLAR")){standard_dot_t = dot_g;}
       else if (TOPIC.equals("POWERS")){standard_dot_t = dot_p;}
+      else if (TOPIC.equals("MISC")){standard_dot_t = dot_p;}
+      else if (TOPIC.equals("SINES")){standard_dot_t = dot_pi;}
       else if (TOPIC.equals("MATRIX")){standard_dot_t = dot_r;}
       else if (TOPIC.equals("ARGAND")){standard_dot_t = dot_c;}
       else{
@@ -549,20 +554,27 @@ public class GameScreen_2 implements Screen {
       //Load in the background du jour.
       
       if (TOPIC.equals("POLAR")){
+    	  if (UNIT_LENGTH_IN_PIXELS==120){
+    		  grid_t = new Texture(Gdx.files.internal("grid_t_polar_v_coarse.png"));
+    	  }
     	  if (UNIT_LENGTH_IN_PIXELS==80){
-    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v5.png"));
+    		  grid_t = new Texture(Gdx.files.internal("grid_t_polar_coarse.png"));
     	  }
-    	  else if (UNIT_LENGTH_IN_PIXELS==40){
-    		  grid_t = new Texture(Gdx.files.internal("grid_polar_v3.png"));
+    	  else{
+    		  grid_t = new Texture(Gdx.files.internal("grid_t_polar_fine.png"));
     	  }
       }
-      else if (UNIT_LENGTH_IN_PIXELS==80){
-    	  grid_t = new Texture(Gdx.files.internal("grid_t_halves_2.png"));
+      else{ 
+    	  if (UNIT_LENGTH_IN_PIXELS==120){
+	    	  grid_t = new Texture(Gdx.files.internal("grid_t_v_coarse.png"));
+	      }
+    	  if (UNIT_LENGTH_IN_PIXELS==80){
+	    	  grid_t = new Texture(Gdx.files.internal("grid_t_coarse.png"));
+	      }
+	      else{
+	    	  grid_t = new Texture(Gdx.files.internal("grid_t_fine.png"));
+	      }
       }
-      else{
-    	  grid_t = new Texture(Gdx.files.internal("grid_t.png"));
-      }
-      
       //--Set up presentation--
       spawnShield(1);
       //spawnShield(2);
@@ -2401,10 +2413,10 @@ private void spawnMineVaryVeloY(int xposn, int vel){
 }
 
 private void spawnMineLine(){
-	spawnMine_queueable(-3, 0, 70);
-	spawnMine_queueable(-1, 0, 70);
-	spawnMine_queueable(1, 0, 70);
-	spawnMine_queueable(3, 0, 70);
+	spawnMine_queueable(-3, 0, 50);
+	spawnMine_queueable(-1, 0, 50);
+	spawnMine_queueable(1, 0, 50);
+	spawnMine_queueable(3, 0, 50);
 }
 
 
@@ -2424,7 +2436,7 @@ private void spawnFastSoloMine(){
 }
 
 private void spawnMineSquare_four(){
-	int m_sp=85;
+	int m_sp=80;
 	int disjunc=MathUtils.random(-2,2);
 	spawnMine_queueable(disjunc-1, 0, m_sp);
 	spawnMine_queueable(disjunc+1, 0, m_sp);

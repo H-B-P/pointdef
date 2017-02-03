@@ -153,12 +153,12 @@ public class LevelSelectScreen implements Screen {
 			score_five=0;
 			
 			one_t = new Texture(Gdx.files.internal("angle_button.png"));
-			two_t = new Texture(Gdx.files.internal("angle_button.png"));
+			two_t = new Texture(Gdx.files.internal("abutton_add.png"));
 			three_t = new Texture(Gdx.files.internal("angle_button.png"));
-			four_t = new Texture(Gdx.files.internal("angle_button.png"));
+			four_t = new Texture(Gdx.files.internal("abutton_multiply.png"));
 			five_t = new Texture(Gdx.files.internal("angle_button.png"));
 			
-			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
+			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_purple.png"));
 
 		}
 		if (TOPIC=="SINES"){
@@ -174,7 +174,7 @@ public class LevelSelectScreen implements Screen {
 			four_t = new Texture(Gdx.files.internal("angle_button.png"));
 			five_t = new Texture(Gdx.files.internal("angle_button.png"));
 			
-			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
+			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_pink.png"));
 
 		}
 		if (TOPIC=="MATRIX"){
