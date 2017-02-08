@@ -152,11 +152,11 @@ public class LevelSelectScreen implements Screen {
 			score_four=0;
 			score_five=0;
 			
-			one_t = new Texture(Gdx.files.internal("angle_button.png"));
+			one_t = new Texture(Gdx.files.internal("abutton_discrete.png"));
 			two_t = new Texture(Gdx.files.internal("abutton_add.png"));
-			three_t = new Texture(Gdx.files.internal("angle_button.png"));
+			three_t = new Texture(Gdx.files.internal("abutton_exponent.png"));
 			four_t = new Texture(Gdx.files.internal("abutton_multiply.png"));
-			five_t = new Texture(Gdx.files.internal("angle_button.png"));
+			five_t = new Texture(Gdx.files.internal("abutton_invert.png"));
 			
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_purple.png"));
 
@@ -169,10 +169,10 @@ public class LevelSelectScreen implements Screen {
 			score_five=0;
 			
 			one_t = new Texture(Gdx.files.internal("abutton_add.png"));
-			two_t = new Texture(Gdx.files.internal("angle_button.png"));
+			two_t = new Texture(Gdx.files.internal("abutton_square.png"));
 			three_t = new Texture(Gdx.files.internal("abutton_multiply.png"));
-			four_t = new Texture(Gdx.files.internal("angle_button.png"));
-			five_t = new Texture(Gdx.files.internal("angle_button.png"));
+			four_t = new Texture(Gdx.files.internal("abutton_invert.png"));
+			five_t = new Texture(Gdx.files.internal("abutton_stretch.png"));
 			
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_pink.png"));
 
