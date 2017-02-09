@@ -223,6 +223,7 @@ public class GameScreen_2 implements Screen {
    private String WT_TWO;
    private int GAMESPEED;
    private int GAMESPEED_ORI;
+   private int WAVENO;
    private boolean ENDLESS;
    
    private boolean CAMPAIGN;
@@ -311,6 +312,8 @@ public class GameScreen_2 implements Screen {
 	   WT_TWO="varyvelo_x";
 	   GRIDTYPE="default";
 	   GENRE="standard";
+		WAVENO=prefs.getInteger("waveno");
+
 	   
 	   if (!campaign){
 		   WT_ONE=prefs.getString("wt_one");
@@ -3892,7 +3895,7 @@ private void spawnRandomMineZigzag(){
     		  }
     		  
     	  }
-    	  if (seconds==204 && !ENDLESS){
+    	  if (seconds==(WAVENO*50+4) && !ENDLESS){
     		  
     		  if(score>prefs_score){
     			  

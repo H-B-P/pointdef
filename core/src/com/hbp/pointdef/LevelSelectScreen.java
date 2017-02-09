@@ -146,11 +146,11 @@ public class LevelSelectScreen implements Screen {
 
 		}
 		if (TOPIC=="MISC"){
-			score_one=0;
-			score_two=0;
-			score_three=0;
-			score_four=0;
-			score_five=0;
+			score_one=prefs.getInteger("score_MISC_discrete");
+			score_two=prefs.getInteger("score_MISC_add");
+			score_three=prefs.getInteger("score_MISC_exponent");
+			score_four=prefs.getInteger("score_MISC_multiply");
+			score_five=prefs.getInteger("score_MISC_invert");
 			
 			one_t = new Texture(Gdx.files.internal("abutton_discrete.png"));
 			two_t = new Texture(Gdx.files.internal("abutton_add.png"));
@@ -162,11 +162,11 @@ public class LevelSelectScreen implements Screen {
 
 		}
 		if (TOPIC=="SINES"){
-			score_one=0;
-			score_two=0;
-			score_three=0;
-			score_four=0;
-			score_five=0;
+			score_one=prefs.getInteger("score_SINES_add");
+			score_two=prefs.getInteger("score_SINES_square");
+			score_three=prefs.getInteger("score_SINES_multiply");
+			score_four=prefs.getInteger("score_SINES_invert");
+			score_five=prefs.getInteger("score_SINES_stretch");
 			
 			one_t = new Texture(Gdx.files.internal("abutton_add.png"));
 			two_t = new Texture(Gdx.files.internal("abutton_square.png"));
