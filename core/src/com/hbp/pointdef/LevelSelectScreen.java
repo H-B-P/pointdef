@@ -65,7 +65,11 @@ public class LevelSelectScreen implements Screen {
 	private float tp_x;
 	private float tp_y;
 	
+	private Texture META_TRIM_t;
 	private Texture TRIM_t;
+	private Texture PRV_TRIM_t;
+	private Texture NXT_TRIM_t;
+	
 	
 	private Rectangle selector_r;
 	private Rectangle selector_prv_r;
@@ -103,6 +107,11 @@ public class LevelSelectScreen implements Screen {
 		ANDROID=android;
 		
 		prefs = Gdx.app.getPreferences("galen_preferences");
+		
+		META_TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
+		
+		PRV_TRIM_t=new Texture(Gdx.files.internal("pobutton_left_trim.png"));
+		NXT_TRIM_t=new Texture(Gdx.files.internal("pobutton_right_trim.png"));
 		
 		if (TOPIC=="NONE"){
 			score_two=prefs.getInteger("score_NONE_basic");
@@ -235,14 +244,14 @@ public class LevelSelectScreen implements Screen {
 		menu_r.y=410;
 		menu_r.height=60;
 		menu_r.width=140;
-		menu_t = new Texture(Gdx.files.internal("button_menu_rect.png"));
+		menu_t = new Texture(Gdx.files.internal("abutton_menu.png"));
 		
 		options_r = new Rectangle();
 		options_r.x=170;
 		options_r.y=410;
 		options_r.height=60;
 		options_r.width=140;
-		options_t = new Texture(Gdx.files.internal("button_options_rect.png"));
+		options_t = new Texture(Gdx.files.internal("abutton_options.png"));
 		
 		abutton_corner_t=new Texture(Gdx.files.internal("abutton_corner.png"));
 		abutton_corner_trim_t=new Texture(Gdx.files.internal("abutton_corner_trim.png"));
@@ -253,8 +262,27 @@ public class LevelSelectScreen implements Screen {
 		banner_r.height=60;
 		banner_r.width=140;
 		
-		banner_t=new Texture(Gdx.files.internal("button_blank.png"));
-		
+		if (TOPIC.equals("CARTESIAN")){
+			banner_t=new Texture(Gdx.files.internal("banner_cartesian.png"));
+		}
+		else if (TOPIC.equals("POLAR")){
+			banner_t=new Texture(Gdx.files.internal("banner_polar.png"));
+		}
+		else if (TOPIC.equals("MISC")){
+			banner_t=new Texture(Gdx.files.internal("banner_misc.png"));
+		}
+		else if (TOPIC.equals("SINES")){
+			banner_t=new Texture(Gdx.files.internal("banner_sines.png"));
+		}
+		else if (TOPIC.equals("MATRIX")){
+			banner_t=new Texture(Gdx.files.internal("banner_matrix.png"));
+		}
+		else if (TOPIC.equals("ARGAND")){
+			banner_t=new Texture(Gdx.files.internal("banner_argand.png"));
+		}
+		else{
+			banner_t=new Texture(Gdx.files.internal("button_blank.png"));
+		}
 		one_r = new Rectangle();
 		one_r.x=10;
 		one_r.y=240;
@@ -362,21 +390,6 @@ public class LevelSelectScreen implements Screen {
 				font.draw(game.batch, ((Integer)score_two).toString(), two_r.x+220, two_r.y+35);
 	    }
 	    
-	    game.batch.draw(menu_t, menu_r.x,menu_r.y);
-	    game.batch.draw(options_t, options_r.x,options_r.y);
-	    
-	    if (menu_r.contains(tp_x,tp_y)){
-			//game.batch.draw(abutton_corner_trim_t, menu_r.x, menu_r.y);
-		}
-	    if (options_r.contains(tp_x,tp_y)){
-			//game.batch.draw(abutton_corner_trim_t, options_r.x, options_r.y);
-		}
-	    
-		game.batch.draw(prv_t, prv_r.x, prv_r.y);
-		game.batch.draw(banner_t, banner_r.x, banner_r.y);
-		game.batch.draw(nxt_t, nxt_r.x, nxt_r.y);
-		
-		//font.draw(game.batch, ""+MINESPEED, selector_r.x+60, selector_r.y+25);
 		if (one_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, one_r.x, one_r.y);
 		}
@@ -384,6 +397,28 @@ public class LevelSelectScreen implements Screen {
 		if (two_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, two_r.x, two_r.y);
 		}
+	    
+	    game.batch.draw(menu_t, menu_r.x,menu_r.y);
+	    game.batch.draw(options_t, options_r.x,options_r.y);
+	    
+	    if (menu_r.contains(tp_x,tp_y)){
+			game.batch.draw(META_TRIM_t, menu_r.x, menu_r.y);
+		}
+	    if (options_r.contains(tp_x,tp_y)){
+			game.batch.draw(META_TRIM_t, options_r.x, options_r.y);
+		}
+	    
+		game.batch.draw(prv_t, prv_r.x, prv_r.y);
+		game.batch.draw(banner_t, banner_r.x, banner_r.y);
+		game.batch.draw(nxt_t, nxt_r.x, nxt_r.y);
+		
+		if (prv_r.contains(tp_x,tp_y)){
+			game.batch.draw(PRV_TRIM_t, prv_r.x, prv_r.y);
+		}
+	    if (nxt_r.contains(tp_x,tp_y)){
+			game.batch.draw(NXT_TRIM_t, nxt_r.x, nxt_r.y);
+		}
+		
 		if (TOPIC!="NONE"){
 			if (three_r.contains(tp_x,tp_y)){
 				game.batch.draw(TRIM_t, three_r.x, three_r.y);
@@ -395,6 +430,7 @@ public class LevelSelectScreen implements Screen {
 				game.batch.draw(TRIM_t, five_r.x, five_r.y);
 			}
 		}
+		
 		game.batch.end();
 
 		if ((!ANDROID&&Gdx.input.justTouched())||(ANDROID&&wastouched&&!Gdx.input.isTouched())) {

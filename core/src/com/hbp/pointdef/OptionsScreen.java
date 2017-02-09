@@ -287,9 +287,9 @@ public class OptionsScreen implements Screen {
 		if (wt.equals("sawtooth")){
 			return "squarewave";
 		}
-		if (wt.equals("squarewave")){
-			return "finale";
-		}
+//		if (wt.equals("squarewave")){
+//			return "finale";
+//		}
 		return wt;
 	}
 	

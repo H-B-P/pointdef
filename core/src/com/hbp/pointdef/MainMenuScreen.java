@@ -122,7 +122,7 @@ public class MainMenuScreen implements Screen {
 		selector_r.y=390;
 		selector_r.height=80;
 		selector_r.width=140;
-		selector_t = new Texture(Gdx.files.internal("selector_minespeed.png"));
+		selector_t = new Texture(Gdx.files.internal("selector_speed.png"));
 		
 		nxt_t = new Texture(Gdx.files.internal("fwd_but.png"));
 		prv_t = new Texture(Gdx.files.internal("bak_but.png"));
