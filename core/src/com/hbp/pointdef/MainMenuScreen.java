@@ -30,6 +30,9 @@ public class MainMenuScreen implements Screen {
 	private Rectangle CAMPAIGN_r;
 	private Texture CAMPAIGN_t;
 	
+	private Rectangle TUTORIAL_r;
+	private Texture TUTORIAL_t;
+	
 	private Rectangle LEVELS_r;
 	private Texture LEVELS_t;
 	
@@ -140,38 +143,45 @@ public class MainMenuScreen implements Screen {
 		
 		
 		
-		CAMPAIGN_r = new Rectangle();
-		CAMPAIGN_r.x=60;
-		CAMPAIGN_r.y=260;
-		CAMPAIGN_r.height=60;
-		CAMPAIGN_r.width=200;
-		CAMPAIGN_t = new Texture(Gdx.files.internal("abutton_long_campaign.png"));
+//		CAMPAIGN_r = new Rectangle();
+//		CAMPAIGN_r.x=60;
+//		CAMPAIGN_r.y=260;
+//		CAMPAIGN_r.height=60;
+//		CAMPAIGN_r.width=200;
+//		CAMPAIGN_t = new Texture(Gdx.files.internal("abutton_long_campaign.png"));
 		
-		if (!ANDROID){
-		
-			LIBRARY_r = new Rectangle();
-			LIBRARY_r.x=60;
-			LIBRARY_r.y=160;
-			LIBRARY_r.height=60;
-			LIBRARY_r.width=200;
-			LIBRARY_t = new Texture(Gdx.files.internal("abutton_long_library.png"));
-			
-			
-			LEVELS_r = new Rectangle();
-			LEVELS_r.x=60;
-			LEVELS_r.y=60;
-			LEVELS_r.height=60;
-			LEVELS_r.width=200;
-			LEVELS_t = new Texture(Gdx.files.internal("abutton_long_freeplay.png"));
-		}
-		else{
+		TUTORIAL_r = new Rectangle();
+		TUTORIAL_r.x=60;
+		TUTORIAL_r.y=260;
+		TUTORIAL_r.height=60;
+		TUTORIAL_r.width=200;
+		TUTORIAL_t = new Texture(Gdx.files.internal("abutton_long_tutorial.png"));
+//		
+//		if (!ANDROID){
+//		
+//			LIBRARY_r = new Rectangle();
+//			LIBRARY_r.x=60;
+//			LIBRARY_r.y=160;
+//			LIBRARY_r.height=60;
+//			LIBRARY_r.width=200;
+//			LIBRARY_t = new Texture(Gdx.files.internal("abutton_long_library.png"));
+//			
+//			
+//			LEVELS_r = new Rectangle();
+//			LEVELS_r.x=60;
+//			LEVELS_r.y=60;
+//			LEVELS_r.height=60;
+//			LEVELS_r.width=200;
+//			LEVELS_t = new Texture(Gdx.files.internal("abutton_long_freeplay.png"));
+//		}
+//		else{
 			LEVELS_r = new Rectangle();
 			LEVELS_r.x=60;
 			LEVELS_r.y=160;
 			LEVELS_r.height=60;
 			LEVELS_r.width=200;
 			LEVELS_t = new Texture(Gdx.files.internal("abutton_long_freeplay.png"));
-		}
+//		}
 
 		TRIM_t = new Texture(Gdx.files.internal("abutton_long_trim.png"));
 		
@@ -221,24 +231,30 @@ public class MainMenuScreen implements Screen {
 		
 	    font.setColor(Color.BLACK);
 		
-		game.batch.draw(CAMPAIGN_t, CAMPAIGN_r.x, CAMPAIGN_r.y);
+		//game.batch.draw(CAMPAIGN_t, CAMPAIGN_r.x, CAMPAIGN_r.y);
+	    game.batch.draw(TUTORIAL_t, TUTORIAL_r.x, TUTORIAL_r.y);
 		game.batch.draw(LEVELS_t, LEVELS_r.x, LEVELS_r.y);
-		if (!ANDROID){
-			game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
-		}
-		
-		if (CAMPAIGN_r.contains(tp_x,tp_y)){
-			game.batch.draw(TRIM_t, CAMPAIGN_r.x, CAMPAIGN_r.y);
-		}
+//		if (!ANDROID){
+//			game.batch.draw(LIBRARY_t, LIBRARY_r.x, LIBRARY_r.y);
+//		}
+//		
+//		if (CAMPAIGN_r.contains(tp_x,tp_y)){
+//			game.batch.draw(TRIM_t, CAMPAIGN_r.x, CAMPAIGN_r.y);
+//		}
 		
 		if (LEVELS_r.contains(tp_x,tp_y)){
 			game.batch.draw(TRIM_t, LEVELS_r.x, LEVELS_r.y);
 		}
-		if (!ANDROID){
-			if (LIBRARY_r.contains(tp_x,tp_y)){
-				game.batch.draw(TRIM_t, LIBRARY_r.x, LIBRARY_r.y);
-			}
+		
+		if (TUTORIAL_r.contains(tp_x,tp_y)){
+			game.batch.draw(TRIM_t, TUTORIAL_r.x, TUTORIAL_r.y);
 		}
+		
+//		if (!ANDROID){
+//			if (LIBRARY_r.contains(tp_x,tp_y)){
+//				game.batch.draw(TRIM_t, LIBRARY_r.x, LIBRARY_r.y);
+//			}
+//		}
 		game.batch.draw(selector_t, selector_r.x, selector_r.y);
 		game.batch.draw(prv_t, selector_prv_r.x, selector_prv_r.y);
 		game.batch.draw(nxt_t, selector_nxt_r.x, selector_nxt_r.y);
@@ -266,23 +282,27 @@ public class MainMenuScreen implements Screen {
 					prefs.flush();
 					arrowsound.play();
 				}
+//				
+//				if (CAMPAIGN_r.contains(tp_x,tp_y)){
+//					game.setScreen(new GameScreen_2(game, prefs.getString("TOPIC"), prefs.getString("MODE"), true, ANDROID));
+//					//game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", false, true));
+//					//NOTE THE PROBLEM IS THAT I'M NOT USING ".equals()" IN GS2
+//				}
 				
-				if (CAMPAIGN_r.contains(tp_x,tp_y)){
-					game.setScreen(new GameScreen_2(game, prefs.getString("TOPIC"), prefs.getString("MODE"), true, ANDROID));
-					//game.setScreen(new GameScreen_2(game, MINESPEED, "NONE", "intro", false, true));
-					//NOTE THE PROBLEM IS THAT I'M NOT USING ".equals()" IN GS2
+				if (TUTORIAL_r.contains(tp_x,tp_y)){
+		            game.setScreen(new GameScreen_2(game, "NONE", "intro", false, ANDROID));
 				}
 				
 				if (LEVELS_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "NONE", ANDROID));
+		            game.setScreen(new LevelSelectScreen(game, "CARTESIAN", ANDROID));
 		            dispose();
 				}
-				if (!ANDROID){
-					if (LIBRARY_r.contains(tp_x,tp_y)){
-			            game.setScreen(new LibraryScreen(game));
-			            dispose();
-					}
-				}
+//				if (!ANDROID){
+//					if (LIBRARY_r.contains(tp_x,tp_y)){
+//			            game.setScreen(new LibraryScreen(game));
+//			            dispose();
+//					}
+//				}
 			}
 		}
 		
@@ -335,11 +355,11 @@ public class MainMenuScreen implements Screen {
 		
 		prv_t.dispose();	
 		
-		CAMPAIGN_t.dispose();
+		//CAMPAIGN_t.dispose();
 
 		LEVELS_t.dispose();
 		
-		if(!ANDROID){LIBRARY_t.dispose();}
+		//if(!ANDROID){LIBRARY_t.dispose();}
 		
 		TRIM_t.dispose();
 		

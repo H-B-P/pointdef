@@ -509,7 +509,7 @@ public class LevelSelectScreen implements Screen {
 		            dispose();
 				}
 				if (three_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "MISC", "reciprocal", false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, "MISC", "exponent", false, ANDROID));
 		            dispose();
 				}
 				if (four_r.contains(tp_x,tp_y)){
@@ -517,7 +517,7 @@ public class LevelSelectScreen implements Screen {
 		            dispose();
 				}
 				if (five_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "MISC", "exponent", false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, "MISC", "invert", false, ANDROID));
 		            dispose();
 				}
 				if (prv_r.contains(tp_x,tp_y)){

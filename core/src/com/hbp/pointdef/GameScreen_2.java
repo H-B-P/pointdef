@@ -583,6 +583,8 @@ public class GameScreen_2 implements Screen {
       //Load in the background du jour.
       
       if (TOPIC.equals("POLAR")){
+    	  grid.x=-160;
+    	  grid.y=-240;
     	  if (UNIT_LENGTH_IN_PIXELS==120){
     		  grid_t = new Texture(Gdx.files.internal("grid_t_polar_v_coarse.png"));
     	  }
@@ -594,6 +596,8 @@ public class GameScreen_2 implements Screen {
     	  }
       }
       else{ 
+    	  grid.x=0;
+    	  grid.y=0;
     	  if (UNIT_LENGTH_IN_PIXELS==120){
 	    	  grid_t = new Texture(Gdx.files.internal("grid_t_v_coarse.png"));
 	      }
