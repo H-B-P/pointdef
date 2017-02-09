@@ -101,11 +101,11 @@ public class MainMenuScreen implements Screen {
 		}
 		
 		if (!prefs.contains("wt_one")){
-			prefs.putString("wt_one", "varyvelo_x");
+			prefs.putString("wt_one", "many");
 			prefs.flush();
 		}
 		if (!prefs.contains("wt_two")){
-			prefs.putString("wt_two", "varyvelo_y");
+			prefs.putString("wt_two", "many");
 			prefs.flush();
 		}
 		if (!prefs.contains("genre")){

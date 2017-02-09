@@ -2904,7 +2904,7 @@ private void spawnRandomMineZigzag(){
  		 dotfunction_font.setColor(Color.BLACK);
  	   }
 	   if (seconds>=ts+20 && seconds<ts+40){
-	 		  if((seconds-ts)%7 == 0){
+	 		  if((seconds-ts-20)%7 == 0){
 	 			  if (plusorminus()>0){
 	 				  spawnMineQueue(4);
 	 			  }
@@ -2912,7 +2912,7 @@ private void spawnRandomMineZigzag(){
 	 				  spawnMineLine();
 	 			  }
 	 		  }
-	 		  if ((seconds-ts)%7 == 5){
+	 		  if ((seconds-ts-20)%7 == 5){
 	 			  spawnFastSoloMine();
 	 		  }
 	   }
@@ -2925,9 +2925,9 @@ private void spawnRandomMineZigzag(){
 	 		 if((seconds-ts)%10 == 0) spawnMineSquare_four();
 	 		 dotfunction_font.setColor(Color.BLACK);
 	 	   }
-		   if (seconds>=ts+20 && seconds<ts+39){
-			   if((seconds-ts)%7 == 5) spawnFastSoloMine();
-			   if((seconds-ts)%7 == 0) spawnMineSquare_four();
+		   if (seconds>=ts+20 && seconds<ts+40){
+			   if((seconds-ts-20)%7 == 5) spawnFastSoloMine();
+			   if((seconds-ts-20)%7 == 0) spawnMineSquare_four();
 		   }
    }
    
