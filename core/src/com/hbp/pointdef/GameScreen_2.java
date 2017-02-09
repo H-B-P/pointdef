@@ -561,13 +561,15 @@ public class GameScreen_2 implements Screen {
       if (GRIDTYPE.equals("fine")){
     	  UNIT_LENGTH_IN_PIXELS=40;
       }
-      if (GRIDTYPE.equals("coarse")){
+      else if (GRIDTYPE.equals("coarse")){
     	  UNIT_LENGTH_IN_PIXELS=80;
       }
-      if (GRIDTYPE.equals("very coarse")){
+      else if (GRIDTYPE.equals("very_coarse")){
     	  UNIT_LENGTH_IN_PIXELS=120;
+    	  System.out.println("got to here");
+
       }
-      if (GRIDTYPE.equals("default")){
+      else if (GRIDTYPE.equals("default")){
     	  if (MODE.equals("power")){
     		  UNIT_LENGTH_IN_PIXELS=80;
     	  }
@@ -588,7 +590,7 @@ public class GameScreen_2 implements Screen {
     	  if (UNIT_LENGTH_IN_PIXELS==120){
     		  grid_t = new Texture(Gdx.files.internal("grid_t_polar_v_coarse.png"));
     	  }
-    	  if (UNIT_LENGTH_IN_PIXELS==80){
+    	  else if (UNIT_LENGTH_IN_PIXELS==80){
     		  grid_t = new Texture(Gdx.files.internal("grid_t_polar_coarse.png"));
     	  }
     	  else{
@@ -601,7 +603,7 @@ public class GameScreen_2 implements Screen {
     	  if (UNIT_LENGTH_IN_PIXELS==120){
 	    	  grid_t = new Texture(Gdx.files.internal("grid_t_v_coarse.png"));
 	      }
-    	  if (UNIT_LENGTH_IN_PIXELS==80){
+    	  else if (UNIT_LENGTH_IN_PIXELS==80){
 	    	  grid_t = new Texture(Gdx.files.internal("grid_t_coarse.png"));
 	      }
 	      else{
@@ -1187,7 +1189,7 @@ public class GameScreen_2 implements Screen {
 			   }
 			   if (seconds%100==50){
 				   Function_Code="root";
-				   polar_n=((seconds%400)-50)/100+2;
+				   polar_n=((seconds%00)-50)/100+2;
 			   }
 		   }
 		   else if (UNIT_LENGTH_IN_PIXELS==80){
@@ -1202,7 +1204,7 @@ public class GameScreen_2 implements Screen {
 		   }
 		   else{
 			   Function_Code="raise";
-			   polar_n=seconds/50+2;
+			   polar_n=(seconds%150)/50+2;
 		   }
 	   }
    }
@@ -1460,7 +1462,7 @@ public class GameScreen_2 implements Screen {
 		   }
 		   else{
 			   Function_Code="raise";
-			   argand_n=seconds/50+2;
+			   argand_n=(seconds%150)/50+2;
 		   }
 	   }
 	   if (MODE.equals("function")){

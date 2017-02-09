@@ -22,6 +22,9 @@ public class OptionsScreen implements Screen {
 	
 	private BitmapFont font;
 	
+	private Texture BUT_TRIM_t;
+	private Texture TRIM_t;
+	
 	private Texture nxt_t;
 	private Texture prv_t;
 	
@@ -89,6 +92,9 @@ public class OptionsScreen implements Screen {
 		font = new BitmapFont();
 		
 		font.setColor(Color.BLACK);
+		
+		TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
+		BUT_TRIM_t = new Texture(Gdx.files.internal("but_trim.png"));
 		
 		nxt_t = new Texture(Gdx.files.internal("fwd_but.png"));
 		prv_t = new Texture(Gdx.files.internal("bak_but.png"));
@@ -287,6 +293,9 @@ public class OptionsScreen implements Screen {
 		if (wt.equals("sawtooth")){
 			return "squarewave";
 		}
+		if (wt.equals("squarewave")){
+			return "many";
+		}
 //		if (wt.equals("squarewave")){
 //			return "finale";
 //		}
@@ -327,12 +336,54 @@ public class OptionsScreen implements Screen {
 		if (wt.equals("squarewave")){
 			return "sawtooth";
 		}
-		if (wt.equals("finale")){
+		if (wt.equals("many")){
 			return "squarewave";
 		}
+//		if (wt.equals("finale")){
+//			return "squarewave";
+//		}
 		return wt;
 	}
 	
+	private String next_gridtype(String gt){
+		if (gt.equals("default")){
+			return "fine";
+		}
+		if (gt.equals("fine")){
+			return "coarse";
+		}
+		if (gt.equals("coarse")){
+			return "very_coarse";
+		}
+		if (gt.equals("very_coarse")){
+			return "default";
+		}
+		return gt;
+	}
+	
+	private String prev_gridtype(String gt){
+		if (gt.equals("fine")){
+			return "default";
+		}
+		if (gt.equals("coarse")){
+			return "fine";
+		}
+		if (gt.equals("very_coarse")){
+			return "coarse";
+		}
+		if (gt.equals("default")){
+			return "very_coarse";
+		}
+		return gt;
+	}
+	
+	private String next_genre(String gr){
+		return gr;
+	}
+	
+	private String prev_genre(String gr){
+		return gr;
+	}
 	
 	@Override
 	public void render(float delta) {
@@ -361,11 +412,25 @@ public class OptionsScreen implements Screen {
 		
 		font.draw(game.batch, ""+GAMESPEED, speed_sel_r.x+60, speed_sel_r.y+25);
 		
+		if (speed_sel_prv_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, speed_sel_prv_r.x, speed_sel_prv_r.y);
+		}
+		if (speed_sel_nxt_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, speed_sel_nxt_r.x, speed_sel_nxt_r.y);
+		}
+		
 		game.batch.draw(waveno_sel_t, waveno_sel_r.x, waveno_sel_r.y);
 		game.batch.draw(prv_t, waveno_sel_prv_r.x, waveno_sel_prv_r.y);
 		game.batch.draw(nxt_t, waveno_sel_nxt_r.x, waveno_sel_nxt_r.y);
 		
 		font.draw(game.batch, ""+WAVENO, waveno_sel_r.x+65, waveno_sel_r.y+25);
+		
+		if (waveno_sel_prv_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, waveno_sel_prv_r.x, waveno_sel_prv_r.y);
+		}
+		if (waveno_sel_nxt_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, waveno_sel_nxt_r.x, waveno_sel_nxt_r.y);
+		}
 		
 		game.batch.draw(wt_one_sel_t, wt_one_sel_r.x, wt_one_sel_r.y);
 		game.batch.draw(prv_t, wt_one_sel_prv_r.x, wt_one_sel_prv_r.y);
@@ -373,11 +438,25 @@ public class OptionsScreen implements Screen {
 		
 		font.draw(game.batch, ""+WT_ONE, wt_one_sel_r.x+30, wt_one_sel_r.y+25);
 		
+		if (wt_one_sel_prv_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, wt_one_sel_prv_r.x, wt_one_sel_prv_r.y);
+		}
+		if (wt_one_sel_nxt_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, wt_one_sel_nxt_r.x, wt_one_sel_nxt_r.y);
+		}
+		
 		game.batch.draw(wt_two_sel_t, wt_two_sel_r.x, wt_two_sel_r.y);
 		game.batch.draw(prv_t, wt_two_sel_prv_r.x, wt_two_sel_prv_r.y);
 		game.batch.draw(nxt_t, wt_two_sel_nxt_r.x, wt_two_sel_nxt_r.y);
 		
 		font.draw(game.batch, ""+WT_TWO, wt_two_sel_r.x+30, wt_two_sel_r.y+25);
+		
+		if (wt_two_sel_prv_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, wt_two_sel_prv_r.x, wt_two_sel_prv_r.y);
+		}
+		if (wt_two_sel_nxt_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, wt_two_sel_nxt_r.x, wt_two_sel_nxt_r.y);
+		}
 		
 		game.batch.draw(gridtype_sel_t, gridtype_sel_r.x, gridtype_sel_r.y);
 		game.batch.draw(prv_t, gridtype_sel_prv_r.x, gridtype_sel_prv_r.y);
@@ -385,71 +464,111 @@ public class OptionsScreen implements Screen {
 		
 		font.draw(game.batch, ""+GRIDTYPE, gridtype_sel_r.x+30, gridtype_sel_r.y+25);
 		
+		if (gridtype_sel_prv_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, gridtype_sel_prv_r.x, gridtype_sel_prv_r.y);
+		}
+		if (gridtype_sel_nxt_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, gridtype_sel_nxt_r.x, gridtype_sel_nxt_r.y);
+		}
+		
 		game.batch.draw(genre_sel_t, genre_sel_r.x, genre_sel_r.y);
 		game.batch.draw(prv_t, genre_sel_prv_r.x, genre_sel_prv_r.y);
 		game.batch.draw(nxt_t, genre_sel_nxt_r.x, genre_sel_nxt_r.y);
 		
 		font.draw(game.batch, ""+GENRE, genre_sel_r.x+30, genre_sel_r.y+25);
 		
-		game.batch.draw(bonus_box_t, bonus_box_r.x, bonus_box_r.y);
+		if (genre_sel_prv_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, genre_sel_prv_r.x, genre_sel_prv_r.y);
+		}
+		if (genre_sel_nxt_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, genre_sel_nxt_r.x, genre_sel_nxt_r.y);
+		}
+		
+		//game.batch.draw(bonus_box_t, bonus_box_r.x, bonus_box_r.y);
 		
 		game.batch.draw(reset_t, reset_r.x, reset_r.y);
 		
 		game.batch.draw(accept_t, accept_r.x, accept_r.y);
+		
+		if (reset_r.contains(tp_x,tp_y)){
+			game.batch.draw(TRIM_t, reset_r.x, reset_r.y);
+		}
+		
+		if (accept_r.contains(tp_x,tp_y)){
+			game.batch.draw(TRIM_t, accept_r.x, accept_r.y);
+		}
 		
 		game.batch.end();
 		
 		if ((!ANDROID&&Gdx.input.justTouched())||(ANDROID&&wastouched&&!Gdx.input.isTouched())) {
 			if (speed_sel_nxt_r.contains(tp_x, tp_y) && GAMESPEED<200){
 				GAMESPEED+=5;
-				prefs.putInteger("gamespeed", GAMESPEED);
-				prefs.flush();
 				arrowsound.play();
 			}
 			if (speed_sel_prv_r.contains(tp_x, tp_y) && GAMESPEED>50){
 				GAMESPEED-=5;
-				prefs.putInteger("gamespeed", GAMESPEED);
-				prefs.flush();
 				arrowsound.play();
 			}
 			if (waveno_sel_nxt_r.contains(tp_x, tp_y) && WAVENO<8){
 				WAVENO+=1;
-				prefs.putInteger("waveno", WAVENO);
-				prefs.flush();
 				arrowsound.play();
 			}
 			if (waveno_sel_prv_r.contains(tp_x, tp_y) && WAVENO>2){
 				WAVENO-=1;
-				prefs.putInteger("waveno", WAVENO);
-				prefs.flush();
 				arrowsound.play();
 			}
 			if (wt_one_sel_nxt_r.contains(tp_x, tp_y)){
 				WT_ONE=next_wavetype(WT_ONE);
-				prefs.putString("wt_one", WT_ONE);
-				prefs.flush();
 				arrowsound.play();
 			}
 			if (wt_one_sel_prv_r.contains(tp_x, tp_y)){
 				WT_ONE=prev_wavetype(WT_ONE);
-				prefs.putString("wt_one", WT_ONE);
-				prefs.flush();
 				arrowsound.play();
 			}
 			if (wt_two_sel_nxt_r.contains(tp_x, tp_y)){
 				WT_TWO=next_wavetype(WT_TWO);
-				prefs.putString("wt_two", WT_TWO);
-				prefs.flush();
 				arrowsound.play();
 			}
 			if (wt_two_sel_prv_r.contains(tp_x, tp_y)){
 				WT_TWO=prev_wavetype(WT_TWO);
-				prefs.putString("wt_two", WT_TWO);
-				prefs.flush();
+				arrowsound.play();
+			}
+			if (gridtype_sel_nxt_r.contains(tp_x, tp_y)){
+				GRIDTYPE=next_gridtype(GRIDTYPE);
+				arrowsound.play();
+			}
+			if (gridtype_sel_prv_r.contains(tp_x, tp_y)){
+				GRIDTYPE=prev_gridtype(GRIDTYPE);
 				arrowsound.play();
 			}
 			
+			if (genre_sel_nxt_r.contains(tp_x, tp_y)){
+				GENRE=next_gridtype(GENRE);
+				arrowsound.play();
+			}
+			if (genre_sel_prv_r.contains(tp_x, tp_y)){
+				GENRE=prev_gridtype(GENRE);
+				arrowsound.play();
+			}
+			
+			if (reset_r.contains(tp_x,tp_y)){
+				GAMESPEED=100;
+				WAVENO=4;
+				WT_ONE="many";
+				WT_TWO="many";
+				GRIDTYPE="default";
+				GENRE="standard";
+			}
+			
 			if (accept_r.contains(tp_x,tp_y)){
+				prefs.putInteger("gamespeed", GAMESPEED);
+				prefs.putInteger("waveno", WAVENO);
+				prefs.putString("wt_one", WT_ONE);
+				prefs.putString("wt_two", WT_TWO);
+				prefs.putString("genre", GENRE);
+				prefs.putString("gridtype", GRIDTYPE);
+				prefs.flush();
+
 	            game.setScreen(new LevelSelectScreen(game,TOPIC,ANDROID));
 	            dispose();
 			}

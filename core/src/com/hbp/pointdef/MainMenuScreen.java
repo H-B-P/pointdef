@@ -41,6 +41,8 @@ public class MainMenuScreen implements Screen {
 	
 	private Texture TRIM_t;
 	
+	private Texture BUT_TRIM_t;
+	
 	private Texture contact_t;
 	
 	private BitmapFont font;
@@ -184,7 +186,8 @@ public class MainMenuScreen implements Screen {
 //		}
 
 		TRIM_t = new Texture(Gdx.files.internal("abutton_long_trim.png"));
-		
+		BUT_TRIM_t = new Texture(Gdx.files.internal("but_trim.png"));
+
 		contact_t=new Texture(Gdx.files.internal("contact_block.png"));
 		
 		game = gam;
@@ -250,6 +253,8 @@ public class MainMenuScreen implements Screen {
 			game.batch.draw(TRIM_t, TUTORIAL_r.x, TUTORIAL_r.y);
 		}
 		
+		
+		
 //		if (!ANDROID){
 //			if (LIBRARY_r.contains(tp_x,tp_y)){
 //				game.batch.draw(TRIM_t, LIBRARY_r.x, LIBRARY_r.y);
@@ -259,6 +264,13 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(prv_t, selector_prv_r.x, selector_prv_r.y);
 		game.batch.draw(nxt_t, selector_nxt_r.x, selector_nxt_r.y);
 		font.draw(game.batch, ""+GAMESPEED, selector_r.x+60, selector_r.y+25);
+		
+		if (selector_prv_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, selector_prv_r.x, selector_prv_r.y);
+		}
+		if (selector_nxt_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, selector_nxt_r.x, selector_nxt_r.y);
+		}
 		
 		game.batch.draw(contact_t, selector_r.x+160, selector_r.y+20);
 		
