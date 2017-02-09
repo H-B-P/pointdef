@@ -3630,22 +3630,22 @@ private void spawnRandomMineZigzag(){
       }
       if (TOPIC.equals("SINES")){
     	  if (MODE.equals("add")){
-			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, line_one_y);
+			  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x), 30, line_one_y+10);
     		  if (Function_Code.equals("sin")){
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "+sin("+double_formatted(mouse_posn_x)+")", 30, line_two_y);
+        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "+sin("+double_formatted(mouse_posn_x)+")", 30, line_two_y+10);
     		  
     		  }
     		  if (Function_Code.equals("cos")){
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "+cos("+double_formatted(mouse_posn_x)+")", 30, line_two_y);
+        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "+cos("+double_formatted(mouse_posn_x)+")", 30, line_two_y+10);
 
     		  }
     		  if (Function_Code.equals("sin_plus_cos")){
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "+sin("+double_formatted(mouse_posn_x)+") + cos("+double_formatted(mouse_posn_x)+")", 30, line_two_y);
-
+        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "+sin("+double_formatted(mouse_posn_x)+")", 30, line_two_y+10);
+        		  dotfunction_font.draw(batch, "+ cos("+double_formatted(mouse_posn_x)+")", 30, line_two_y-10);
     		  }
     		  if (Function_Code.equals("sin_take_cos")){
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "+sin("+double_formatted(mouse_posn_x)+") - cos("+double_formatted(mouse_posn_x)+")", 30, line_two_y);
-
+        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "+sin("+double_formatted(mouse_posn_x)+")", 30, line_two_y+10);
+        		  dotfunction_font.draw(batch, "- cos("+double_formatted(mouse_posn_x)+")", 30, line_two_y-10);
     		  }
     	  }
     	  if (MODE.equals("square")){
@@ -3681,31 +3681,31 @@ private void spawnRandomMineZigzag(){
 
     		  }
     		  if (Function_Code.equals("minus_sin")){
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "*-sin("+double_formatted(mouse_posn_x)+")", 30, line_two_y);
+        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "*(-sin("+double_formatted(mouse_posn_x)+"))", 30, line_two_y);
     		  
     		  }
     		  if (Function_Code.equals("minus_cos")){
-        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "*-cos("+double_formatted(mouse_posn_x)+")", 30, line_two_y);
+        		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y)+ "*(-cos("+double_formatted(mouse_posn_x)+"))", 30, line_two_y);
 
     		  }
     	  }
     	  if (MODE.equals("invert")){
-    		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y), 30, line_two_y);
+    		  dotfunction_font.draw(batch, "y="+double_formatted(mouse_posn_y), 30, line_two_y-10);
     		  if (Function_Code.equals("sin")){
-        		  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+ "+sin^-1("+double_formatted(mouse_posn_y)+")", 30, line_one_y);
+        		  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+ "+sin^-1("+double_formatted(mouse_posn_y)+")", 30, line_one_y+10);
     		  
     		  }
     		  if (Function_Code.equals("cos")){
-        		  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+ "+cos^-1("+double_formatted(mouse_posn_y)+")", 30, line_one_y);
+        		  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+ "+cos^-1("+double_formatted(mouse_posn_y)+")", 30, line_one_y+10);
 
     		  }
     		  if (Function_Code.equals("sin_plus_cos")){
-        		  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+ "+sin^-1("+double_formatted(mouse_posn_y)+") + cos^-1("+double_formatted(mouse_posn_x)+")", 30, line_one_y);
-
+        		  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+ "+sin^-1("+double_formatted(mouse_posn_y)+")", 30, line_one_y+10);
+        		  dotfunction_font.draw(batch, "+ cos^-1("+double_formatted(mouse_posn_x)+")", 30, line_one_y-10);
     		  }
     		  if (Function_Code.equals("sin_take_cos")){
-        		  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+ "+sin^-1("+double_formatted(mouse_posn_y)+") - cos^-1("+double_formatted(mouse_posn_x)+")", 30, line_one_y);
-
+        		  dotfunction_font.draw(batch, "x="+double_formatted(mouse_posn_x)+ "+sin^-1("+double_formatted(mouse_posn_y)+")", 30, line_one_y+10);
+        		  dotfunction_font.draw(batch, "- cos^-1("+double_formatted(mouse_posn_x)+")", 30, line_one_y-10);
     		  }
     	  }
 
