@@ -385,6 +385,70 @@ public class OptionsScreen implements Screen {
 		return gr;
 	}
 	
+	private void present(String thing, float corner_x, float corner_y){
+		if (thing.equals("many")){
+			font.draw(game.batch, "many", corner_x+53, corner_y+27);
+		}
+		if (thing.equals("basic")){
+			font.draw(game.batch, "basic", corner_x+53, corner_y+27);
+		}
+		if (thing.equals("varyvelo_x")){
+			font.draw(game.batch, "velocity", corner_x+46, corner_y+36);
+			font.draw(game.batch, "X", corner_x+65, corner_y+18);
+		}
+		if (thing.equals("varyvelo_y")){
+			font.draw(game.batch, "velocity", corner_x+46, corner_y+36);
+			font.draw(game.batch, "Y", corner_x+65, corner_y+18);
+		}
+		if (thing.equals("squares")){
+			font.draw(game.batch, "squares", corner_x+45, corner_y+27);
+		}
+		if (thing.equals("lines")){
+			font.draw(game.batch, "lines", corner_x+56, corner_y+27);
+		}
+		if (thing.equals("accel_x")){
+			font.draw(game.batch, "accel", corner_x+53, corner_y+36);
+			font.draw(game.batch, "X", corner_x+65, corner_y+18);
+		}
+		if (thing.equals("accel_y")){
+			font.draw(game.batch, "accel", corner_x+53, corner_y+36);
+			font.draw(game.batch, "Y", corner_x+65, corner_y+18);
+		}
+		if (thing.equals("sinewave")){
+			font.draw(game.batch, "sine", corner_x+56, corner_y+36);
+			font.draw(game.batch, "wave", corner_x+53, corner_y+18);
+		}
+		if (thing.equals("zigzag")){
+			font.draw(game.batch, "zigzag", corner_x+49, corner_y+27);
+		}
+		if (thing.equals("squarewave")){
+			font.draw(game.batch, "square", corner_x+48, corner_y+36);
+			font.draw(game.batch, "wave", corner_x+53, corner_y+18);
+		}
+		if (thing.equals("sawtooth")){
+			font.draw(game.batch, "sawtooth", corner_x+41, corner_y+27);
+		}
+		
+		
+		if (thing.equals("default")){
+			font.draw(game.batch, "default", corner_x+48, corner_y+27);
+		}
+		if (thing.equals("fine")){
+			font.draw(game.batch, "fine", corner_x+59, corner_y+27);
+		}
+		if (thing.equals("coarse")){
+			font.draw(game.batch, "coarse", corner_x+48, corner_y+27);
+		}
+		if (thing.equals("very_coarse")){
+			font.draw(game.batch, "very", corner_x+55, corner_y+36);
+			font.draw(game.batch, "coarse", corner_x+48, corner_y+18);
+		}
+		
+		if (thing.equals("standard")){
+			font.draw(game.batch, "standard", corner_x+42, corner_y+27);
+		}
+	}
+	
 	@Override
 	public void render(float delta) {
 		
@@ -436,7 +500,8 @@ public class OptionsScreen implements Screen {
 		game.batch.draw(prv_t, wt_one_sel_prv_r.x, wt_one_sel_prv_r.y);
 		game.batch.draw(nxt_t, wt_one_sel_nxt_r.x, wt_one_sel_nxt_r.y);
 		
-		font.draw(game.batch, ""+WT_ONE, wt_one_sel_r.x+30, wt_one_sel_r.y+25);
+		//font.draw(game.batch, ""+WT_ONE, wt_one_sel_r.x+30, wt_one_sel_r.y+25);
+		present(WT_ONE,wt_one_sel_r.x,wt_one_sel_r.y);
 		
 		if (wt_one_sel_prv_r.contains(tp_x,tp_y)){
 			game.batch.draw(BUT_TRIM_t, wt_one_sel_prv_r.x, wt_one_sel_prv_r.y);
@@ -449,8 +514,9 @@ public class OptionsScreen implements Screen {
 		game.batch.draw(prv_t, wt_two_sel_prv_r.x, wt_two_sel_prv_r.y);
 		game.batch.draw(nxt_t, wt_two_sel_nxt_r.x, wt_two_sel_nxt_r.y);
 		
-		font.draw(game.batch, ""+WT_TWO, wt_two_sel_r.x+30, wt_two_sel_r.y+25);
-		
+		//font.draw(game.batch, ""+WT_TWO, wt_two_sel_r.x+30, wt_two_sel_r.y+25);
+		present(WT_TWO,wt_two_sel_r.x,wt_two_sel_r.y);
+
 		if (wt_two_sel_prv_r.contains(tp_x,tp_y)){
 			game.batch.draw(BUT_TRIM_t, wt_two_sel_prv_r.x, wt_two_sel_prv_r.y);
 		}
@@ -462,7 +528,8 @@ public class OptionsScreen implements Screen {
 		game.batch.draw(prv_t, gridtype_sel_prv_r.x, gridtype_sel_prv_r.y);
 		game.batch.draw(nxt_t, gridtype_sel_nxt_r.x, gridtype_sel_nxt_r.y);
 		
-		font.draw(game.batch, ""+GRIDTYPE, gridtype_sel_r.x+30, gridtype_sel_r.y+25);
+		//font.draw(game.batch, ""+GRIDTYPE, gridtype_sel_r.x+30, gridtype_sel_r.y+25);
+		present(GRIDTYPE,gridtype_sel_r.x,gridtype_sel_r.y);
 		
 		if (gridtype_sel_prv_r.contains(tp_x,tp_y)){
 			game.batch.draw(BUT_TRIM_t, gridtype_sel_prv_r.x, gridtype_sel_prv_r.y);
@@ -475,7 +542,8 @@ public class OptionsScreen implements Screen {
 		game.batch.draw(prv_t, genre_sel_prv_r.x, genre_sel_prv_r.y);
 		game.batch.draw(nxt_t, genre_sel_nxt_r.x, genre_sel_nxt_r.y);
 		
-		font.draw(game.batch, ""+GENRE, genre_sel_r.x+30, genre_sel_r.y+25);
+		//font.draw(game.batch, ""+GENRE, genre_sel_r.x+30, genre_sel_r.y+25);
+		present(GENRE,genre_sel_r.x,genre_sel_r.y);
 		
 		if (genre_sel_prv_r.contains(tp_x,tp_y)){
 			game.batch.draw(BUT_TRIM_t, genre_sel_prv_r.x, genre_sel_prv_r.y);
@@ -558,6 +626,7 @@ public class OptionsScreen implements Screen {
 				WT_TWO="many";
 				GRIDTYPE="default";
 				GENRE="standard";
+				arrowsound.play();
 			}
 			
 			if (accept_r.contains(tp_x,tp_y)){
