@@ -3866,10 +3866,9 @@ private void spawnRandomMineZigzag(){
     	  }
     	  
     	  if (!MODE.equals("intro") && !ENDLESS){
-	    	  wave(0);
-	    	  wave(50);
-	    	  wave(100);
-	    	  wave(150);
+    		  for (int ws=0; ws<(WAVENO*50); ws+=50){
+            	  wave(ws);
+              }
     	  }
     	  if (!MODE.equals("intro") && ENDLESS){
     		  wave(seconds-seconds%50);
