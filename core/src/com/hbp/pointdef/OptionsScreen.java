@@ -378,10 +378,28 @@ public class OptionsScreen implements Screen {
 	}
 	
 	private String next_genre(String gr){
+		if (gr.equals("standard")){
+			return "endless";
+		}
+		if (gr.equals("endless")){
+			return "empty";
+		}
+		if (gr.equals("empty")){
+			return "standard";
+		}
 		return gr;
 	}
 	
 	private String prev_genre(String gr){
+		if (gr.equals("standard")){
+			return "empty";
+		}
+		if (gr.equals("endless")){
+			return "standard";
+		}
+		if (gr.equals("empty")){
+			return "endless";
+		}
 		return gr;
 	}
 	
@@ -446,6 +464,12 @@ public class OptionsScreen implements Screen {
 		
 		if (thing.equals("standard")){
 			font.draw(game.batch, "standard", corner_x+42, corner_y+27);
+		}
+		if (thing.equals("endless")){
+			font.draw(game.batch, "endless", corner_x+47, corner_y+27);
+		}
+		if (thing.equals("empty")){
+			font.draw(game.batch, "empty", corner_x+51, corner_y+27);
 		}
 	}
 	
@@ -611,11 +635,11 @@ public class OptionsScreen implements Screen {
 			}
 			
 			if (genre_sel_nxt_r.contains(tp_x, tp_y)){
-				GENRE=next_gridtype(GENRE);
+				GENRE=next_genre(GENRE);
 				arrowsound.play();
 			}
 			if (genre_sel_prv_r.contains(tp_x, tp_y)){
-				GENRE=prev_gridtype(GENRE);
+				GENRE=prev_genre(GENRE);
 				arrowsound.play();
 			}
 			

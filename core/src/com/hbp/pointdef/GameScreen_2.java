@@ -224,7 +224,6 @@ public class GameScreen_2 implements Screen {
    private int GAMESPEED;
    private int GAMESPEED_ORI;
    private int WAVENO;
-   private boolean ENDLESS;
    
    private boolean CAMPAIGN;
    private boolean META_PAUSE;
@@ -319,6 +318,8 @@ public class GameScreen_2 implements Screen {
 		   WT_ONE=prefs.getString("wt_one");
 		   WT_TWO=prefs.getString("wt_two");
 		   GRIDTYPE=prefs.getString("gridtype");
+		   GENRE=prefs.getString("genre");
+		   
 		   System.out.println("aaaaaaaaaaaa");
 		   System.out.println(WT_ONE);
 		   System.out.println(WT_TWO);
@@ -333,7 +334,6 @@ public class GameScreen_2 implements Screen {
 	   
 	   //--Perform tautological actions--
 	   this.game = gam;
-	   //ENDLESS=endless;
       MODE=mode;
       TOPIC=topic;
       if (MODE.equals("INTRO")){
@@ -2751,6 +2751,10 @@ private void spawnRandomMineZigzag(){
 			  dot_t=standard_dot_t;
 	   }
 	   
+	   if (GENRE=="empty"){
+		   wavetype="nope";
+	   }
+	   
 	   if (wavetype.equals("basic_LF")){
 		   wave_basic_LF(sss);
 	   }
@@ -3781,7 +3785,7 @@ private void spawnRandomMineZigzag(){
       }
       
       //----
-      if (!MODE.equals("intro") && ENDLESS){
+      if (!MODE.equals("intro") && GENRE=="endless"){
     	  font.draw(batch, "Hits:", 200, 445);
     	  font.draw(batch, ((Integer)(score-GAMESPEED_ORI/5)).toString(), 260, 445);
     	  font.draw(batch, "Misses:", 200, 425);
@@ -3791,7 +3795,7 @@ private void spawnRandomMineZigzag(){
     	  font.draw(batch, "Lives:", 200, 435);
     	  font.draw(batch, ((Integer)(lives)).toString(), 250, 435);
       }
-      else if (!MODE.equals("intro") && !ENDLESS){
+      else if (!MODE.equals("intro") && !(GENRE=="endless")){
     	  font.draw(batch, "Score:", 200, 435);
     	  font.draw(batch, ((Integer)score).toString(), 250, 435);
       }
@@ -3867,12 +3871,12 @@ private void spawnRandomMineZigzag(){
     		  shuffle_wavetype();
     	  }
     	  
-    	  if (!MODE.equals("intro") && !ENDLESS){
+    	  if (!MODE.equals("intro") && !(GENRE=="standard")){
     		  for (int ws=0; ws<(WAVENO*50); ws+=50){
             	  wave(ws);
               }
     	  }
-    	  if (!MODE.equals("intro") && ENDLESS){
+    	  if (!MODE.equals("intro") && (GENRE=="endless")){
     		  wave(seconds-seconds%50);
     	  }
     	  if (MODE.equals("intro")){
@@ -3900,11 +3904,10 @@ private void spawnRandomMineZigzag(){
     		  }
     		  
     	  }
-    	  if (seconds==(WAVENO*50+4) && !ENDLESS){
+    	  if (seconds==(WAVENO*50+4) && !(GENRE=="endless")){
     		  
-    		  if(score>prefs_score){
+    		  if(score>prefs_score && WAVENO==4 && GENRE=="standard"){
     			  
-    	    	  
     	    	  prefs.putInteger("score_"+TOPIC+"_"+MODE, score);
     	    	  prefs.flush();
     		  }
