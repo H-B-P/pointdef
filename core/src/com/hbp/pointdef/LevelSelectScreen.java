@@ -197,7 +197,7 @@ public class LevelSelectScreen implements Screen {
 			two_t = new Texture(Gdx.files.internal("abutton_rotation.png"));
 			three_t = new Texture(Gdx.files.internal("abutton_diagonal.png"));
 			four_t = new Texture(Gdx.files.internal("abutton_singular.png"));
-			five_t = new Texture(Gdx.files.internal("abutton_arbitrary.png"));
+			five_t = new Texture(Gdx.files.internal("abutton_symmetric.png"));
 			
 			TRIM_t=new Texture(Gdx.files.internal("abutton_trim_red.png"));
 

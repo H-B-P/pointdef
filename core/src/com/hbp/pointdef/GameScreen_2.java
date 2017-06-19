@@ -1529,7 +1529,15 @@ public class GameScreen_2 implements Screen {
 			   NewArbMatrix();
 		   }
 		   if (MODE.equals("symmetric")){
-			   NewSymMatrix();
+			   if ((seconds%200)<49){
+				   NewSymMatrix_clean_pos();
+			   }
+			   else if ((seconds%200)<99){
+				   NewSymMatrix_clean_neg();
+			   }
+			   else{
+				   NewSymMatrix();
+			   }
 		   }
 	   }
    }
@@ -1716,10 +1724,35 @@ public class GameScreen_2 implements Screen {
 	   int a = 0;
 	   int b = 0;
 	   int d = 0;
-	   while ((a==0 || b==0 || d==0)||(a==b && b==d)){
+	   while ((a==0 || b==0 || d==0)||(a*d==b*b)){
 	   		a=plusorminus()*MathUtils.random(1,2);
 	   		b=plusorminus();
 	   		d=plusorminus()*MathUtils.random(1,2);
+	   }
+	   float[] NPSM_Input = new float[]{a, b, 0, b, d, 0, 0, 0, 1};
+	   TheMatrix.set(NPSM_Input);
+   }
+   
+   private void NewSymMatrix_clean_pos(){
+	   int a = 0;
+	   int b = 0;
+	   int d = 0;
+	   while ((a==0 || b==0 || d==0)||(a*d==b*b)){
+	   		a=MathUtils.random(1,2);
+	   		b=1;
+	   		d=MathUtils.random(1,2);
+	   }
+	   float[] NPSM_Input = new float[]{a, b, 0, b, d, 0, 0, 0, 1};
+	   TheMatrix.set(NPSM_Input);
+   }
+   private void NewSymMatrix_clean_neg(){
+	   int a = 0;
+	   int b = 0;
+	   int d = 0;
+	   while ((a==0 || b==0 || d==0)||(a*d==b*b)){
+	   		a=-MathUtils.random(1,2);
+	   		b=-1;
+	   		d=-MathUtils.random(1,2);
 	   }
 	   float[] NPSM_Input = new float[]{a, b, 0, b, d, 0, 0, 0, 1};
 	   TheMatrix.set(NPSM_Input);
@@ -2776,10 +2809,7 @@ private void spawnRandomMineZigzag(){
 			  dot_t=standard_dot_t;
 	   }
 	   
-	   //System.out.println("she dont want yellow");
-	   
 	   if (GENRE.equals("empty")){
-		   //System.out.println("YOU NOTICED!");
 		   wavetype="nope";
 	   }
 	   
@@ -3898,7 +3928,6 @@ private void spawnRandomMineZigzag(){
     	  }
     	  
     	  if (!MODE.equals("intro") && (GENRE.equals("standard"))){
-    		  System.out.println("hello?");
     		  for (int ws=0; ws<(WAVENO*50); ws+=50){
             	  wave(ws);
               }
