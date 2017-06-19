@@ -191,15 +191,10 @@ public class GameScreen_2 implements Screen {
    private float last_charge_event_time;
    
    
-   //REPLACE MIRRORING WITH NUMBER_OF_DOTS
-   
    //---Space---
    
    private int NUMBER_OF_DOTS;
    
-   
-   
-   //NEW STUFF
    
    private double mouse_posn_x;
    private double mouse_posn_y;
@@ -320,11 +315,12 @@ public class GameScreen_2 implements Screen {
 		   GRIDTYPE=prefs.getString("gridtype");
 		   GENRE=prefs.getString("genre");
 		   
-		   System.out.println("aaaaaaaaaaaa");
+		   System.out.println("~~~~~~~~~~~~");
 		   System.out.println(WT_ONE);
 		   System.out.println(WT_TWO);
 		   System.out.println(GRIDTYPE);
-		   System.out.println("aaaaaaaaaaaa");
+		   System.out.println(GENRE);
+		   System.out.println("~~~~~~~~~~~~");
 		   
 	   }
 	   ANDROID=android;
@@ -495,9 +491,7 @@ public class GameScreen_2 implements Screen {
       
       //(Whether the game is not-exactly-paused.)
       IS_TIME_HAPPENING=true;
-      //(I should set up a more rigorous way of doing this, but all the dot functions which create multiple
-      //dots (sqrt, for example) create only two, mirrored about the origin. So for now we just have this boolean
-      //which creates a mirrored dot whenever needed instead of doing anything clever.)
+      
       NUMBER_OF_DOTS=1;
       
       //(Even though this is a 2D game, we use 3D matrices and vectors simply because matrix2d doesn't exist in libgdx's setup.)
@@ -838,13 +832,16 @@ public class GameScreen_2 implements Screen {
    
    private double real_part_complex_raise(double real, double imag, double n){
 	   int n_temp=1;
+	   double orig_real=real;
+	   double orig_imag=imag;
 	   double old_real=real;
 	   double old_imag=imag;
 	   double new_real=0;
 	   double new_imag=0;
 	   while (n_temp<n){
-		   new_real=real_part_complex_multiply(old_real,old_imag,old_real,old_imag);
-		   new_imag=imag_part_complex_multiply(old_real,old_imag,old_real,old_imag);
+		   new_real=real_part_complex_multiply(old_real,old_imag,orig_real,orig_imag);
+		   new_imag=imag_part_complex_multiply(old_real,old_imag,orig_real,orig_imag);
+		   
 		   old_real=new_real;
 		   old_imag=new_imag;
 		   n_temp+=1;
@@ -854,13 +851,15 @@ public class GameScreen_2 implements Screen {
    
    private double imag_part_complex_raise(double real, double imag, double n){
 	   int n_temp=1;
+	   double orig_real=real;
+	   double orig_imag=imag;
 	   double old_real=real;
 	   double old_imag=imag;
 	   double new_real=0;
 	   double new_imag=0;
 	   while (n_temp<n){
-		   new_real=real_part_complex_multiply(old_real,old_imag,old_real,old_imag);
-		   new_imag=imag_part_complex_multiply(old_real,old_imag,old_real,old_imag);
+		   new_real=real_part_complex_multiply(old_real,old_imag,orig_real,orig_imag);
+		   new_imag=imag_part_complex_multiply(old_real,old_imag,orig_real,orig_imag);
 		   old_real=new_real;
 		   old_imag=new_imag;
 		   n_temp+=1;
@@ -1486,20 +1485,19 @@ public class GameScreen_2 implements Screen {
 	   while (OldMatrix.getValues()[0]==TheMatrix.getValues()[0] && OldMatrix.getValues()[4]==TheMatrix.getValues()[4] && OldMatrix.getValues()[8]==TheMatrix.getValues()[8]){
 		   if (MODE.equals("scale")){
 			   if (seconds==0){
-				   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
-				   TheMatrix.set(SI_Input);
+				   NewIdentMatrix();
 			   }
 			   else{
-				   int k = plusorminus()*MathUtils.random(2,3);
-				   float[] SI_Input = new float[]{k, 0, 0, 0, k, 0, 0, 0, 1};
-				   TheMatrix.set(SI_Input);
+				   NewScaleMatrix();
 			   }
 		   }
 		   if (MODE.equals("diagonal")){
-			   int a = plusorminus()*MathUtils.random(1,3);
-			   int d = plusorminus()*MathUtils.random(1,3);
-			   float[] SI_Input = new float[]{a, 0, 0, 0, d, 0, 0, 0, 1};
-			   TheMatrix.set(SI_Input);
+			   if (seconds<100){
+				   NewDiagMatrix_easy();
+			   }
+			   else{
+				   NewDiagMatrix_hard();
+			   }
 		   }
 		   if (MODE.equals("rotation")){
 			   if (CAMPAIGN){
@@ -1529,6 +1527,9 @@ public class GameScreen_2 implements Screen {
 		   }
 		   if (MODE.equals("arbitrary")){
 			   NewArbMatrix();
+		   }
+		   if (MODE.equals("symmetric")){
+			   NewSymMatrix();
 		   }
 	   }
    }
@@ -1589,6 +1590,17 @@ public class GameScreen_2 implements Screen {
    //--Generate new matrices.--
    //(The below functions are called when a new dot function is set up in the Matrix topic.)
    
+   private void NewIdentMatrix(){
+	   float[] SI_Input = new float[]{1, 0, 0, 0, 1, 0, 0, 0, 1};
+	   TheMatrix.set(SI_Input);
+   }
+   
+   private void NewScaleMatrix(){
+	   int k = plusorminus()*MathUtils.random(2,3);
+	   float[] SI_Input = new float[]{k, 0, 0, 0, k, 0, 0, 0, 1};
+	   TheMatrix.set(SI_Input);
+   }
+   
    private void NewRotMatrix_quarters_easy(){
 	   
 	   int q = plusorminus()*MathUtils.random(1,2);
@@ -1614,6 +1626,17 @@ public class GameScreen_2 implements Screen {
 	   Double c = Math.sin(r*Math.PI/180);
 	   Double d = Math.cos(r*Math.PI/180);
 	   float[] NPSM_Input = new float[]{a.floatValue(), c.floatValue(), 0, b.floatValue(), d.floatValue(), 0, 0, 0, 1};
+	   TheMatrix.set(NPSM_Input);
+   }
+   
+   private void NewDiagMatrix_easy(){
+	   int a = 0;
+	   int c = 0;
+	   while ((a==0 || c==0) || !(a==1 || c==1 || a==c)){
+	   		a=MathUtils.random(-3,3);
+	   		c=MathUtils.random(-3,3);
+	   }
+	   float[] NPSM_Input = new float[]{a, 0, 0, 0, c, 0, 0, 0, 1};
 	   TheMatrix.set(NPSM_Input);
    }
    
@@ -1678,17 +1701,6 @@ public class GameScreen_2 implements Screen {
 	   TheMatrix.set(NPSM_Input);
    }
    
-   private void NewDiagMatrix_easy(){
-	   int a = 0;
-	   int c = 0;
-	   while ((a==0 || c==0) || !(a==1 || c==1 || a==c)){
-	   		a=MathUtils.random(-3,3);
-	   		c=MathUtils.random(-3,3);
-	   }
-	   float[] NPSM_Input = new float[]{a, 0, 0, 0, c, 0, 0, 0, 1};
-	   TheMatrix.set(NPSM_Input);
-   }
-   
    private void NewDiagMatrix_hard(){
 	   int a = 0;
 	   int c = 0;
@@ -1697,6 +1709,19 @@ public class GameScreen_2 implements Screen {
 	   		c=MathUtils.random(-3,3);
 	   }
 	   float[] NPSM_Input = new float[]{a, 0, 0, 0, c, 0, 0, 0, 1};
+	   TheMatrix.set(NPSM_Input);
+   }
+   
+   private void NewSymMatrix(){
+	   int a = 0;
+	   int b = 0;
+	   int d = 0;
+	   while ((a==0 || b==0 || d==0)||(a==b && b==d)){
+	   		a=plusorminus()*MathUtils.random(1,2);
+	   		b=plusorminus();
+	   		d=plusorminus()*MathUtils.random(1,2);
+	   }
+	   float[] NPSM_Input = new float[]{a, b, 0, b, d, 0, 0, 0, 1};
 	   TheMatrix.set(NPSM_Input);
    }
    
@@ -2751,7 +2776,10 @@ private void spawnRandomMineZigzag(){
 			  dot_t=standard_dot_t;
 	   }
 	   
-	   if (GENRE=="empty"){
+	   //System.out.println("she dont want yellow");
+	   
+	   if (GENRE.equals("empty")){
+		   //System.out.println("YOU NOTICED!");
 		   wavetype="nope";
 	   }
 	   
@@ -2895,12 +2923,12 @@ private void spawnRandomMineZigzag(){
 	   int ts=ss+5;
 	   if (seconds>=ts && seconds<ts+20){
  		  if((seconds-ts)%10 == 0){
- 			  if (plusorminus()>0){
+ 			  //if (plusorminus()>0){
  				  spawnMineQueue(4);
- 			  }
- 			  else{
- 				  spawnMineLine();
- 			  }
+ 			  //}
+ 			  //else{
+ 				//  spawnMineLine();
+ 			  //}
  		  }
  		  if ((seconds-ts)%10 == 5){
  			  spawnFastSoloMine();
@@ -2909,12 +2937,12 @@ private void spawnRandomMineZigzag(){
  	   }
 	   if (seconds>=ts+20 && seconds<ts+40){
 	 		  if((seconds-ts-20)%7 == 0){
-	 			  if (plusorminus()>0){
+	 			  //if (plusorminus()>0){
 	 				  spawnMineQueue(4);
-	 			  }
-	 			  else{
-	 				  spawnMineLine();
-	 			  }
+	 			  //}
+	 			  //else{
+	 			//	  spawnMineLine();
+	 			  //}
 	 		  }
 	 		  if ((seconds-ts-20)%7 == 5){
 	 			  spawnFastSoloMine();
@@ -3208,8 +3236,6 @@ private void spawnRandomMineZigzag(){
     	  zvbx+=1;
       }
       
-      
-      //HERE HERE HERE HERE HERE
       
       //--Render any textboxes that happen to need it--
       
@@ -3785,7 +3811,7 @@ private void spawnRandomMineZigzag(){
       }
       
       //----
-      if (!MODE.equals("intro") && GENRE=="endless"){
+      if (!MODE.equals("intro") && GENRE.equals("endless")){
     	  font.draw(batch, "Hits:", 200, 445);
     	  font.draw(batch, ((Integer)(score-GAMESPEED_ORI/5)).toString(), 260, 445);
     	  font.draw(batch, "Misses:", 200, 425);
@@ -3795,7 +3821,7 @@ private void spawnRandomMineZigzag(){
     	  font.draw(batch, "Lives:", 200, 435);
     	  font.draw(batch, ((Integer)(lives)).toString(), 250, 435);
       }
-      else if (!MODE.equals("intro") && !(GENRE=="endless")){
+      else if (!MODE.equals("intro") && !(GENRE.equals("endless"))){
     	  font.draw(batch, "Score:", 200, 435);
     	  font.draw(batch, ((Integer)score).toString(), 250, 435);
       }
@@ -3871,12 +3897,13 @@ private void spawnRandomMineZigzag(){
     		  shuffle_wavetype();
     	  }
     	  
-    	  if (!MODE.equals("intro") && !(GENRE=="standard")){
+    	  if (!MODE.equals("intro") && (GENRE.equals("standard"))){
+    		  System.out.println("hello?");
     		  for (int ws=0; ws<(WAVENO*50); ws+=50){
             	  wave(ws);
               }
     	  }
-    	  if (!MODE.equals("intro") && (GENRE=="endless")){
+    	  if (!MODE.equals("intro") && (GENRE.equals("endless"))){
     		  wave(seconds-seconds%50);
     	  }
     	  if (MODE.equals("intro")){
@@ -3904,9 +3931,9 @@ private void spawnRandomMineZigzag(){
     		  }
     		  
     	  }
-    	  if (seconds==(WAVENO*50+4) && !(GENRE=="endless")){
+    	  if (seconds==(WAVENO*50+4) && !(GENRE.equals("endless"))){
     		  
-    		  if(score>prefs_score && WAVENO==4 && GENRE=="standard"){
+    		  if(score>prefs_score && WAVENO==4 && GENRE.equals("standard")){
     			  
     	    	  prefs.putInteger("score_"+TOPIC+"_"+MODE, score);
     	    	  prefs.flush();

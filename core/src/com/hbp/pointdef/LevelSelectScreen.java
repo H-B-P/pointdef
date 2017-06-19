@@ -528,76 +528,76 @@ public class LevelSelectScreen implements Screen {
 		            dispose();
 				}
 				if (nxt_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "MISC", ANDROID));
-		            dispose();
-				}
-
-			}
-			
-			
-			if (TOPIC=="MISC"){
-				if (one_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "MISC", "discrete", false, ANDROID));
-		            dispose();
-				}
-				if (two_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "MISC", "add", false, ANDROID));
-		            dispose();
-				}
-				if (three_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "MISC", "exponent", false, ANDROID));
-		            dispose();
-				}
-				if (four_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "MISC", "multiply", false, ANDROID));
-		            dispose();
-				}
-				if (five_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "MISC", "invert", false, ANDROID));
-		            dispose();
-				}
-				if (prv_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "POLAR", ANDROID));
-		            dispose();
-				}
-				if (nxt_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "SINES", ANDROID));
-		            dispose();
-				}
-
-			}
-			
-			if (TOPIC=="SINES"){
-				if (one_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "SINES", "add", false, ANDROID));
-		            dispose();
-				}
-				if (two_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "SINES", "square", false, ANDROID));
-		            dispose();
-				}
-				if (three_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "SINES", "multiply", false, ANDROID));
-		            dispose();
-				}
-				if (four_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "SINES", "invert", false, ANDROID));
-		            dispose();
-				}
-				if (five_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "SINES", "stretch", false, ANDROID));
-		            dispose();
-				}
-				if (prv_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "MISC", ANDROID));
-		            dispose();
-				}
-				if (nxt_r.contains(tp_x,tp_y)){
 		            game.setScreen(new LevelSelectScreen(game, "MATRIX", ANDROID));
 		            dispose();
 				}
 
 			}
+			
+			
+//			if (TOPIC=="MISC"){
+//				if (one_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "MISC", "discrete", false, ANDROID));
+//		            dispose();
+//				}
+//				if (two_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "MISC", "add", false, ANDROID));
+//		            dispose();
+//				}
+//				if (three_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "MISC", "exponent", false, ANDROID));
+//		            dispose();
+//				}
+//				if (four_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "MISC", "multiply", false, ANDROID));
+//		            dispose();
+//				}
+//				if (five_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "MISC", "invert", false, ANDROID));
+//		            dispose();
+//				}
+//				if (prv_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new LevelSelectScreen(game, "POLAR", ANDROID));
+//		            dispose();
+//				}
+//				if (nxt_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new LevelSelectScreen(game, "SINES", ANDROID));
+//		            dispose();
+//				}
+//
+//			}
+			
+//			if (TOPIC=="SINES"){
+//				if (one_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "SINES", "add", false, ANDROID));
+//		            dispose();
+//				}
+//				if (two_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "SINES", "square", false, ANDROID));
+//		            dispose();
+//				}
+//				if (three_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "SINES", "multiply", false, ANDROID));
+//		            dispose();
+//				}
+//				if (four_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "SINES", "invert", false, ANDROID));
+//		            dispose();
+//				}
+//				if (five_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new GameScreen_2(game, "SINES", "stretch", false, ANDROID));
+//		            dispose();
+//				}
+//				if (prv_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new LevelSelectScreen(game, "MISC", ANDROID));
+//		            dispose();
+//				}
+//				if (nxt_r.contains(tp_x,tp_y)){
+//		            game.setScreen(new LevelSelectScreen(game, "MATRIX", ANDROID));
+//		            dispose();
+//				}
+//
+//			}
 			
 			if (TOPIC=="MATRIX"){
 				if (one_r.contains(tp_x,tp_y)){
@@ -617,11 +617,11 @@ public class LevelSelectScreen implements Screen {
 		            dispose();
 				}
 				if (five_r.contains(tp_x,tp_y)){
-		            game.setScreen(new GameScreen_2(game, "MATRIX", "arbitrary", false, ANDROID));
+		            game.setScreen(new GameScreen_2(game, "MATRIX", "symmetric", false, ANDROID));
 		            dispose();
 				}
 				if (prv_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "SINES", ANDROID));
+		            game.setScreen(new LevelSelectScreen(game, "POLAR", ANDROID));
 		            dispose();
 				}
 				if (nxt_r.contains(tp_x,tp_y)){
