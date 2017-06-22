@@ -345,9 +345,9 @@ public class GameScreen_2 implements Screen {
       //--Ensure it starts paused--
       
       //This variable has to exist because otherwise people could unfreeze at the start/end of levels.
-      
-      META_PAUSE=true;
-      
+      if (!MODE.equals("intro")){
+    	  META_PAUSE=true;
+      }
       //--Shout!--
       
       System.out.println("TOPIC IS " + TOPIC + "XXXX");
@@ -638,8 +638,9 @@ public class GameScreen_2 implements Screen {
     	  campaign_tb_win=new Texture(Gdx.files.internal("campaign_tb_win.png"));
     	  campaign_tb_lose=new Texture(Gdx.files.internal("campaign_tb_lose.png"));
     	  campaign_tb_final=new Texture(Gdx.files.internal("campaign_tb_final.png"));
-    	  
-    	  show_c_textbox=true;
+    	  if (!MODE.equals("intro")){
+    		  show_c_textbox=true;
+    	  }
     	  c_textbox=campaign_tb_start;
     	  c_textbox_x=30;
     	  c_textbox_y=100;
@@ -4106,7 +4107,12 @@ private void spawnRandomMineZigzag(){
       
       
       if (about_to_leave){
-    	  game.setScreen(new LevelSelectScreen(game, TOPIC, ANDROID));
+    	  if (MODE.equals("intro")){
+    		  game.setScreen(new MainMenuScreen(game, ANDROID, true));
+    	  }
+    	  else{
+    		  game.setScreen(new LevelSelectScreen(game, TOPIC, ANDROID));
+    	  }
     	  dispose();
       }
       
