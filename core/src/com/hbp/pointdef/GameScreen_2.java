@@ -545,65 +545,40 @@ public class GameScreen_2 implements Screen {
       explosions = new Array<Kaboom>();
       other_dots = new Array<Kaboom>();
       
-//      if ((TOPIC.equals("POLAR") && !MODE.equals("switch")) || (TOPIC.equals("ARGAND") && MODE.equals("power")) || (TOPIC.equals("POWERS")&& ANDROID)){
-//    	  UNIT_LENGTH_IN_PIXELS=80;
-//      }
-//      else{
-//    	  UNIT_LENGTH_IN_PIXELS=40;
-//      }
+      //Declare unit length.
       
-      if (GRIDTYPE.equals("fine")){
-    	  UNIT_LENGTH_IN_PIXELS=40;
-      }
-      else if (GRIDTYPE.equals("coarse")){
-    	  UNIT_LENGTH_IN_PIXELS=80;
-      }
-      else if (GRIDTYPE.equals("very_coarse")){
-    	  UNIT_LENGTH_IN_PIXELS=120;
-    	  System.out.println("got to here");
-
-      }
-      else if (GRIDTYPE.equals("default")){
-    	  if (MODE.equals("power")){
+      if(MODE.equals("power")){
+    	  if (TOPIC.equals("CARTESIAN")){
     		  UNIT_LENGTH_IN_PIXELS=80;
     	  }
     	  else{
-    		  UNIT_LENGTH_IN_PIXELS=40;
+    		  UNIT_LENGTH_IN_PIXELS=120;
     	  }
       }
       else{
-    	  UNIT_LENGTH_IN_PIXELS=80;
-    	  System.out.println("Something is wrong: Gridtype is missing?");
+    	  UNIT_LENGTH_IN_PIXELS=40;
       }
       
       //Load in the background du jour.
       
+      if (MODE.equals("power")){
+    	  grid_t = new Texture(Gdx.files.internal("grids_II/grid_"+TOPIC.toLowerCase()+"_t_coarse.png"));
+      }
+      else{
+    	  grid_t = new Texture(Gdx.files.internal("grids_II/grid_"+TOPIC.toLowerCase()+"_t_fine.png"));
+      }
+      
+      //Place background!
+      
       if (TOPIC.equals("POLAR")){
     	  grid.x=-160;
     	  grid.y=-240;
-    	  if (UNIT_LENGTH_IN_PIXELS==120){
-    		  grid_t = new Texture(Gdx.files.internal("grid_t_polar_v_coarse.png"));
-    	  }
-    	  else if (UNIT_LENGTH_IN_PIXELS==80){
-    		  grid_t = new Texture(Gdx.files.internal("grid_t_polar_coarse.png"));
-    	  }
-    	  else{
-    		  grid_t = new Texture(Gdx.files.internal("grid_t_polar_fine.png"));
-    	  }
       }
       else{ 
     	  grid.x=0;
     	  grid.y=0;
-    	  if (UNIT_LENGTH_IN_PIXELS==120){
-	    	  grid_t = new Texture(Gdx.files.internal("grid_t_v_coarse.png"));
-	      }
-    	  else if (UNIT_LENGTH_IN_PIXELS==80){
-	    	  grid_t = new Texture(Gdx.files.internal("grid_t_coarse.png"));
-	      }
-	      else{
-	    	  grid_t = new Texture(Gdx.files.internal("grid_t_fine.png"));
-	      }
       }
+      
       //--Set up presentation--
       spawnShield(1);
       //spawnShield(2);
