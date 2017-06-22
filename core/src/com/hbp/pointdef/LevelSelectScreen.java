@@ -18,11 +18,19 @@ public class LevelSelectScreen implements Screen {
     final PointDef game;
 	OrthographicCamera camera;
 	
+	private int GAMESPEED;
+	
 	private Rectangle nxt_r;
 	private Texture nxt_t;	
 	
 	private Rectangle prv_r;
 	private Texture prv_t;
+	
+	private Rectangle selector_nxt_r;
+	private Texture selector_nxt_t;	
+	
+	private Rectangle selector_prv_r;
+	private Texture selector_prv_t;
 	
 	private Rectangle menu_r;
 	private Texture menu_t;
@@ -60,8 +68,6 @@ public class LevelSelectScreen implements Screen {
 	
 	private BitmapFont font;
 	
-	private int MINESPEED;
-	
 	private float tp_x;
 	private float tp_y;
 	
@@ -69,11 +75,10 @@ public class LevelSelectScreen implements Screen {
 	private Texture TRIM_t;
 	private Texture PRV_TRIM_t;
 	private Texture NXT_TRIM_t;
+	private Texture BUT_TRIM_t;
 	
 	
 	private Rectangle selector_r;
-	private Rectangle selector_prv_r;
-	private Rectangle selector_nxt_r;
 	private Texture selector_t;
 	
 	private Texture mode_background_t;
@@ -99,7 +104,7 @@ public class LevelSelectScreen implements Screen {
 	public LevelSelectScreen(final PointDef gam, String topic, boolean android) {
 		
 		wastouched=false;
-		
+				
 		GRIDTYPE="default";
 		
 		TOPIC=topic;
@@ -107,6 +112,8 @@ public class LevelSelectScreen implements Screen {
 		ANDROID=android;
 		
 		prefs = Gdx.app.getPreferences("galen_preferences");
+		
+		GAMESPEED=prefs.getInteger("gamespeed");
 		
 		META_TRIM_t=new Texture(Gdx.files.internal("abutton_trim_boring.png"));
 		
@@ -225,23 +232,46 @@ public class LevelSelectScreen implements Screen {
 		
 		nxt_r = new Rectangle();
 		nxt_r.x=240;
-		nxt_r.y=320;
+		nxt_r.y=310;
 		nxt_r.height=60;
 		nxt_r.width=60;
 		nxt_t = new Texture(Gdx.files.internal("pobutton_right.png"));
 		
 		prv_r = new Rectangle();
 		prv_r.x=20;
-		prv_r.y=320;
+		prv_r.y=310;
 		prv_r.height=60;
 		prv_r.width=60;
 		prv_t = new Texture(Gdx.files.internal("pobutton_left.png"));
 		
-		selector_t = new Texture(Gdx.files.internal("selector_minespeed.png"));
+		selector_t = new Texture(Gdx.files.internal("selector_speed.png"));
+		selector_r = new Rectangle();
+		selector_r.x=10;
+		selector_r.y=390;
+		selector_r.height=80;
+		selector_r.width=140;
+		
+		selector_nxt_t = new Texture(Gdx.files.internal("fwd_but.png"));
+		selector_prv_t = new Texture(Gdx.files.internal("bak_but.png"));
+		
+		selector_prv_r = new Rectangle();
+		selector_prv_r.x=selector_r.x;
+		selector_prv_r.y=selector_r.y;
+		selector_prv_r.height=40;
+		selector_prv_r.width=40;
+		
+		selector_nxt_r = new Rectangle();
+		selector_nxt_r.x=selector_r.x+100;
+		selector_nxt_r.y=selector_r.y;
+		selector_nxt_r.height=40;
+		selector_nxt_r.width=40;
+		
+		BUT_TRIM_t = new Texture(Gdx.files.internal("but_trim.png"));
+
 		
 		menu_r = new Rectangle();
-		menu_r.x=10;
-		menu_r.y=410;
+		menu_r.x=170;
+		menu_r.y=400;
 		menu_r.height=60;
 		menu_r.width=140;
 		menu_t = new Texture(Gdx.files.internal("abutton_menu.png"));
@@ -258,7 +288,7 @@ public class LevelSelectScreen implements Screen {
 		
 		banner_r = new Rectangle();
 		banner_r.x=90;
-		banner_r.y=320;
+		banner_r.y=310;
 		banner_r.height=60;
 		banner_r.width=140;
 		
@@ -285,35 +315,35 @@ public class LevelSelectScreen implements Screen {
 		}
 		one_r = new Rectangle();
 		one_r.x=10;
-		one_r.y=240;
+		one_r.y=230;
 		one_r.height=60;
 		one_r.width=140;
 		
 		
 		two_r = new Rectangle();
 		two_r.x=170;
-		two_r.y=240;
+		two_r.y=230;
 		two_r.height=60;
 		two_r.width=140;
 		
 		
 		three_r = new Rectangle();
 		three_r.x=10;
-		three_r.y=150;
+		three_r.y=140;
 		three_r.height=60;
 		three_r.width=140;
 		
 		
 		four_r = new Rectangle();
 		four_r.x=170;
-		four_r.y=150;
+		four_r.y=140;
 		four_r.height=60;
 		four_r.width=140;
 		
 		
 		five_r = new Rectangle();
 		five_r.x=90;
-		five_r.y=60;
+		five_r.y=50;
 		five_r.height=60;
 		five_r.width=140;
 		
@@ -399,13 +429,26 @@ public class LevelSelectScreen implements Screen {
 		}
 	    
 	    game.batch.draw(menu_t, menu_r.x,menu_r.y);
-	    game.batch.draw(options_t, options_r.x,options_r.y);
+	    //game.batch.draw(options_t, options_r.x,options_r.y);
 	    
+	  game.batch.draw(selector_t, selector_r.x,selector_r.y);
+	  
+	  game.batch.draw(selector_prv_t, selector_prv_r.x,selector_prv_r.y);
+	  game.batch.draw(selector_nxt_t, selector_nxt_r.x,selector_nxt_r.y);
+	font.draw(game.batch, ""+GAMESPEED, selector_r.x+60, selector_r.y+25);
+
+	  if (selector_prv_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, selector_prv_r.x, selector_prv_r.y);
+		}
+		if (selector_nxt_r.contains(tp_x,tp_y)){
+			game.batch.draw(BUT_TRIM_t, selector_nxt_r.x, selector_nxt_r.y);
+		}
+	  
 	    if (menu_r.contains(tp_x,tp_y)){
 			game.batch.draw(META_TRIM_t, menu_r.x, menu_r.y);
 		}
 	    if (options_r.contains(tp_x,tp_y)){
-			game.batch.draw(META_TRIM_t, options_r.x, options_r.y);
+			//game.batch.draw(META_TRIM_t, options_r.x, options_r.y);
 		}
 	    
 		game.batch.draw(prv_t, prv_r.x, prv_r.y);
@@ -435,20 +478,24 @@ public class LevelSelectScreen implements Screen {
 
 		if ((!ANDROID&&Gdx.input.justTouched())||(ANDROID&&wastouched&&!Gdx.input.isTouched())) {
 		
-//			if (selector_prv_r.contains(tp_x, tp_y) && MINESPEED>50){
-//				MINESPEED-=5;
-//				arrowsound.play();
-//			}
-//			if (selector_nxt_r.contains(tp_x, tp_y) && MINESPEED<200){
-//				MINESPEED+=5;
-//				arrowsound.play();
-//			}
+			if (selector_prv_r.contains(tp_x, tp_y) && GAMESPEED>50){
+				GAMESPEED-=10;
+				prefs.putInteger("gamespeed", GAMESPEED);
+				prefs.flush();
+				arrowsound.play();
+			}
+			if (selector_nxt_r.contains(tp_x, tp_y) && GAMESPEED<250){
+				GAMESPEED+=10;
+				prefs.putInteger("gamespeed", GAMESPEED);
+				prefs.flush();
+				arrowsound.play();
+			}
 			if (menu_r.contains(tp_x, tp_y)){
 				game.setScreen(new MainMenuScreen(game, ANDROID, true));
 	            dispose();
 			}
 			if (options_r.contains(tp_x, tp_y)){
-				game.setScreen(new OptionsScreen(game, TOPIC, ANDROID));
+				//game.setScreen(new OptionsScreen(game, TOPIC, ANDROID));
 			}
 			if (TOPIC=="NONE"){
 				if (one_r.contains(tp_x,tp_y)){

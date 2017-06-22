@@ -83,7 +83,7 @@ public class MainMenuScreen implements Screen {
 			prefs.flush();
 		}
 		if (!prefs.contains("TOPIC")){
-			prefs.putString("TOPIC", "NONE");
+			prefs.putString("TOPIC", "CARTESIAN");
 			prefs.flush();
 		}
 		
