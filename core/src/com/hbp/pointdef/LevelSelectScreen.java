@@ -492,7 +492,7 @@ public class LevelSelectScreen implements Screen {
 		            dispose();
 				}
 				if (prv_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "NONE", ANDROID));
+		            game.setScreen(new LevelSelectScreen(game, "ARGAND", ANDROID));
 		            dispose();
 				}
 				if (nxt_r.contains(tp_x,tp_y)){
@@ -657,7 +657,7 @@ public class LevelSelectScreen implements Screen {
 		            dispose();
 				}
 				if (nxt_r.contains(tp_x,tp_y)){
-		            game.setScreen(new LevelSelectScreen(game, "NONE", ANDROID));
+		            game.setScreen(new LevelSelectScreen(game, "CARTESIAN", ANDROID));
 		            dispose();
 				}
 
