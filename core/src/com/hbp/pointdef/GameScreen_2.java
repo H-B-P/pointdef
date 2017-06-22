@@ -1188,7 +1188,7 @@ public class GameScreen_2 implements Screen {
 			   }
 			   if (seconds%100==50){
 				   Function_Code="root";
-				   polar_n=((seconds%00)-50)/100+2;
+				   polar_n=((seconds%400)-50)/100+2;
 			   }
 		   }
 		   else if (UNIT_LENGTH_IN_PIXELS==80){
