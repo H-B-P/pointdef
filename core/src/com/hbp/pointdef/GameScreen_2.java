@@ -447,8 +447,8 @@ public class GameScreen_2 implements Screen {
       }
       ship_t=ship_t_plural[0];
       
-      menu_button_t=new Texture(Gdx.files.internal("button_menu_smol.png"));
-      menu_button_trim_t=new Texture(Gdx.files.internal("button_menu_smol_trim.png"));
+      menu_button_t=new Texture(Gdx.files.internal("campaign_button_menu.png"));
+      menu_button_trim_t=new Texture(Gdx.files.internal("campaign_button_trim.png"));
       show_textbox=false;
       
       
@@ -507,7 +507,7 @@ public class GameScreen_2 implements Screen {
       
       //--Create rectangles--
       
-      menu_button_r=new Rectangle(240,450,100,40);
+      menu_button_r=new Rectangle(220,420,100,40);
       
       
       dots=new Rectangle[10];
@@ -3391,9 +3391,9 @@ private void spawnRandomMineZigzag(){
       //(These have to be drawn last so the dot doesn't go over them.)
       batch.draw(ship_t, ship.x, ship.y);
       batch.draw(statusbar_t, 0, 400);
-      batch.draw(menu_button_t,265,455);
+      batch.draw(menu_button_t,menu_button_r.x,menu_button_r.y);
       if (menu_button_r.contains(tp_x, tp_y)){
-    	  batch.draw(menu_button_trim_t,265,455);
+    	  batch.draw(menu_button_trim_t,menu_button_r.x,menu_button_r.y);
       }
       //--PRESENT THE FUNCTION--
       //(That is: make it clear on the statusbar what is actually being done.)
@@ -3865,8 +3865,8 @@ private void spawnRandomMineZigzag(){
     	  font.draw(batch, ((Integer)(lives)).toString(), 250, 435);
       }
       else if (!MODE.equals("intro") && !(GENRE.equals("endless"))){
-    	  font.draw(batch, "Score:", 200, 435);
-    	  font.draw(batch, ((Integer)score).toString(), 250, 435);
+    	  font.draw(batch, "SCORE:", 150, 455);
+    	  font.draw(batch, ((Integer)score).toString(), 167, 435);
       }
       
       
