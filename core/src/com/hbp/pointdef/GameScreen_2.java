@@ -646,78 +646,88 @@ public class GameScreen_2 implements Screen {
     	  c_textbox_y=100;
     	  
     	  //set up snippets
-    	  if(MODE.equals("intro")){
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_intro_1.png"));
-    		  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_intro_2.png"));
-    		  snippet_lose_t=snippet_win_t;
-    	  }
-    	  else if(TOPIC.equals("CARTESIAN") && !MODE.equals("lines")){
-    		  int sni=MathUtils.random(1,6);
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+sni+".png"));
-    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+cycled(sni,6)+".png"));
-    		  if (MODE.equals("add")){
-    			  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_pause.png"));
-    			  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_firstwin.png"));
-    		  }
-    		  else{
-    			  snippet_win_t=snippet_lose_t;
-    		  }
-    	  }
-    	  else if(TOPIC.equals("CARTESIAN") && MODE.equals("lines")){
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
-    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
-    		  snippet_win_t=snippet_lose_t;
-    	  }
-    	  else if(TOPIC.equals("POLAR")){
-    		  int sni=MathUtils.random(1,5);
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_polar_"+sni+".png"));
-    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_polar_"+cycled(sni,5)+".png"));
-    		  snippet_win_t=snippet_lose_t;
-    	  }
-    	  else if(TOPIC.equals("POWERS") && !MODE.equals("exponent")){
-    		  int sni=MathUtils.random(1,11);
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_powers_"+sni+".png"));
-    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_powers_"+cycled(sni,11)+".png"));
-    		  snippet_win_t=snippet_lose_t;
-    	  }
-    	  else if(TOPIC.equals("POWERS") && MODE.equals("exponent")){
-    		  int sni=MathUtils.random(1,2);
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_expon_"+sni+".png"));
-    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_expon_"+((sni%2)+1)+".png"));
-    		  snippet_win_t=snippet_lose_t;
-    	  }
-    	  else if(TOPIC.equals("MATRIX") && !MODE.equals("singular")){
-    		  int sni=MathUtils.random(1,5);
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+sni+".png"));
-    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+cycled(sni,5)+".png"));
-    		  snippet_win_t=snippet_lose_t;
-    	  }
-    	  else if(TOPIC.equals("MATRIX") && MODE.equals("singular")){
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_sing_"+MathUtils.random(1,2)+".png"));
-    		  snippet_lose_t=snippet_t;
+//    	  if(MODE.equals("intro")){
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_intro_1.png"));
+//    		  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_intro_2.png"));
+//    		  snippet_lose_t=snippet_win_t;
+//    	  }
+//    	  else if(TOPIC.equals("CARTESIAN") && !MODE.equals("lines")){
+//    		  int sni=MathUtils.random(1,6);
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+sni+".png"));
+//    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_cartesian_"+cycled(sni,6)+".png"));
+//    		  if (MODE.equals("add")){
+//    			  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_pause.png"));
+//    			  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_firstwin.png"));
+//    		  }
+//    		  else{
+//    			  snippet_win_t=snippet_lose_t;
+//    		  }
+//    	  }
+//    	  else if(TOPIC.equals("CARTESIAN") && MODE.equals("lines")){
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
+//    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_cart_line_"+MathUtils.random(1,3)+".png"));
+//    		  snippet_win_t=snippet_lose_t;
+//    	  }
+//    	  else if(TOPIC.equals("POLAR")){
+//    		  int sni=MathUtils.random(1,5);
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_polar_"+sni+".png"));
+//    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_polar_"+cycled(sni,5)+".png"));
+//    		  snippet_win_t=snippet_lose_t;
+//    	  }
+//    	  else if(TOPIC.equals("POWERS") && !MODE.equals("exponent")){
+//    		  int sni=MathUtils.random(1,11);
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_powers_"+sni+".png"));
+//    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_powers_"+cycled(sni,11)+".png"));
+//    		  snippet_win_t=snippet_lose_t;
+//    	  }
+//    	  else if(TOPIC.equals("POWERS") && MODE.equals("exponent")){
+//    		  int sni=MathUtils.random(1,2);
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_expon_"+sni+".png"));
+//    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_expon_"+((sni%2)+1)+".png"));
+//    		  snippet_win_t=snippet_lose_t;
+//    	  }
+//    	  else if(TOPIC.equals("MATRIX") && !MODE.equals("singular")){
+//    		  int sni=MathUtils.random(1,5);
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+sni+".png"));
+//    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_matrix_"+cycled(sni,5)+".png"));
+//    		  snippet_win_t=snippet_lose_t;
+//    	  }
+//    	  else if(TOPIC.equals("MATRIX") && MODE.equals("singular")){
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_sing_"+MathUtils.random(1,2)+".png"));
+//    		  snippet_lose_t=snippet_t;
+//    		  snippet_win_t=snippet_t;
+//    	  }
+//    	  else if(TOPIC.equals("ARGAND") && !MODE.equals("power")){
+//    		  int sni=MathUtils.random(1,8);
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_argand_"+sni+".png"));
+//    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_argand_"+cycled(sni,8)+".png"));
+//    		  snippet_win_t=snippet_lose_t;
+//    	  }
+//    	  else if(TOPIC.equals("ARGAND") && MODE.equals("power")){
+//    		  int sni=MathUtils.random(1,3);
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_pow_"+sni+".png"));
+//    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_pow_"+cycled(sni,3)+".png"));
+//    		  snippet_win_t=snippet_lose_t;
+//    	  }
+//    	  else{
+//    		  int sni=MathUtils.random(1,3);
+//    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_meta_"+sni+".png"));
+//    		  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_meta_"+cycled(sni,3)+".png"));
+//    		  snippet_lose_t=snippet_win_t;
+//    	  }
+    	  
+    	  
+    	  if (!MODE.equals("intro")){
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/gsnip_"+TOPIC.toLowerCase()+"_"+MODE+".png"));
     		  snippet_win_t=snippet_t;
-    	  }
-    	  else if(TOPIC.equals("ARGAND") && !MODE.equals("power")){
-    		  int sni=MathUtils.random(1,8);
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_argand_"+sni+".png"));
-    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_argand_"+cycled(sni,8)+".png"));
-    		  snippet_win_t=snippet_lose_t;
-    	  }
-    	  else if(TOPIC.equals("ARGAND") && MODE.equals("power")){
-    		  int sni=MathUtils.random(1,3);
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_pow_"+sni+".png"));
-    		  snippet_lose_t=new Texture(Gdx.files.internal("snippets/snippet_pow_"+cycled(sni,3)+".png"));
-    		  snippet_win_t=snippet_lose_t;
+    		  snippet_lose_t=snippet_t;
     	  }
     	  else{
-    		  int sni=MathUtils.random(1,3);
-    		  snippet_t=new Texture(Gdx.files.internal("snippets/snippet_meta_"+sni+".png"));
-    		  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_meta_"+cycled(sni,3)+".png"));
-    		  snippet_lose_t=snippet_win_t;
+    		  snippet_t=new Texture(Gdx.files.internal("snippets/snyp.png"));
+    		  snippet_win_t=snippet_t;
+    		  snippet_lose_t=snippet_t;
     	  }
-    	  snippet_t=new Texture(Gdx.files.internal("snippets/snyp.png"));
-    	  snippet_win_t=snippet_t;
-    	  snippet_lose_t=snippet_t;
+    	  
       }
       
       wavetype=WT_TWO;
@@ -3877,7 +3887,12 @@ private void spawnRandomMineZigzag(){
       
       if(Gdx.input.justTouched()){
     	  if (menu_button_r.contains(tp_x, tp_y)){
-    		  game.setScreen(new MainMenuScreen(game, ANDROID, true));
+    		  if (MODE.equals("intro")){
+    			  game.setScreen(new MainMenuScreen(game, ANDROID, true));
+    		  }
+    		  else{
+	    		  game.setScreen(new LevelSelectScreen(game, TOPIC, ANDROID));
+    		  }
     		  dispose();
     	  }
     	  
