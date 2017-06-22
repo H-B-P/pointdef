@@ -625,7 +625,7 @@ public class GameScreen_2 implements Screen {
     	  campaign_but_r.height=40;
     	  campaign_but_r.width=80;
     	  campaign_but_r.x=120;
-    	  campaign_but_r.y=150;
+    	  campaign_but_r.y=110;
     	  campaign_but_start_t=new Texture(Gdx.files.internal("campaign_button_start.png"));
     	  campaign_but_retry_t=new Texture(Gdx.files.internal("campaign_button_retry.png"));
     	  campaign_but_menu_t=new Texture(Gdx.files.internal("campaign_button_menu.png"));
@@ -641,8 +641,8 @@ public class GameScreen_2 implements Screen {
     	  
     	  show_c_textbox=true;
     	  c_textbox=campaign_tb_start;
-    	  c_textbox_x=60;
-    	  c_textbox_y=140;
+    	  c_textbox_x=30;
+    	  c_textbox_y=100;
     	  
     	  //set up snippets
     	  if(MODE.equals("intro")){
@@ -714,6 +714,9 @@ public class GameScreen_2 implements Screen {
     		  snippet_win_t=new Texture(Gdx.files.internal("snippets/snippet_meta_"+cycled(sni,3)+".png"));
     		  snippet_lose_t=snippet_win_t;
     	  }
+    	  snippet_t=new Texture(Gdx.files.internal("snippets/snyp.png"));
+    	  snippet_win_t=snippet_t;
+    	  snippet_lose_t=snippet_t;
       }
       
       wavetype=WT_TWO;
@@ -3335,10 +3338,9 @@ private void spawnRandomMineZigzag(){
       if (show_c_textbox){
     	  batch.draw(c_textbox, c_textbox_x, c_textbox_y);
     	  if (total_time==0){
-    		  //batch.draw(snippet, c_textbox_x+10, c_textbox_y+20);
+    		  batch.draw(snippet_t, c_textbox_x+10, c_textbox_y+50);
     		  batch.draw(campaign_but_start_t, campaign_but_r.x, campaign_but_r.y);
-    		  batch.draw(snippet_t, c_textbox_x+10, c_textbox_y+60);
-    		  font.draw(batch, TOPIC+": "+MODE.toUpperCase(), c_textbox_x+20, c_textbox_y+175);
+    		  //font.draw(batch, TOPIC+": "+MODE.toUpperCase(), c_textbox_x+20, c_textbox_y+175);
     		  if(campaign_but_r.contains(tp_x, tp_y)){
     			  batch.draw(campaign_but_trim, campaign_but_r.x, campaign_but_r.y);
     		  }
