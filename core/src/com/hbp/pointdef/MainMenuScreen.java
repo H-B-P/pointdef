@@ -283,13 +283,13 @@ public class MainMenuScreen implements Screen {
 			
 			if (!are_instructions_visible){
 				if (selector_prv_r.contains(tp_x, tp_y) && GAMESPEED>50){
-					GAMESPEED-=5;
+					GAMESPEED-=10;
 					prefs.putInteger("gamespeed", GAMESPEED);
 					prefs.flush();
 					arrowsound.play();
 				}
 				if (selector_nxt_r.contains(tp_x, tp_y) && GAMESPEED<200){
-					GAMESPEED+=5;
+					GAMESPEED+=10;
 					prefs.putInteger("gamespeed", GAMESPEED);
 					prefs.flush();
 					arrowsound.play();
